@@ -55,10 +55,10 @@ jobs:
       - run:
           name: 'Deploy'
           command: |
-            echo "Deploy to staging target GAE instance with project ID $S_GCP_PROJECT_ID"
-            echo $S_GCP_KEY > /tmp/$CI_PIPELINE_ID.json
+            echo "Deploy to staging target GAE instance with project ID $GCP_PROJECT_ID"
+            echo $GCP_KEY > /tmp/$CI_PIPELINE_ID.json
             gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
-            gcloud config set project $S_GCP_PROJECT_ID
+            gcloud config set project $GCP_PROJECT_ID
             gcloud --quiet app deploy app.yml
       - persist_to_workspace:
           root: ~/
@@ -95,6 +95,7 @@ workflows:
       - Approve deploy:
           type: approval
       - Deploy:
+          context: mstable-governance-app-kovan
           requires:
             - Approve deploy
             - Build
@@ -112,6 +113,7 @@ workflows:
           requires:
             - Approve build
       - Deploy:
+          context: mstable-governance-app-ropsten
           requires:
             - Approve deploy
             - Build
@@ -129,6 +131,7 @@ workflows:
           requires:
             - Approve build
       - Deploy:
+          context: mstable-governance-app-staging
           requires:
             - Approve deploy
             - Build
@@ -146,9 +149,11 @@ workflows:
           requires:
             - Approve build
       - Deploy:
+          context: mstable-governance-app-production
           requires:
             - Approve deploy
             - Build
-      - Sentry:
-          requires:
-            - Deploy
+# TODO create new Sentry project
+#      - Sentry:
+#          requires:
+#            - Deploy
