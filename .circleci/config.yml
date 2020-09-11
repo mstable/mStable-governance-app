@@ -11,9 +11,8 @@ executors:
     resource_class: small
 
 jobs:
-  buildStaging:
+  Build:
     executor: gcp
-    resource_class: medium+
     steps:
       - checkout
       - restore_cache:
@@ -51,47 +50,8 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-  buildProd:
-    executor: gcp
-    resource_class: medium+
-    steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install
-          command: yarn
-      - run:
-          name: 'Provision'
-          command: |
-            yarn run provision
-      - run:
-          name: Codegen (TypeChain)
-          command: yarn codegen:typechain
-      - run:
-          name: TypeScript
-          command: yarn tsc --noEmit
-      - run:
-          name: Lint
-          command: yarn lint
-      - run:
-          name: Test
-          command: yarn test --passWithNoTests
-      - run:
-          name: Build
-          command: yarn build
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/build
-            - project/public
-            - project/package.json
-            - project/*
-      - save_cache:
-          key: dependency-cache-{{ checksum "yarn.lock" }}
-          paths:
-            - node_modules
-  deployStaging:
+
+  Deploy:
     executor: gcp
     steps:
       - attach_workspace:
@@ -105,33 +65,14 @@ jobs:
             gcloud config set project $S_GCP_PROJECT_ID
             gcloud --quiet app deploy app.yml
       - persist_to_workspace:
-         root: ~/
-         paths:
-           - project/build
-           - project/public
-           - project/package.json
-           - project/*
-  deployProd:
-    executor: gcp
-    steps:
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: 'Deploy'
-          command: |
-            echo "Deploy to prod target GAE instance with project ID $P_GCP_PROJECT_ID"
-            echo $P_GCP_KEY > /tmp/$CI_PIPELINE_ID.json
-            gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
-            gcloud config set project $P_GCP_PROJECT_ID
-            gcloud --quiet app deploy app.yml
-      - persist_to_workspace:
           root: ~/
           paths:
             - project/build
             - project/public
             - project/package.json
             - project/*
-  sentryRelease:
+
+  Sentry:
     executor: sentry
     steps:
       - attach_workspace:
@@ -146,29 +87,72 @@ jobs:
             sentry-cli releases files $PACKAGE_VERSION upload-sourcemaps './build/static/js' --rewrite --url-prefix './build/static/js'
             sentry-cli releases finalize $SENTRY_RELEASE
             exit 0
+
 workflows:
   version: 2.1
-  staging:
+
+  Kovan:
     jobs:
-      - buildStaging:
-          context: mstable-governance-app-staging
-      - Approval:
+      # Kovan always runs Build
+      - Build:
+          context: mstable-governance-app-kovan
+      - Approve deploy:
           type: approval
-      - deployStaging:
+      - Deploy:
           requires:
-            - Approval
-            - buildStaging
-  prod:
+            - Approve deploy
+            - Build
+
+  Ropsten:
     jobs:
-      - Approval:
+      - Approve build:
           type: approval
-      - buildProd:
+      - Build:
+          context: mstable-governance-app-ropsten
+          requires:
+            - Approve build
+      - Approve deploy:
+          type: approval
+          requires:
+            - Approve build
+      - Deploy:
+          requires:
+            - Approve deploy
+            - Build
+
+  Staging:
+    jobs:
+      - Approve build:
+          type: approval
+      - Build:
+          context: mstable-governance-app-staging
+          requires:
+            - Approve build
+      - Approve deploy:
+          type: approval
+          requires:
+            - Approve build
+      - Deploy:
+          requires:
+            - Approve deploy
+            - Build
+
+  Production:
+    jobs:
+      - Approve build:
+          type: approval
+      - Build:
           context: mstable-governance-app-production
           requires:
-            - Approval
-      - deployProd:
+            - Approve build
+      - Approve deploy:
+          type: approval
           requires:
-            - buildProd
-      - sentryRelease:
+            - Approve build
+      - Deploy:
           requires:
-            - deployProd
+            - Approve deploy
+            - Build
+      - Sentry:
+          requires:
+            - Deploy
