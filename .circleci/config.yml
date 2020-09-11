@@ -21,10 +21,6 @@ jobs:
           name: Install
           command: yarn
       - run:
-          name: 'Provision'
-          command: |
-            yarn run provision
-      - run:
           name: Codegen (TypeChain)
           command: yarn codegen:typechain
       - run:
