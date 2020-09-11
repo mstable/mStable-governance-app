@@ -87,7 +87,11 @@ export const getConnectors = (chainId: number): Connectors => {
         //   chainId,
         // },
       };
-    case 3:
+    case 1337:
+      return {
+        injected,
+      };
+    default:
       return {
         injected,
         portis,
@@ -96,18 +100,12 @@ export const getConnectors = (chainId: number): Connectors => {
           apiKey: process.env.REACT_APP_FORTMATIC_API_KEY as string,
         },
         walletconnect,
-        // walletlink, // In theory it supports Ropsten; in reality the tx gas is broken :(
+        // walletlink, // In theory it supports other networks; in reality the tx gas is broken :(
         // torus: {
         //   ...torus,
         //   chainId,
         // },
       };
-    case 1337:
-      return {
-        injected,
-      };
-    default:
-      return {};
   }
 };
 
