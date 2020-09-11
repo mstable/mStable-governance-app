@@ -1,0 +1,3 @@
+[submodule "lib/mStable-subgraph"]
+	path = lib/mStable-subgraph
+	url = git@github.com:mstable/mStable-subgraph.git

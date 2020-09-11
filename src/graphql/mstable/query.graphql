@@ -1,0 +1,19 @@
+# import './fragments.graphql'
+
+query Erc20Tokens($addresses: [Bytes!]!) @api(name: mstable) {
+  tokens(where: { address_in: $addresses }) {
+    ...TokenDetails
+  }
+}
+
+query AllErc20Tokens @api(name: mstable) {
+  tokens {
+    ...TokenDetails
+  }
+}
+
+query Token($id: ID!) @api(name: mstable) {
+  token(id: $id) {
+    ...TokenDetails
+  }
+}

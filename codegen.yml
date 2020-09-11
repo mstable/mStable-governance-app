@@ -1,0 +1,30 @@
+config:
+  skipTypename: true
+  withComponent: false
+  withHOC: false
+  withHooks: true
+  scalars:
+    BigDecimal: string
+    BigInt: string
+    Bytes: string
+    Address: string
+    ID: string
+
+generates:
+  ./src/graphql/mstable/schema.graphql:
+    overwrite: true
+    schema: ${REACT_APP_GRAPHQL_ENDPOINT_MSTABLE}
+    plugins:
+      - 'schema-ast'
+    config:
+      includeDirectives: true
+
+  ./src/graphql/mstable.tsx:
+    overwrite: true
+    schema: ${REACT_APP_GRAPHQL_ENDPOINT_MSTABLE}
+    documents: 'src/graphql/mstable/*.graphql'
+    plugins:
+      - 'fragment-matcher'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
