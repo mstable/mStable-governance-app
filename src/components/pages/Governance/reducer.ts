@@ -12,7 +12,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
                 metaToken: action.payload.metaToken,
             };
         case Actions.SetVoteAmount:
-            return { ...state, amount: BigDecimal.maybeParse(action.payload, 18), formValue: action.payload };
+            return { ...state, amount: BigDecimal.maybeParse(action.payload, 18), formValue: action.payload, touched: true, };
 
         case Actions.SetLockUpPeriod: {
             return { ...state, lockUpPeriod: action.payload };

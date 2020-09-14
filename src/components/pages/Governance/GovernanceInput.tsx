@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import format from 'date-fns/format'
 import addDays from 'date-fns/addDays'
@@ -55,25 +55,25 @@ display: flex;
 justify-content: space-between;`;
 
 export const GovernanceInput: FC<{}> = () => {
-  const [value, onChange] = useState(MIN);
   const {
     formValue,
+    lockUpPeriod
   } = useGovernanceState();
   const token = useTokenCtx();
   const {
     setVoteAmount,
-    setLockUpPeriod,
+    setLockUpPeriod
   } = useGovernanceDispatch();
   const tokenAddresses = useMemo<string[]>(
     () => (token?.address ? [token?.address] : []),
     [token],
   );
 
-  // eslint-disable-next-line no-console
   const formattedDate = useMemo(() => {
-    return format(addDays(now, value), "dd-MM-yyyy")
-  }, [value]);
-
+    return format(addDays(now, lockUpPeriod), "dd-MM-yyyy")
+  }, [lockUpPeriod]);
+  // eslint-disable-next-line no-console
+  console.log('LOCK UP PERIOD LADS', lockUpPeriod);
   return (
     <>
       <FormRow>
@@ -93,17 +93,17 @@ export const GovernanceInput: FC<{}> = () => {
           Lock up deposit
         </H3>
         <SliderParent>
-          <RangeValue value={value}>
+          <RangeValue value={lockUpPeriod}>
             <div>
-              {value} Days
+              {lockUpPeriod} Days
             </div>
             <div>
               ({formattedDate})
             </div>
           </RangeValue>
-          <StyledInput type="range" min={MIN} max={MAX} value={value}
+          <StyledInput type="range" min={MIN} max={MAX} value={lockUpPeriod}
             onChange={({ target: { value: radius } }) => {
-              onChange(parseFloat(radius));
+              setLockUpPeriod(parseFloat(radius));
             }}
           />
         </SliderParent>

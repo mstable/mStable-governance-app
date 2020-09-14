@@ -5,9 +5,9 @@ export interface State {
     amount?: BigDecimal;
     lockUpPeriod: number;
     error?: string;
-    formValue?: string | null;
+    formValue: string | null;
     touched?: boolean;
-    valid?: boolean;
+    valid: boolean;
     data?: {
         metaToken: SubscribedToken
     }
@@ -23,7 +23,7 @@ export enum Reasons {
 
 export interface Dispatch {
     setVoteAmount(formValue: string): void;
-    setLockUpPeriod(inputValue: number): void;
+    setLockUpPeriod(lockUpPeriod: number): void;
 }
 
 export enum Actions {
