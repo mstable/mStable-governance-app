@@ -6,10 +6,6 @@ const validateLock = ({
   data
 }: State): [false, Reasons] | [true] => {
 
-  if (!data) {
-    return [false, Reasons.FetchingData];
-  }
-
   if (!amount) {
     return [false, Reasons.AmountMustBeSet];
   }
@@ -21,9 +17,10 @@ const validateLock = ({
   if (lockUpPeriod < 0) {
     return [false, Reasons.PeriodMustBeMoreThanDay]
   }
-
-  if (amount.exact.gt(data.metaToken.balance.exact)) {
-    return [false, Reasons.AmountMustNotExceedBalance];
+  if (data) {
+    if (amount.exact.gt(data.metaToken.balance.exact)) {
+      return [false, Reasons.AmountMustNotExceedBalance];
+    }
   }
   return [true];
 };

@@ -3,16 +3,15 @@ import { PageHeader } from '../PageHeader';
 import { ReactComponent as GovernanceIcon } from '../../icons/circle/analytics.svg';
 import { TransactionForm } from '../../forms/TransactionForm';
 import { GovernanceInput } from './GovernanceInput';
-import { GovernanceProvider } from './GovernanceProvider';
+import { GovernanceProvider, useGovernanceState } from './GovernanceProvider';
 
 const GovernanceForm: FC<{}> = () => {
-
+  const { valid } = useGovernanceState();
   return (
     <TransactionForm
       confirmLabel='Confirm Deposit and Lockup'
       input={<GovernanceInput />}
-      // eslint-disable-next-line react/jsx-boolean-value
-      valid={true}
+      valid={valid}
     />
   );
 };

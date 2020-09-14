@@ -7,7 +7,6 @@ import React, {
   useReducer,
   useEffect,
 } from 'react';
-
 import { Dispatch, State, Actions } from './types';
 import { reducer } from './reducer';
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
@@ -17,7 +16,8 @@ const initialState: State = {
   valid: false,
   touched: false,
   lockUpPeriod: 0,
-  formValue: null
+  formValue: null,
+
 };
 
 const dispatchCtx = createContext<Dispatch>({} as never);
