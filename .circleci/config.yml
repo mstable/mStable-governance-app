@@ -55,7 +55,7 @@ jobs:
       - run:
           name: 'Deploy'
           command: |
-            echo "Deploy to staging target GAE instance with project ID $GCP_PROJECT_ID"
+            echo "Deploy to target GAE instance with project ID $GCP_PROJECT_ID"
             echo $GCP_KEY > /tmp/$CI_PIPELINE_ID.json
             gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
             gcloud config set project $GCP_PROJECT_ID
@@ -89,23 +89,26 @@ workflows:
 
   Kovan:
     jobs:
-      # Kovan always runs Build
       - Build:
-          context: mstable-governance-app-kovan
+          context:
+            - mstable-governance-app-kovan
       - Approve deploy:
           type: approval
       - Deploy:
-          context: mstable-governance-app-kovan
+          context:
+            - mstable-kovan
+            - mstable-governance-app-kovan
           requires:
-            - Approve deploy
             - Build
+            - Approve deploy
 
   Ropsten:
     jobs:
       - Approve build:
           type: approval
       - Build:
-          context: mstable-governance-app-ropsten
+          context:
+            - mstable-governance-app-ropsten
           requires:
             - Approve build
       - Approve deploy:
@@ -113,17 +116,20 @@ workflows:
           requires:
             - Approve build
       - Deploy:
-          context: mstable-governance-app-ropsten
+          context:
+            - mstable-ropsten
+            - mstable-governance-app-ropsten
           requires:
-            - Approve deploy
             - Build
+            - Approve deploy
 
   Staging:
     jobs:
       - Approve build:
           type: approval
       - Build:
-          context: mstable-governance-app-staging
+          context:
+            - mstable-governance-app-staging
           requires:
             - Approve build
       - Approve deploy:
@@ -131,17 +137,20 @@ workflows:
           requires:
             - Approve build
       - Deploy:
-          context: mstable-governance-app-staging
+          context:
+            - mstable-staging
+            - mstable-governance-app-staging
           requires:
-            - Approve deploy
             - Build
+            - Approve deploy
 
   Production:
     jobs:
       - Approve build:
           type: approval
       - Build:
-          context: mstable-governance-app-production
+          context:
+            - mstable-governance-app
           requires:
             - Approve build
       - Approve deploy:
@@ -149,11 +158,12 @@ workflows:
           requires:
             - Approve build
       - Deploy:
-          context: mstable-governance-app-production
+          context:
+            - mstable-app
+            - mstable-governance-app
           requires:
-            - Approve deploy
             - Build
-# TODO create new Sentry project
-#      - Sentry:
-#          requires:
-#            - Deploy
+            - Approve deploy
+      - Sentry:
+          requires:
+            - Deploy
