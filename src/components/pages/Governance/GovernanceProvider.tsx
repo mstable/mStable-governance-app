@@ -10,24 +10,18 @@ import React, {
 import { Dispatch, State, Actions } from './types';
 import { reducer } from './reducer';
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
-import { SubscribedToken } from '../../../types';
 
 const initialState: State = {
   valid: false,
   touched: false,
   lockUpPeriod: 0,
-  formValue: null
+  formValue: null,
+  data: {}
 };
 
 const dispatchCtx = createContext<Dispatch>({} as never);
 
 const stateCtx = createContext<State>({} as never);
-
-const tokenCtx = createContext<SubscribedToken | undefined>(undefined);
-
-export const useTokenCtx = ():
-  | SubscribedToken
-  | undefined => useContext(tokenCtx);
 
 export const useGovernanceState = (): State => useContext(stateCtx);
 
@@ -71,9 +65,7 @@ export const GovernanceProvider: FC<{}> = ({
         }), [setVoteAmount, setLockUpPeriod])}
     >
       <stateCtx.Provider value={state}>
-        <tokenCtx.Provider value={metaToken}>
-          {children}
-        </tokenCtx.Provider>
+        {children}
       </stateCtx.Provider>
     </dispatchCtx.Provider >
   );

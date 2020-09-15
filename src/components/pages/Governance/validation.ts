@@ -18,9 +18,10 @@ const validateLock = ({
     return [false, Reasons.AmountMustBeGreaterThanZero];
   }
 
-  if (lockUpPeriod < 0) {
+  if (lockUpPeriod <= 0) {
     return [false, Reasons.PeriodMustBeMoreThanDay]
   }
+
   if (metaToken) {
     if (amount.exact.gt(metaToken.balance.exact)) {
       return [false, Reasons.AmountMustNotExceedBalance];
@@ -30,9 +31,8 @@ const validateLock = ({
 };
 
 export const validate = (state: State): State => {
-  const { touched, lockUpPeriod } = state;
-  const ready = touched && !!lockUpPeriod;
-  const [valid, error] = ready ? validateLock(state) : [false];
+  const { touched } = state;
+  const [valid, error] = touched ? validateLock(state) : [false];
   return {
     ...state,
     error,
