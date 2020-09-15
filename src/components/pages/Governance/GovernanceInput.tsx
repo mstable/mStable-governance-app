@@ -57,7 +57,8 @@ justify-content: space-between;`;
 export const GovernanceInput: FC<{}> = () => {
   const {
     formValue,
-    lockUpPeriod
+    lockUpPeriod,
+    error
   } = useGovernanceState();
   const token = useTokenCtx();
   const {
@@ -86,6 +87,7 @@ export const GovernanceInput: FC<{}> = () => {
           name='stake'
           onChangeAmount={setVoteAmount}
           amountValue={formValue || null}
+          error={error}
         />
       </FormRow>
       <FormRow>

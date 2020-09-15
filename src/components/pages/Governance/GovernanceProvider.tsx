@@ -16,8 +16,7 @@ const initialState: State = {
   valid: false,
   touched: false,
   lockUpPeriod: 0,
-  formValue: null,
-
+  formValue: null
 };
 
 const dispatchCtx = createContext<Dispatch>({} as never);
@@ -41,9 +40,6 @@ export const GovernanceProvider: FC<{}> = ({
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const metaToken = useMetaToken();
-
-  // eslint-disable-next-line no-console
-  console.log('META TOKEN', metaToken);
 
   useEffect(() => {
     dispatch({

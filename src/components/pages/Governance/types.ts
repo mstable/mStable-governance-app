@@ -9,7 +9,7 @@ export interface State {
     touched?: boolean;
     valid: boolean;
     data?: {
-        metaToken: SubscribedToken
+        metaToken: SubscribedToken | undefined
     }
 }
 
