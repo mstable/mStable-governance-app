@@ -19,7 +19,7 @@ const validateLock = ({
   }
 
   if (lockUpPeriod <= 0) {
-    return [false, Reasons.PeriodMustBeMoreThanDay]
+    return [false, Reasons.PeriodMustBeSet]
   }
 
   if (metaToken) {
