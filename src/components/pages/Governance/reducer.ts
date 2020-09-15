@@ -17,7 +17,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
             return { ...state, amount: BigDecimal.maybeParse(action.payload, 18), formValue: action.payload, touched: true, };
 
         case Actions.SetLockUpPeriod: {
-            return { ...state, lockUpPeriod: action.payload };
+            return { ...state, lockUpPeriod: action.payload, touched: true };
         }
 
         default:

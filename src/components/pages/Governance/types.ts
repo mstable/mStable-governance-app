@@ -8,8 +8,8 @@ export interface State {
     formValue: string | null;
     touched?: boolean;
     valid: boolean;
-    data?: {
-        metaToken: SubscribedToken | undefined
+    data: {
+        metaToken?: SubscribedToken
     }
 }
 
@@ -18,7 +18,7 @@ export enum Reasons {
     AmountMustBeGreaterThanZero = 'Amount must be greater than zero',
     AmountMustBeSet = 'Amount must be set',
     PeriodMustBeMoreThanDay = 'Lock period must be more than a day',
-    AmountMustNotExceedBalance = 'Amount must not exceed balance'
+    AmountMustNotExceedBalance = 'Amount must not exceed balance',
 }
 
 export interface Dispatch {
