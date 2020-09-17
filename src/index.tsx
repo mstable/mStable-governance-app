@@ -11,7 +11,9 @@ import { Providers } from './context';
 import { Updaters } from './updaters';
 import { Layout } from './components/layout/Layout';
 import { NotFound } from './components/pages/NotFound';
-import { Governance } from './components/pages/Governance'
+import { Stake } from './components/pages/Stake'
+import { Discuss } from './components/pages/Discuss'
+import { Govern } from './components/pages/Govern'
 
 checkRequiredEnvVars();
 
@@ -21,7 +23,11 @@ Sentry.init({
 });
 
 const routes = {
-  '/': () => <Governance/>,
+  '/': () => <Govern />,
+  '/stake': () => <Stake />,
+  '/discuss': () => <Discuss />,
+  '/vote': () => <div>Vote</div>,
+  '/govern': () => <Govern />
 };
 
 const Root: FC<{}> = () => {

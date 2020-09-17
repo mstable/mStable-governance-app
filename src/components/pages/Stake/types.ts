@@ -1,8 +1,18 @@
 import { BigDecimal } from "../../../web3/BigDecimal";
 import { SubscribedToken } from "../../../types";
 
+export enum TransactionType {
+    Withdraw,
+    Claim,
+    Eject,
+    CreateLock,
+    IncreaseLockAmount,
+    IncreaseLockTime
+}
+
 export interface State {
     amount?: BigDecimal;
+    transactionType?: TransactionType;
     lockUpPeriod: number;
     error?: string;
     formValue: string | null;

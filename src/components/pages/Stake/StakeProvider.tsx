@@ -23,12 +23,12 @@ const dispatchCtx = createContext<Dispatch>({} as never);
 
 const stateCtx = createContext<State>({} as never);
 
-export const useGovernanceState = (): State => useContext(stateCtx);
+export const useStakeState = (): State => useContext(stateCtx);
 
-export const useGovernanceDispatch = (): Dispatch =>
+export const useStakeDispatch = (): Dispatch =>
   useContext(dispatchCtx);
 
-export const GovernanceProvider: FC<{}> = ({
+export const StakeProvider: FC<{}> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
