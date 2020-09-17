@@ -2,31 +2,31 @@ import React, { FC } from 'react';
 import { PageHeader } from '../PageHeader';
 import { ReactComponent as GovernanceIcon } from '../../icons/circle/analytics.svg';
 import { TransactionForm } from '../../forms/TransactionForm';
-import { GovernanceInput } from './GovernanceInput';
-import { GovernanceProvider, useGovernanceState } from './GovernanceProvider';
+import { StakeInput } from './StakeInput';
+import { StakeProvider, useStakeState } from './StakeProvider';
 
-const GovernanceForm: FC<{}> = () => {
-  const { valid } = useGovernanceState();
+const StakeForm: FC<{}> = () => {
+  const { valid } = useStakeState();
   return (
     <TransactionForm
       confirmLabel='Confirm Deposit and Lockup'
-      input={<GovernanceInput />}
+      input={<StakeInput />}
       valid={valid}
     />
   );
 };
 
-export const Governance: FC<{}> = () => {
+export const Stake: FC<{}> = () => {
   return (
     <div>
       <PageHeader
         icon={<GovernanceIcon />}
-        title="GOVERNANCE"
+        title="STAKE"
         subtitle="Stake your MTA to participate in mStable protocol governance"
       />
-      <GovernanceProvider>
-        <GovernanceForm />
-      </GovernanceProvider>
+      <StakeProvider>
+        <StakeForm />
+      </StakeProvider>
     </div>
   )
 };

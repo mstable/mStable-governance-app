@@ -40,7 +40,7 @@ export const PageHeader: FC<Props> = ({ children, title, subtitle, icon }) => (
     <Icon>{icon}</Icon>
     <div>
       <H2>{title}</H2>
-      <H3 style={{ whiteSpace: 'nowrap' }}>{subtitle}</H3>
+      <H3>{subtitle}</H3>
       <div>{children}</div>
     </div>
   </Container>

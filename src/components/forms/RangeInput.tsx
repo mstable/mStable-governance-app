@@ -54,7 +54,7 @@ export const RangeInput: FC<Props> = ({ min, max, value, onChange, startLabel, e
               marginBottom: '15px',
               background: getTrackBackground({
                 values: [value],
-                colors: ["#00BFFF", "#ccc"],
+                colors: ["rgb(23, 110, 222)", "#ccc"],
                 min,
                 max
               })
