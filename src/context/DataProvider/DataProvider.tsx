@@ -3,13 +3,15 @@ import { pipe } from 'ts-pipe-compose';
 import useDebouncedMemo from '@sevenoutman/use-debounced-memo';
 
 import { useTokensState } from './TokensProvider';
-import { RawData, PartialRawData, DataState } from './types';
+import { RawData, DataState, IncentivisedVotingLockup } from './types';
 import { recalculateState } from './recalculateState';
 import { transformRawData } from './transformRawData';
+import { useUserLockupsSubscription } from './subscriptions';
+import { useAccount } from '../UserProvider';
 
-const dataStateCtx = createContext<DataState | undefined>(undefined);
+const dataStateCtx = createContext<DataState>({} as DataState);
 
-const setDataState = (data: PartialRawData): DataState => {
+const setDataState = (data: RawData): DataState => {
   return pipe<RawData, DataState, DataState>(
     data as RawData,
     transformRawData,
@@ -17,22 +19,25 @@ const setDataState = (data: PartialRawData): DataState => {
   );
 };
 
-const useRawData = (): PartialRawData => {
+const useRawData = (): RawData => {
   const { tokens } = useTokensState();
+  const account = useAccount();
+  const { data } = useUserLockupsSubscription(account as string);
+  const incentivisedVotingLockups = data?.incentivisedVotingLockups ?? []
 
   return useDebouncedMemo(
     () => ({
       tokens,
+      incentivisedVotingLockups
     }),
-    [tokens],
+    [tokens, incentivisedVotingLockups],
     1000,
   );
 };
 
 export const DataProvider: FC<{}> = ({ children }) => {
   const data = useRawData();
-
-  const dataState = useMemo<DataState | undefined>(() => setDataState(data), [
+  const dataState = useMemo<DataState>(() => setDataState(data), [
     data,
   ]);
 
@@ -41,5 +46,8 @@ export const DataProvider: FC<{}> = ({ children }) => {
   );
 };
 
-export const useDataState = (): DataState | undefined =>
+export const useDataState = (): DataState =>
   useContext(dataStateCtx);
+
+export const useIncentivisedVotingLockup = (): IncentivisedVotingLockup[] => useDataState().incentivisedVotingLockups
+

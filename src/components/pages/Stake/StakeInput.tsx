@@ -2,13 +2,14 @@ import React, { FC, useMemo } from 'react';
 import format from 'date-fns/format'
 import addDays from 'date-fns/addDays'
 import styled from 'styled-components';
+import Skeleton from 'react-loading-skeleton';
 import { FormRow } from '../../core/Form';
 import { H3 } from '../../core/Typography';
-import { TokenAmountInput } from '../../forms/TokenAmountInput';
 import { useStakeDispatch, useStakeState } from './StakeProvider';
 import { RangeInput } from '../../forms/RangeInput';
 import { TokenIcon } from '../../icons/TokenIcon';
 import { Tooltip } from '../../core/ReactTooltip';
+import { InlineTokenAmountInput } from '../../forms/InlineTokenAmountInput';
 
 const now = new Date()
 
@@ -31,6 +32,7 @@ const Container = styled.div`
 
 export const StakeInput: FC<{}> = () => {
   const {
+    amount,
     formValue,
     lockUpPeriod,
     error,
@@ -52,14 +54,27 @@ export const StakeInput: FC<{}> = () => {
             Deposit Amount
           </Tooltip>
         </H3>
-        <TokenAmountInput
-          tokenValue={data.metaToken?.address || null}
-          tokenAddresses={data.metaToken?.address ? [data.metaToken.address] : []}
-          name='stake'
-          onChangeAmount={setVoteAmount}
-          amountValue={formValue || null}
-          error={error}
-        />
+        {/* TODO: add balances label */}
+        {data.metaToken && data.incentivisedVotingLockup ?
+          <InlineTokenAmountInput
+            amount={{
+              value: amount,
+              formValue,
+              handleChange: setVoteAmount
+              // TODO: handleSetMax
+            }
+            }
+            token={{
+              address: data.metaToken.address,
+            }}
+            approval={{
+              spender: data.incentivisedVotingLockup.address
+            }}
+            error={error}
+          />
+          :
+          <Skeleton />
+        }
       </FormRow>
       <FormRow>
         <H3>

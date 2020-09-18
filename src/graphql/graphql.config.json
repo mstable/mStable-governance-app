@@ -3,19 +3,11 @@
   "projects": {
     "mstable": {
       "includes": ["./shared/*", "./mstable/*"],
-      "schemaPath": "remote-schema.graphql",
+      "schemaPath": "./mstable/schema.graphql",
       "extensions": {
         "endpoints": {
-          "ropsten": {
-            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-protocol-ropsten",
-            "introspect": false
-          },
-          "mainnet-production": {
-            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-protocol",
-            "introspect": false
-          },
-          "mainnet-staging": {
-            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-protocol-staging",
+          "kovan": {
+            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-governance-kovan",
             "introspect": false
           }
         }
