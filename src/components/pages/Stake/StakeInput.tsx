@@ -1,6 +1,5 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import format from 'date-fns/format'
-import addDays from 'date-fns/addDays'
 import styled from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
 import { FormRow } from '../../core/Form';
@@ -10,8 +9,6 @@ import { RangeInput } from '../../forms/RangeInput';
 import { TokenIcon } from '../../icons/TokenIcon';
 import { Tooltip } from '../../core/ReactTooltip';
 import { InlineTokenAmountInput } from '../../forms/InlineTokenAmountInput';
-
-const now = new Date()
 
 const Symbol = styled.div`
   display: flex;
@@ -34,18 +31,16 @@ export const StakeInput: FC<{}> = () => {
   const {
     amount,
     formValue,
-    lockUpPeriod,
+    lockUpDays,
     error,
-    data
+    data,
+    unlockTime
   } = useStakeState();
   const {
     setVoteAmount,
     setLockUpPeriod
   } = useStakeDispatch();
 
-  const formattedDate = useMemo(() => {
-    return format(addDays(now, lockUpPeriod), "dd-MM-yyyy")
-  }, [lockUpPeriod]);
   return (
     <>
       <FormRow>
@@ -82,13 +77,16 @@ export const StakeInput: FC<{}> = () => {
             Lock up deposit
           </Tooltip>
         </H3>
-        <RangeInput min={0} max={365} value={lockUpPeriod} onChange={setLockUpPeriod} startLabel='Today' endLabel='1 Year'>
+        <RangeInput min={0} max={365} value={lockUpDays} onChange={setLockUpPeriod} startLabel='Today' endLabel='1 Year'>
           <div>
-            {lockUpPeriod} Days
+            {lockUpDays} Days
             </div>
           <div>
-            ({formattedDate})
-            </div>
+            {unlockTime ?
+              `(${format(unlockTime, 'dd-MM-yyyy')})`
+              : '-'
+            }
+          </div>
         </RangeInput>
       </FormRow >
       <FormRow>

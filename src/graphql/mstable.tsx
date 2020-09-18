@@ -29,13 +29,7 @@ export type Maybe<T> = T | null;
           },
           {
             "name": "ClaimTransaction"
-          }
-        ]
-      },
-      {
-        "kind": "INTERFACE",
-        "name": "IDepositTransaction",
-        "possibleTypes": [
+          },
           {
             "name": "CreateLockTransaction"
           },
@@ -74,12 +68,13 @@ export type Block_Height = {
 
 export type ClaimTransaction = Transaction & {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  provider: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
+  hash: Scalars['Bytes'];
   reward: Scalars['BigInt'];
+  sender: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  type: TransactionType;
+  user: Scalars['Bytes'];
 };
 
 export type ClaimTransaction_Filter = {
@@ -91,32 +86,6 @@ export type ClaimTransaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  provider?: Maybe<Scalars['Bytes']>;
-  provider_not?: Maybe<Scalars['Bytes']>;
-  provider_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_contains?: Maybe<Scalars['Bytes']>;
-  provider_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -125,6 +94,12 @@ export type ClaimTransaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
   reward?: Maybe<Scalars['BigInt']>;
   reward_not?: Maybe<Scalars['BigInt']>;
   reward_gt?: Maybe<Scalars['BigInt']>;
@@ -133,27 +108,51 @@ export type ClaimTransaction_Filter = {
   reward_lte?: Maybe<Scalars['BigInt']>;
   reward_in?: Maybe<Array<Scalars['BigInt']>>;
   reward_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
+  timestamp?: Maybe<Scalars['BigInt']>;
+  timestamp_not?: Maybe<Scalars['BigInt']>;
+  timestamp_gt?: Maybe<Scalars['BigInt']>;
+  timestamp_lt?: Maybe<Scalars['BigInt']>;
+  timestamp_gte?: Maybe<Scalars['BigInt']>;
+  timestamp_lte?: Maybe<Scalars['BigInt']>;
+  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
+  user?: Maybe<Scalars['Bytes']>;
+  user_not?: Maybe<Scalars['Bytes']>;
+  user_in?: Maybe<Array<Scalars['Bytes']>>;
+  user_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  user_contains?: Maybe<Scalars['Bytes']>;
+  user_not_contains?: Maybe<Scalars['Bytes']>;
 };
 
 export enum ClaimTransaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
-  Provider = 'provider',
-  Hash = 'hash',
-  Timestamp = 'timestamp',
   Block = 'block',
-  Reward = 'reward'
+  Hash = 'hash',
+  Reward = 'reward',
+  Sender = 'sender',
+  Timestamp = 'timestamp',
+  Type = 'type',
+  User = 'user'
 }
 
-export type CreateLockTransaction = IDepositTransaction & {
+export type CreateLockTransaction = Transaction & {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  provider: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
-  value: Scalars['BigInt'];
+  hash: Scalars['Bytes'];
   lockTime: Scalars['BigInt'];
+  provider: Scalars['Bytes'];
+  sender: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  type: TransactionType;
+  value: Scalars['BigInt'];
 };
 
 export type CreateLockTransaction_Filter = {
@@ -165,32 +164,6 @@ export type CreateLockTransaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  provider?: Maybe<Scalars['Bytes']>;
-  provider_not?: Maybe<Scalars['Bytes']>;
-  provider_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_contains?: Maybe<Scalars['Bytes']>;
-  provider_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -199,14 +172,12 @@ export type CreateLockTransaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
-  value?: Maybe<Scalars['BigInt']>;
-  value_not?: Maybe<Scalars['BigInt']>;
-  value_gt?: Maybe<Scalars['BigInt']>;
-  value_lt?: Maybe<Scalars['BigInt']>;
-  value_gte?: Maybe<Scalars['BigInt']>;
-  value_lte?: Maybe<Scalars['BigInt']>;
-  value_in?: Maybe<Array<Scalars['BigInt']>>;
-  value_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
   lockTime?: Maybe<Scalars['BigInt']>;
   lockTime_not?: Maybe<Scalars['BigInt']>;
   lockTime_gt?: Maybe<Scalars['BigInt']>;
@@ -215,27 +186,59 @@ export type CreateLockTransaction_Filter = {
   lockTime_lte?: Maybe<Scalars['BigInt']>;
   lockTime_in?: Maybe<Array<Scalars['BigInt']>>;
   lockTime_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  provider?: Maybe<Scalars['Bytes']>;
+  provider_not?: Maybe<Scalars['Bytes']>;
+  provider_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_contains?: Maybe<Scalars['Bytes']>;
+  provider_not_contains?: Maybe<Scalars['Bytes']>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
+  timestamp?: Maybe<Scalars['BigInt']>;
+  timestamp_not?: Maybe<Scalars['BigInt']>;
+  timestamp_gt?: Maybe<Scalars['BigInt']>;
+  timestamp_lt?: Maybe<Scalars['BigInt']>;
+  timestamp_gte?: Maybe<Scalars['BigInt']>;
+  timestamp_lte?: Maybe<Scalars['BigInt']>;
+  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
+  value?: Maybe<Scalars['BigInt']>;
+  value_not?: Maybe<Scalars['BigInt']>;
+  value_gt?: Maybe<Scalars['BigInt']>;
+  value_lt?: Maybe<Scalars['BigInt']>;
+  value_gte?: Maybe<Scalars['BigInt']>;
+  value_lte?: Maybe<Scalars['BigInt']>;
+  value_in?: Maybe<Array<Scalars['BigInt']>>;
+  value_not_in?: Maybe<Array<Scalars['BigInt']>>;
 };
 
 export enum CreateLockTransaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
-  Provider = 'provider',
-  Hash = 'hash',
-  Timestamp = 'timestamp',
   Block = 'block',
-  Value = 'value',
-  LockTime = 'lockTime'
+  Hash = 'hash',
+  LockTime = 'lockTime',
+  Provider = 'provider',
+  Sender = 'sender',
+  Timestamp = 'timestamp',
+  Type = 'type',
+  Value = 'value'
 }
 
 export type EjectTransaction = Transaction & {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  ejected: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
+  ejected: Scalars['Bytes'];
   ejector: Scalars['Bytes'];
+  hash: Scalars['Bytes'];
+  sender: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  type: TransactionType;
 };
 
 export type EjectTransaction_Filter = {
@@ -247,94 +250,38 @@ export type EjectTransaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
+  block?: Maybe<Scalars['Int']>;
+  block_not?: Maybe<Scalars['Int']>;
+  block_gt?: Maybe<Scalars['Int']>;
+  block_lt?: Maybe<Scalars['Int']>;
+  block_gte?: Maybe<Scalars['Int']>;
+  block_lte?: Maybe<Scalars['Int']>;
+  block_in?: Maybe<Array<Scalars['Int']>>;
+  block_not_in?: Maybe<Array<Scalars['Int']>>;
   ejected?: Maybe<Scalars['Bytes']>;
   ejected_not?: Maybe<Scalars['Bytes']>;
   ejected_in?: Maybe<Array<Scalars['Bytes']>>;
   ejected_not_in?: Maybe<Array<Scalars['Bytes']>>;
   ejected_contains?: Maybe<Scalars['Bytes']>;
   ejected_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  block?: Maybe<Scalars['Int']>;
-  block_not?: Maybe<Scalars['Int']>;
-  block_gt?: Maybe<Scalars['Int']>;
-  block_lt?: Maybe<Scalars['Int']>;
-  block_gte?: Maybe<Scalars['Int']>;
-  block_lte?: Maybe<Scalars['Int']>;
-  block_in?: Maybe<Array<Scalars['Int']>>;
-  block_not_in?: Maybe<Array<Scalars['Int']>>;
   ejector?: Maybe<Scalars['Bytes']>;
   ejector_not?: Maybe<Scalars['Bytes']>;
   ejector_in?: Maybe<Array<Scalars['Bytes']>>;
   ejector_not_in?: Maybe<Array<Scalars['Bytes']>>;
   ejector_contains?: Maybe<Scalars['Bytes']>;
   ejector_not_contains?: Maybe<Scalars['Bytes']>;
-};
-
-export enum EjectTransaction_OrderBy {
-  Id = 'id',
-  Sender = 'sender',
-  Hash = 'hash',
-  Ejected = 'ejected',
-  Timestamp = 'timestamp',
-  Block = 'block',
-  Ejector = 'ejector'
-}
-
-export type IDepositTransaction = {
-  id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  provider: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
-  block: Scalars['Int'];
-};
-
-export type IDepositTransaction_Filter = {
-  id?: Maybe<Scalars['ID']>;
-  id_not?: Maybe<Scalars['ID']>;
-  id_gt?: Maybe<Scalars['ID']>;
-  id_lt?: Maybe<Scalars['ID']>;
-  id_gte?: Maybe<Scalars['ID']>;
-  id_lte?: Maybe<Scalars['ID']>;
-  id_in?: Maybe<Array<Scalars['ID']>>;
-  id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  provider?: Maybe<Scalars['Bytes']>;
-  provider_not?: Maybe<Scalars['Bytes']>;
-  provider_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_contains?: Maybe<Scalars['Bytes']>;
-  provider_not_contains?: Maybe<Scalars['Bytes']>;
   hash?: Maybe<Scalars['Bytes']>;
   hash_not?: Maybe<Scalars['Bytes']>;
   hash_in?: Maybe<Array<Scalars['Bytes']>>;
   hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
   hash_contains?: Maybe<Scalars['Bytes']>;
   hash_not_contains?: Maybe<Scalars['Bytes']>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
   timestamp?: Maybe<Scalars['BigInt']>;
   timestamp_not?: Maybe<Scalars['BigInt']>;
   timestamp_gt?: Maybe<Scalars['BigInt']>;
@@ -343,23 +290,19 @@ export type IDepositTransaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  block?: Maybe<Scalars['Int']>;
-  block_not?: Maybe<Scalars['Int']>;
-  block_gt?: Maybe<Scalars['Int']>;
-  block_lt?: Maybe<Scalars['Int']>;
-  block_gte?: Maybe<Scalars['Int']>;
-  block_lte?: Maybe<Scalars['Int']>;
-  block_in?: Maybe<Array<Scalars['Int']>>;
-  block_not_in?: Maybe<Array<Scalars['Int']>>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
 };
 
-export enum IDepositTransaction_OrderBy {
+export enum EjectTransaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
-  Provider = 'provider',
+  Block = 'block',
+  Ejected = 'ejected',
+  Ejector = 'ejector',
   Hash = 'hash',
+  Sender = 'sender',
   Timestamp = 'timestamp',
-  Block = 'block'
+  Type = 'type'
 }
 
 export type IncentivisedVotingLockup = {
@@ -568,13 +511,14 @@ export enum IncentivisedVotingLockup_OrderBy {
   TotalValue = 'totalValue'
 }
 
-export type IncreaseLockAmountTransaction = IDepositTransaction & {
+export type IncreaseLockAmountTransaction = Transaction & {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  provider: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
+  hash: Scalars['Bytes'];
+  provider: Scalars['Bytes'];
+  sender: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  type: TransactionType;
   value: Scalars['BigInt'];
 };
 
@@ -587,32 +531,6 @@ export type IncreaseLockAmountTransaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  provider?: Maybe<Scalars['Bytes']>;
-  provider_not?: Maybe<Scalars['Bytes']>;
-  provider_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_contains?: Maybe<Scalars['Bytes']>;
-  provider_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -621,6 +539,34 @@ export type IncreaseLockAmountTransaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
+  provider?: Maybe<Scalars['Bytes']>;
+  provider_not?: Maybe<Scalars['Bytes']>;
+  provider_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_contains?: Maybe<Scalars['Bytes']>;
+  provider_not_contains?: Maybe<Scalars['Bytes']>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
+  timestamp?: Maybe<Scalars['BigInt']>;
+  timestamp_not?: Maybe<Scalars['BigInt']>;
+  timestamp_gt?: Maybe<Scalars['BigInt']>;
+  timestamp_lt?: Maybe<Scalars['BigInt']>;
+  timestamp_gte?: Maybe<Scalars['BigInt']>;
+  timestamp_lte?: Maybe<Scalars['BigInt']>;
+  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
   value?: Maybe<Scalars['BigInt']>;
   value_not?: Maybe<Scalars['BigInt']>;
   value_gt?: Maybe<Scalars['BigInt']>;
@@ -633,22 +579,24 @@ export type IncreaseLockAmountTransaction_Filter = {
 
 export enum IncreaseLockAmountTransaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
-  Provider = 'provider',
-  Hash = 'hash',
-  Timestamp = 'timestamp',
   Block = 'block',
+  Hash = 'hash',
+  Provider = 'provider',
+  Sender = 'sender',
+  Timestamp = 'timestamp',
+  Type = 'type',
   Value = 'value'
 }
 
-export type IncreaseLockTimeTransaction = IDepositTransaction & {
+export type IncreaseLockTimeTransaction = Transaction & {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  provider: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
+  hash: Scalars['Bytes'];
   lockTime: Scalars['BigInt'];
+  provider: Scalars['Bytes'];
+  sender: Scalars['Bytes'];
+  type: TransactionType;
+  timestamp: Scalars['BigInt'];
 };
 
 export type IncreaseLockTimeTransaction_Filter = {
@@ -660,32 +608,6 @@ export type IncreaseLockTimeTransaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  provider?: Maybe<Scalars['Bytes']>;
-  provider_not?: Maybe<Scalars['Bytes']>;
-  provider_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_contains?: Maybe<Scalars['Bytes']>;
-  provider_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -694,6 +616,12 @@ export type IncreaseLockTimeTransaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
   lockTime?: Maybe<Scalars['BigInt']>;
   lockTime_not?: Maybe<Scalars['BigInt']>;
   lockTime_gt?: Maybe<Scalars['BigInt']>;
@@ -702,16 +630,39 @@ export type IncreaseLockTimeTransaction_Filter = {
   lockTime_lte?: Maybe<Scalars['BigInt']>;
   lockTime_in?: Maybe<Array<Scalars['BigInt']>>;
   lockTime_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  provider?: Maybe<Scalars['Bytes']>;
+  provider_not?: Maybe<Scalars['Bytes']>;
+  provider_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_contains?: Maybe<Scalars['Bytes']>;
+  provider_not_contains?: Maybe<Scalars['Bytes']>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
+  timestamp?: Maybe<Scalars['BigInt']>;
+  timestamp_not?: Maybe<Scalars['BigInt']>;
+  timestamp_gt?: Maybe<Scalars['BigInt']>;
+  timestamp_lt?: Maybe<Scalars['BigInt']>;
+  timestamp_gte?: Maybe<Scalars['BigInt']>;
+  timestamp_lte?: Maybe<Scalars['BigInt']>;
+  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
 };
 
 export enum IncreaseLockTimeTransaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
-  Provider = 'provider',
-  Hash = 'hash',
-  Timestamp = 'timestamp',
   Block = 'block',
-  LockTime = 'lockTime'
+  Hash = 'hash',
+  LockTime = 'lockTime',
+  Provider = 'provider',
+  Sender = 'sender',
+  Type = 'type',
+  Timestamp = 'timestamp'
 }
 
 export enum LockAction {
@@ -753,8 +704,6 @@ export type Query = {
   increaseLockTimeTransactions: Array<IncreaseLockTimeTransaction>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  idepositTransaction?: Maybe<IDepositTransaction>;
-  idepositTransactions: Array<IDepositTransaction>;
 };
 
 
@@ -965,22 +914,6 @@ export type QueryTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
-
-export type QueryIdepositTransactionArgs = {
-  id: Scalars['ID'];
-  block?: Maybe<Block_Height>;
-};
-
-
-export type QueryIdepositTransactionsArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<IDepositTransaction_OrderBy>;
-  orderDirection?: Maybe<OrderDirection>;
-  where?: Maybe<IDepositTransaction_Filter>;
-  block?: Maybe<Block_Height>;
-};
-
 export type RewardsDistributor = {
   id: Scalars['ID'];
   fundManagers: Array<Scalars['Bytes']>;
@@ -1149,8 +1082,6 @@ export type Subscription = {
   increaseLockTimeTransactions: Array<IncreaseLockTimeTransaction>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  idepositTransaction?: Maybe<IDepositTransaction>;
-  idepositTransactions: Array<IDepositTransaction>;
 };
 
 
@@ -1361,22 +1292,6 @@ export type SubscriptionTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
-
-export type SubscriptionIdepositTransactionArgs = {
-  id: Scalars['ID'];
-  block?: Maybe<Block_Height>;
-};
-
-
-export type SubscriptionIdepositTransactionsArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<IDepositTransaction_OrderBy>;
-  orderDirection?: Maybe<OrderDirection>;
-  where?: Maybe<IDepositTransaction_Filter>;
-  block?: Maybe<Block_Height>;
-};
-
 export type Token = {
   id: Scalars['ID'];
   address: Scalars['Bytes'];
@@ -1458,10 +1373,11 @@ export enum Token_OrderBy {
 
 export type Transaction = {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
+  hash: Scalars['Bytes'];
+  sender: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  type: TransactionType;
 };
 
 export type Transaction_Filter = {
@@ -1473,26 +1389,6 @@ export type Transaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -1501,18 +1397,43 @@ export type Transaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
+  timestamp?: Maybe<Scalars['BigInt']>;
+  timestamp_not?: Maybe<Scalars['BigInt']>;
+  timestamp_gt?: Maybe<Scalars['BigInt']>;
+  timestamp_lt?: Maybe<Scalars['BigInt']>;
+  timestamp_gte?: Maybe<Scalars['BigInt']>;
+  timestamp_lte?: Maybe<Scalars['BigInt']>;
+  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
 };
 
 export enum Transaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
+  Block = 'block',
   Hash = 'hash',
+  Sender = 'sender',
   Timestamp = 'timestamp',
-  Block = 'block'
+  Type = 'type'
 }
 
 export enum TransactionType {
-  Deposit = 'DEPOSIT',
+  CreateLock = 'CREATE_LOCK',
+  IncreaseLockTime = 'INCREASE_LOCK_TIME',
+  IncreaseLockAmount = 'INCREASE_LOCK_AMOUNT',
   Withdraw = 'WITHDRAW',
   Eject = 'EJECT',
   Claim = 'CLAIM'
@@ -1613,11 +1534,12 @@ export enum UserLockup_OrderBy {
 
 export type WithdrawTransaction = Transaction & {
   id: Scalars['ID'];
-  sender: Scalars['Bytes'];
-  provider: Scalars['Bytes'];
-  hash: Scalars['Bytes'];
-  timestamp: Scalars['BigInt'];
   block: Scalars['Int'];
+  hash: Scalars['Bytes'];
+  provider: Scalars['Bytes'];
+  sender: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  type: TransactionType;
   value: Scalars['BigInt'];
 };
 
@@ -1630,32 +1552,6 @@ export type WithdrawTransaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
-  provider?: Maybe<Scalars['Bytes']>;
-  provider_not?: Maybe<Scalars['Bytes']>;
-  provider_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  provider_contains?: Maybe<Scalars['Bytes']>;
-  provider_not_contains?: Maybe<Scalars['Bytes']>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  timestamp?: Maybe<Scalars['BigInt']>;
-  timestamp_not?: Maybe<Scalars['BigInt']>;
-  timestamp_gt?: Maybe<Scalars['BigInt']>;
-  timestamp_lt?: Maybe<Scalars['BigInt']>;
-  timestamp_gte?: Maybe<Scalars['BigInt']>;
-  timestamp_lte?: Maybe<Scalars['BigInt']>;
-  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
-  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -1664,6 +1560,34 @@ export type WithdrawTransaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
+  provider?: Maybe<Scalars['Bytes']>;
+  provider_not?: Maybe<Scalars['Bytes']>;
+  provider_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  provider_contains?: Maybe<Scalars['Bytes']>;
+  provider_not_contains?: Maybe<Scalars['Bytes']>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
+  timestamp?: Maybe<Scalars['BigInt']>;
+  timestamp_not?: Maybe<Scalars['BigInt']>;
+  timestamp_gt?: Maybe<Scalars['BigInt']>;
+  timestamp_lt?: Maybe<Scalars['BigInt']>;
+  timestamp_gte?: Maybe<Scalars['BigInt']>;
+  timestamp_lte?: Maybe<Scalars['BigInt']>;
+  timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  type?: Maybe<TransactionType>;
+  type_not?: Maybe<TransactionType>;
   value?: Maybe<Scalars['BigInt']>;
   value_not?: Maybe<Scalars['BigInt']>;
   value_gt?: Maybe<Scalars['BigInt']>;
@@ -1676,11 +1600,12 @@ export type WithdrawTransaction_Filter = {
 
 export enum WithdrawTransaction_OrderBy {
   Id = 'id',
-  Sender = 'sender',
-  Provider = 'provider',
-  Hash = 'hash',
-  Timestamp = 'timestamp',
   Block = 'block',
+  Hash = 'hash',
+  Provider = 'provider',
+  Sender = 'sender',
+  Timestamp = 'timestamp',
+  Type = 'type',
   Value = 'value'
 }
 

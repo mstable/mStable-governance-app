@@ -289,28 +289,6 @@ type Query {
     """
     block: Block_height
   ): [Transaction!]!
-  idepositTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): IDepositTransaction
-  idepositTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: IDepositTransaction_orderBy
-    orderDirection: OrderDirection
-    where: IDepositTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [IDepositTransaction!]!
 }
 input Block_height {
   hash: Bytes
@@ -798,27 +776,38 @@ input Token_filter {
 }
 type WithdrawTransaction implements Transaction {
   id: ID!
-  sender: Bytes!
-  provider: Bytes!
-  hash: Bytes!
-  timestamp: BigInt!
   block: Int!
+  hash: Bytes!
+  provider: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
   value: BigInt!
 }
 interface Transaction {
   id: ID!
-  sender: Bytes!
-  hash: Bytes!
-  timestamp: BigInt!
   block: Int!
+  hash: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+}
+enum TransactionType {
+  CREATE_LOCK
+  INCREASE_LOCK_TIME
+  INCREASE_LOCK_AMOUNT
+  WITHDRAW
+  EJECT
+  CLAIM
 }
 enum WithdrawTransaction_orderBy {
   id
-  sender
-  provider
-  hash
-  timestamp
   block
+  hash
+  provider
+  sender
+  timestamp
+  type
   value
 }
 input WithdrawTransaction_filter {
@@ -830,32 +819,6 @@ input WithdrawTransaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  provider: Bytes
-  provider_not: Bytes
-  provider_in: [Bytes!]
-  provider_not_in: [Bytes!]
-  provider_contains: Bytes
-  provider_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -864,6 +827,34 @@ input WithdrawTransaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
   value: BigInt
   value_not: BigInt
   value_gt: BigInt
@@ -875,21 +866,23 @@ input WithdrawTransaction_filter {
 }
 type EjectTransaction implements Transaction {
   id: ID!
-  sender: Bytes!
-  hash: Bytes!
-  ejected: Bytes!
-  timestamp: BigInt!
   block: Int!
+  ejected: Bytes!
   ejector: Bytes!
+  hash: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
 }
 enum EjectTransaction_orderBy {
   id
-  sender
-  hash
-  ejected
-  timestamp
   block
+  ejected
   ejector
+  hash
+  sender
+  timestamp
+  type
 }
 input EjectTransaction_filter {
   id: ID
@@ -900,32 +893,6 @@ input EjectTransaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  ejected: Bytes
-  ejected_not: Bytes
-  ejected_in: [Bytes!]
-  ejected_not_in: [Bytes!]
-  ejected_contains: Bytes
-  ejected_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -934,30 +901,60 @@ input EjectTransaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
+  ejected: Bytes
+  ejected_not: Bytes
+  ejected_in: [Bytes!]
+  ejected_not_in: [Bytes!]
+  ejected_contains: Bytes
+  ejected_not_contains: Bytes
   ejector: Bytes
   ejector_not: Bytes
   ejector_in: [Bytes!]
   ejector_not_in: [Bytes!]
   ejector_contains: Bytes
   ejector_not_contains: Bytes
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
 }
 type ClaimTransaction implements Transaction {
   id: ID!
-  sender: Bytes!
-  provider: Bytes!
-  hash: Bytes!
-  timestamp: BigInt!
   block: Int!
+  hash: Bytes!
   reward: BigInt!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+  user: Bytes!
 }
 enum ClaimTransaction_orderBy {
   id
-  sender
-  provider
-  hash
-  timestamp
   block
+  hash
   reward
+  sender
+  timestamp
+  type
+  user
 }
 input ClaimTransaction_filter {
   id: ID
@@ -968,32 +965,6 @@ input ClaimTransaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  provider: Bytes
-  provider_not: Bytes
-  provider_in: [Bytes!]
-  provider_not_in: [Bytes!]
-  provider_contains: Bytes
-  provider_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -1002,6 +973,12 @@ input ClaimTransaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
   reward: BigInt
   reward_not: BigInt
   reward_gt: BigInt
@@ -1010,34 +987,50 @@ input ClaimTransaction_filter {
   reward_lte: BigInt
   reward_in: [BigInt!]
   reward_not_in: [BigInt!]
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+  user: Bytes
+  user_not: Bytes
+  user_in: [Bytes!]
+  user_not_in: [Bytes!]
+  user_contains: Bytes
+  user_not_contains: Bytes
 }
-type CreateLockTransaction implements IDepositTransaction {
+type CreateLockTransaction implements Transaction {
   id: ID!
-  sender: Bytes!
-  provider: Bytes!
-  hash: Bytes!
-  timestamp: BigInt!
   block: Int!
-  value: BigInt!
+  hash: Bytes!
   lockTime: BigInt!
-}
-interface IDepositTransaction {
-  id: ID!
-  sender: Bytes!
   provider: Bytes!
-  hash: Bytes!
+  sender: Bytes!
   timestamp: BigInt!
-  block: Int!
+  type: TransactionType!
+  value: BigInt!
 }
 enum CreateLockTransaction_orderBy {
   id
-  sender
-  provider
-  hash
-  timestamp
   block
-  value
+  hash
   lockTime
+  provider
+  sender
+  timestamp
+  type
+  value
 }
 input CreateLockTransaction_filter {
   id: ID
@@ -1048,32 +1041,6 @@ input CreateLockTransaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  provider: Bytes
-  provider_not: Bytes
-  provider_in: [Bytes!]
-  provider_not_in: [Bytes!]
-  provider_contains: Bytes
-  provider_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -1082,14 +1049,12 @@ input CreateLockTransaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
-  value: BigInt
-  value_not: BigInt
-  value_gt: BigInt
-  value_lt: BigInt
-  value_gte: BigInt
-  value_lte: BigInt
-  value_in: [BigInt!]
-  value_not_in: [BigInt!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
   lockTime: BigInt
   lockTime_not: BigInt
   lockTime_gt: BigInt
@@ -1098,23 +1063,55 @@ input CreateLockTransaction_filter {
   lockTime_lte: BigInt
   lockTime_in: [BigInt!]
   lockTime_not_in: [BigInt!]
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
 }
-type IncreaseLockAmountTransaction implements IDepositTransaction {
+type IncreaseLockAmountTransaction implements Transaction {
   id: ID!
-  sender: Bytes!
-  provider: Bytes!
-  hash: Bytes!
-  timestamp: BigInt!
   block: Int!
+  hash: Bytes!
+  provider: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
   value: BigInt!
 }
 enum IncreaseLockAmountTransaction_orderBy {
   id
-  sender
-  provider
-  hash
-  timestamp
   block
+  hash
+  provider
+  sender
+  timestamp
+  type
   value
 }
 input IncreaseLockAmountTransaction_filter {
@@ -1126,32 +1123,6 @@ input IncreaseLockAmountTransaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  provider: Bytes
-  provider_not: Bytes
-  provider_in: [Bytes!]
-  provider_not_in: [Bytes!]
-  provider_contains: Bytes
-  provider_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -1160,6 +1131,34 @@ input IncreaseLockAmountTransaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
   value: BigInt
   value_not: BigInt
   value_gt: BigInt
@@ -1169,23 +1168,25 @@ input IncreaseLockAmountTransaction_filter {
   value_in: [BigInt!]
   value_not_in: [BigInt!]
 }
-type IncreaseLockTimeTransaction implements IDepositTransaction {
+type IncreaseLockTimeTransaction implements Transaction {
   id: ID!
-  sender: Bytes!
-  provider: Bytes!
-  hash: Bytes!
-  timestamp: BigInt!
   block: Int!
+  hash: Bytes!
   lockTime: BigInt!
+  provider: Bytes!
+  sender: Bytes!
+  type: TransactionType!
+  timestamp: BigInt!
 }
 enum IncreaseLockTimeTransaction_orderBy {
   id
-  sender
-  provider
-  hash
-  timestamp
   block
+  hash
   lockTime
+  provider
+  sender
+  type
+  timestamp
 }
 input IncreaseLockTimeTransaction_filter {
   id: ID
@@ -1196,32 +1197,6 @@ input IncreaseLockTimeTransaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  provider: Bytes
-  provider_not: Bytes
-  provider_in: [Bytes!]
-  provider_not_in: [Bytes!]
-  provider_contains: Bytes
-  provider_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -1230,6 +1205,12 @@ input IncreaseLockTimeTransaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
   lockTime: BigInt
   lockTime_not: BigInt
   lockTime_gt: BigInt
@@ -1238,13 +1219,36 @@ input IncreaseLockTimeTransaction_filter {
   lockTime_lte: BigInt
   lockTime_in: [BigInt!]
   lockTime_not_in: [BigInt!]
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  type: TransactionType
+  type_not: TransactionType
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
 }
 enum Transaction_orderBy {
   id
-  sender
-  hash
-  timestamp
   block
+  hash
+  sender
+  timestamp
+  type
 }
 input Transaction_filter {
   id: ID
@@ -1255,26 +1259,6 @@ input Transaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  timestamp: BigInt
-  timestamp_not: BigInt
-  timestamp_gt: BigInt
-  timestamp_lt: BigInt
-  timestamp_gte: BigInt
-  timestamp_lte: BigInt
-  timestamp_in: [BigInt!]
-  timestamp_not_in: [BigInt!]
   block: Int
   block_not: Int
   block_gt: Int
@@ -1283,42 +1267,18 @@ input Transaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
-}
-enum IDepositTransaction_orderBy {
-  id
-  sender
-  provider
-  hash
-  timestamp
-  block
-}
-input IDepositTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  provider: Bytes
-  provider_not: Bytes
-  provider_in: [Bytes!]
-  provider_not_in: [Bytes!]
-  provider_contains: Bytes
-  provider_not_contains: Bytes
   hash: Bytes
   hash_not: Bytes
   hash_in: [Bytes!]
   hash_not_in: [Bytes!]
   hash_contains: Bytes
   hash_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
   timestamp: BigInt
   timestamp_not: BigInt
   timestamp_gt: BigInt
@@ -1327,14 +1287,8 @@ input IDepositTransaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  block: Int
-  block_not: Int
-  block_gt: Int
-  block_lt: Int
-  block_gte: Int
-  block_lte: Int
-  block_in: [Int!]
-  block_not_in: [Int!]
+  type: TransactionType
+  type_not: TransactionType
 }
 type Subscription {
   userLockup(
@@ -1623,28 +1577,6 @@ type Subscription {
     """
     block: Block_height
   ): [Transaction!]!
-  idepositTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): IDepositTransaction
-  idepositTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: IDepositTransaction_orderBy
-    orderDirection: OrderDirection
-    where: IDepositTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [IDepositTransaction!]!
 }
 scalar BigDecimal
 enum LockAction {
@@ -1652,10 +1584,4 @@ enum LockAction {
   CREATE_LOCK
   INCREASE_LOCK_AMOUNT
   INCREASE_LOCK_TIME
-}
-enum TransactionType {
-  DEPOSIT
-  WITHDRAW
-  EJECT
-  CLAIM
 }
