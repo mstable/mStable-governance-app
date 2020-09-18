@@ -1,0 +1,3 @@
+[submodule "lib/mStable-governance-subgraph"]
+	path = lib/mStable-governance-subgraph
+	url = git@github.com:mstable/mStable-governance-subgraph.git

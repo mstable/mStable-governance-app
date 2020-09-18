@@ -14,7 +14,8 @@ export enum TransactionType {
 export interface State {
     amount?: BigDecimal;
     transactionType?: TransactionType;
-    lockUpPeriod: number;
+    lockUpDays: number;
+    unlockTime?: number;
     error?: string;
     formValue: string | null;
     touched?: boolean;
@@ -31,6 +32,7 @@ export enum Reasons {
     AmountMustBeSet = 'Amount must be set',
     PeriodMustBeSet = 'Lock up period must be set',
     AmountMustNotExceedBalance = 'Amount must not exceed balance',
+    TransfersMustBeApproved = 'Transfer must be approved'
 }
 
 export interface Dispatch {

@@ -2,10 +2,10 @@ import { Reasons, State } from './types';
 
 const validateLock = ({
   amount,
-  lockUpPeriod,
+  unlockTime,
   data
 }: State): [false, Reasons] | [true] => {
-  if (!data) {
+  if (!data.metaToken || !data.incentivisedVotingLockup) {
     return [false, Reasons.FetchingData];
   }
 
@@ -18,14 +18,16 @@ const validateLock = ({
     return [false, Reasons.AmountMustBeGreaterThanZero];
   }
 
-  if (lockUpPeriod <= 0) {
+  if (unlockTime && unlockTime <= 0) {
     return [false, Reasons.PeriodMustBeSet]
   }
 
-  if (metaToken) {
-    if (amount.exact.gt(metaToken.balance.exact)) {
-      return [false, Reasons.AmountMustNotExceedBalance];
-    }
+  if (amount.exact.gt(metaToken.balance.exact)) {
+    return [false, Reasons.AmountMustNotExceedBalance];
+  }
+
+  if (!metaToken.allowances[data.incentivisedVotingLockup.address]?.exact.gte(amount.exact)) {
+    return [false, Reasons.TransfersMustBeApproved];
   }
   return [true];
 };

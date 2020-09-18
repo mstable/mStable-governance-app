@@ -16,15 +16,15 @@ interface InjectedEthereum {
   enable(): Promise<string[]>;
 }
 
-type State = Signer | null;
+type SignerState = Signer | null;
 
-const context = createContext<State>(null);
+const context = createContext<SignerState>(null);
 
 /**
  * Provider for setting and getting a transaction signer (via `use-wallet`).
  */
 export const SignerProvider: FC<{}> = ({ children }) => {
-  const [signer, setSigner] = useState<State>(null);
+  const [signer, setSigner] = useState<SignerState>(null);
   const { ethereum, account } = useWallet<InjectedEthereum>();
 
   useEffect((): void => {
@@ -42,7 +42,7 @@ export const SignerProvider: FC<{}> = ({ children }) => {
   return <context.Provider value={signer}>{children}</context.Provider>;
 };
 
-export const useSignerContext = (): State => useContext(context);
+export const useSignerContext = (): SignerState => useContext(context);
 
 export const useWeb3Provider = (): EthersWeb3Provider | null => {
   const signer = useSignerContext();

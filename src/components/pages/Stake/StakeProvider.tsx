@@ -15,7 +15,7 @@ import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataP
 const initialState: State = {
   valid: false,
   touched: false,
-  lockUpPeriod: 0,
+  lockUpDays: 0,
   formValue: null,
   data: {}
 };

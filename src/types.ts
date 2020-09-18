@@ -10,6 +10,7 @@ import { StakingRewardsWithPlatformToken as IStakingRewardsWithPlatformToken } f
 import { BigDecimal } from './web3/BigDecimal';
 import { RewardsDistributor as IRewardsDistributor } from './typechain/RewardsDistributor.d';
 import { MerkleDrop as IMerkleDrop } from './typechain/MerkleDrop.d';
+import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup'
 
 export interface Transaction {
   formId?: string;
@@ -47,23 +48,15 @@ export enum TransactionStatus {
 }
 
 export enum Interfaces {
-  Masset,
   ERC20,
-  SavingsContract,
-  StakingRewards,
-  StakingRewardsWithPlatformToken,
   RewardsDistibutor,
-  MerkleDrop,
+  IncentivisedVotingLockup,
 }
 
 export interface Instances {
-  [Interfaces.Masset]: IMasset;
   [Interfaces.ERC20]: Ierc20;
-  [Interfaces.SavingsContract]: ISavingsContract;
-  [Interfaces.StakingRewards]: IStakingRewards;
-  [Interfaces.StakingRewardsWithPlatformToken]: IStakingRewardsWithPlatformToken;
   [Interfaces.RewardsDistibutor]: IRewardsDistributor;
-  [Interfaces.MerkleDrop]: IMerkleDrop;
+  [Interfaces.IncentivisedVotingLockup]: IIncentivisedVotingLockup;
 }
 
 /**
@@ -76,7 +69,7 @@ export interface Instances {
 export interface SendTxManifest<
   TIface extends Interfaces,
   TFn extends keyof Instances[TIface]['functions']
-> {
+  > {
   iface: Instances[TIface];
   fn: Extract<keyof Instances[TIface]['functions'], TFn> & string;
   args: Parameters<
