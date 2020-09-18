@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { Range, getTrackBackground } from 'react-range';
+import { ViewportWidth } from '../../theme';
 
 interface Props {
   min: number;
@@ -18,9 +19,18 @@ const RangeValue = styled.div<Pick<Props, 'max' | 'value'>>`
   margin-left: -60px;
   text-align: center;`;
 
+
 const Container = styled.div`
   position: relative;
-  margin: 0.5rem auto 0.5rem;`;
+  margin: 0.5rem auto 0.5rem;
+  padding-left: 50px;
+  padding-right: 50px;
+  
+  @media (min-width: ${ViewportWidth.m}) {
+    padding-right: none;
+    padding-left: none;
+  }
+  `;
 
 const LabelWrapper = styled.div`
 display: flex;

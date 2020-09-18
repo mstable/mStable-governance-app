@@ -23,7 +23,7 @@ const useRawData = (): RawData => {
   const { tokens } = useTokensState();
   const account = useAccount();
   const { data } = useUserLockupsSubscription(account as string);
-  const incentivisedVotingLockups = data?.incentivisedVotingLockups ?? []
+  const incentivisedVotingLockups = (data?.incentivisedVotingLockups ?? []) as RawData['incentivisedVotingLockups']
 
   return useDebouncedMemo(
     () => ({
@@ -49,5 +49,5 @@ export const DataProvider: FC<{}> = ({ children }) => {
 export const useDataState = (): DataState =>
   useContext(dataStateCtx);
 
-export const useIncentivisedVotingLockup = (): IncentivisedVotingLockup[] => useDataState().incentivisedVotingLockups
+export const useIncentivisedVotingLockup = (): IncentivisedVotingLockup | undefined => useDataState().incentivisedVotingLockup
 

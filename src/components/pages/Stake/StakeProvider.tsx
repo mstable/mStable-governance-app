@@ -35,14 +35,14 @@ export const StakeProvider: FC<{}> = ({
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const metaToken = useMetaToken();
-  const incentivisedVotingLockups = useIncentivisedVotingLockup();
+  const incentivisedVotingLockup = useIncentivisedVotingLockup();
 
   useEffect(() => {
     dispatch({
       type: Actions.Data,
-      payload: { metaToken, incentivisedVotingLockups },
+      payload: { metaToken, incentivisedVotingLockup },
     });
-  }, [metaToken, incentivisedVotingLockups, dispatch]);
+  }, [metaToken, incentivisedVotingLockup, dispatch]);
 
   const setVoteAmount = useCallback<Dispatch['setVoteAmount']>(
     amount => {

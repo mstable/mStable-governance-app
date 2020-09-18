@@ -18,7 +18,7 @@ query Token($id: ID!) @api(name: mstable) {
   }
 }
 
-query UserLockups($account: Bytes!) {
+query UserLockups($account: Bytes!) @api(name: mstable) {
   incentivisedVotingLockups {
     address: id
     stakingRewards(where: { account: $account }) {

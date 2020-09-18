@@ -42,10 +42,10 @@ export interface IncentivisedVotingLockup {
 
 export interface RawData {
   tokens: Tokens;
-  incentivisedVotingLockups: NonNullable<UserLockupsQueryResult['data']>['incentivisedVotingLockups']
+  incentivisedVotingLockups: [NonNullable<UserLockupsQueryResult['data']>['incentivisedVotingLockups'][0] | undefined]
 }
 
 export interface DataState {
   tokens: Tokens;
-  incentivisedVotingLockups: IncentivisedVotingLockup[]
+  incentivisedVotingLockup?: IncentivisedVotingLockup
 }
