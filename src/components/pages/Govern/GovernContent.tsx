@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { useWallet } from 'use-wallet';
+import { navigate } from 'hookrouter';
 import { FormRow } from '../../core/Form';
-import { H3, P } from '../../core/Typography';
+import { H3 } from '../../core/Typography';
 import { Button } from '../../core/Button';
+
 
 import {
   useIsWalletConnecting,
@@ -12,7 +14,13 @@ import {
 } from '../../../context/AppProvider'
 import { InjectedEthereum } from '../../../types';
 
-
+const HoverText = styled.p`
+	color: #D3D3D3;
+	:hover {
+		color: #000000	;
+		cursor: pointer;
+	}
+`
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -55,20 +63,20 @@ export const GovernContent: FC<{}> = () => {
         </H3>
         <Container>
           <div>
-            Connect wallet
+            <HoverText onClick={connecting ? resetWallet : toggleWallet}>Connect wallet</HoverText>
           </div>
           <div>
-            Get MTA
+            <HoverText>Get MTA</HoverText>
           </div>
           <div>
-            Stake MTA
+            <HoverText onClick={() => navigate('/stake')}>Stake MTA</HoverText>
           </div>
           <div>
-            Vote
+            <HoverText onClick={() => navigate('/vote')}>Vote</HoverText>
           </div>
-          <div>
-            Claim rewards
-          </div>
+          {/* <div>
+            <HoverText>Claim rewards</HoverText>
+          </div> */}
         </Container>
         {!connected &&
           <WalletContainer>

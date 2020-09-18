@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { PageHeader } from '../PageHeader';
-import { ReactComponent as GovernanceIcon } from '../../icons/circle/analytics.svg';
+import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
 import { TransactionForm } from '../../forms/TransactionForm';
 import { StakeInput } from './StakeInput';
 import { StakeProvider, useStakeState } from './StakeProvider';
@@ -20,7 +20,7 @@ export const Stake: FC<{}> = () => {
   return (
     <div>
       <PageHeader
-        icon={<GovernanceIcon />}
+        icon={<StakeIcon />}
         title="STAKE"
         subtitle="Stake your MTA to participate in mStable protocol governance"
       />

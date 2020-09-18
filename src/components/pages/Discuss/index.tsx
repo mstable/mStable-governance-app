@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
 import { PageHeader } from '../PageHeader';
-import { ReactComponent as GovernanceIcon } from '../../icons/circle/analytics.svg';
+import { ReactComponent as DiscussIcon } from '../../icons/circle/discuss.svg';
 import { DiscussContent } from './DiscussContent';
 
 export const Discuss: FC<{}> = () => {
   return (
     <div>
       <PageHeader
-        icon={<GovernanceIcon />}
+        icon={<DiscussIcon />}
         title="Discuss"
         subtitle="Join the discussion and be part of the process"
       />
