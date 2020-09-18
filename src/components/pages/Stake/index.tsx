@@ -4,7 +4,6 @@ import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
 import { TransactionForm } from '../../forms/TransactionForm';
 import { StakeInput } from './StakeInput';
 import { StakeProvider, useStakeState } from './StakeProvider';
-import { StakeConfirm } from './StakeConfirm';
 import { FormProvider, useSetFormManifest } from '../../forms/TransactionForm/FormProvider';
 import { Interfaces } from '../../../types';
 import { BigDecimal } from '../../../web3/BigDecimal';
@@ -41,7 +40,6 @@ const StakeForm: FC<{}> = () => {
         confirmLabel='Confirm Deposit and Lockup'
         input={<StakeInput />}
         valid={valid}
-        confirm={<StakeConfirm />}
       />
     </div>
   );

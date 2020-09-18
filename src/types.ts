@@ -3,14 +3,9 @@ import { TransactionResponse, Log } from 'ethers/providers';
 import { BigNumber, LogDescription } from 'ethers/utils';
 import { Connectors } from 'use-wallet';
 import { Ierc20 } from './typechain/Ierc20.d';
-import { ISavingsContract } from './typechain/ISavingsContract.d';
-import { IMasset } from './typechain/IMasset.d';
-import { StakingRewards as IStakingRewards } from './typechain/StakingRewards.d';
-import { StakingRewardsWithPlatformToken as IStakingRewardsWithPlatformToken } from './typechain/StakingRewardsWithPlatformToken.d';
 import { BigDecimal } from './web3/BigDecimal';
 import { RewardsDistributor as IRewardsDistributor } from './typechain/RewardsDistributor.d';
-import { MerkleDrop as IMerkleDrop } from './typechain/MerkleDrop.d';
-import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup'
+import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d'
 
 export interface Transaction {
   formId?: string;

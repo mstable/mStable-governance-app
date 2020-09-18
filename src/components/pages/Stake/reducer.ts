@@ -17,7 +17,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
 
         case Actions.SetLockUpPeriod: {
             const lockUpDays = action.payload
-            const unlockTime = addDays(Date.now(), lockUpDays).getTime()
+            const unlockTime = Math.floor(addDays(Date.now(), lockUpDays).getTime() / 1000)
             return { ...state, unlockTime, lockUpDays, touched: true };
         }
 
