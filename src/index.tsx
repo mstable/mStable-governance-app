@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
-import { useRoutes } from 'hookrouter';
+import { useRoutes, useRedirect } from 'hookrouter';
 
 import * as Sentry from '@sentry/react';
 
@@ -23,14 +23,14 @@ Sentry.init({
 });
 
 const routes = {
-  '/': () => <Govern />,
+  '/govern': () => <Govern />,
   '/stake': () => <Stake />,
   '/discuss': () => <Discuss />,
   '/vote': () => <div>Vote</div>,
-  '/govern': () => <Govern />
 };
 
 const Root: FC<{}> = () => {
+  useRedirect('/', '/govern')
   const routeResult = useRoutes(routes);
   return (
     <Providers>

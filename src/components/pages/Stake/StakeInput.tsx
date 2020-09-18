@@ -44,13 +44,13 @@ export const StakeInput: FC<{}> = () => {
   const formattedDate = useMemo(() => {
     return format(addDays(now, lockUpPeriod), "dd-MM-yyyy")
   }, [lockUpPeriod]);
-  // eslint-disable-next-line no-console
-  console.log('data', data);
   return (
     <>
       <FormRow>
         <H3>
-          Deposit Amount
+          <Tooltip tip='test'>
+            Deposit Amount
+          </Tooltip>
         </H3>
         <TokenAmountInput
           tokenValue={data.metaToken?.address || null}
@@ -63,7 +63,9 @@ export const StakeInput: FC<{}> = () => {
       </FormRow>
       <FormRow>
         <H3>
-          Lock up deposit
+          <Tooltip tip='test'>
+            Lock up deposit
+          </Tooltip>
         </H3>
         <RangeInput min={0} max={365} value={lockUpPeriod} onChange={setLockUpPeriod} startLabel='Today' endLabel='1 Year'>
           <div>
