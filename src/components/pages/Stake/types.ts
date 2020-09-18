@@ -48,8 +48,8 @@ export type Action =
     {
         type: Actions.Data;
         payload: {
-            metaToken: SubscribedToken | undefined;
-            incentivisedVotingLockups: {};
+            metaToken?: SubscribedToken
+            incentivisedVotingLockup?: IncentivisedVotingLockup
         };
     }
     | { type: Actions.SetVoteAmount; payload: string }

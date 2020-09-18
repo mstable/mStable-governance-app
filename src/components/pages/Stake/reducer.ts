@@ -9,9 +9,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
         case Actions.Data:
             return {
                 ...state,
-                data: {
-                    metaToken: action.payload.metaToken
-                }
+                data: action.payload
             };
         case Actions.SetVoteAmount:
             return { ...state, amount: BigDecimal.maybeParse(action.payload, 18), formValue: action.payload, touched: true, };

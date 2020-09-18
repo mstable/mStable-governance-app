@@ -1824,7 +1824,7 @@ export type TokenQueryHookResult = ReturnType<typeof useTokenQuery>;
 export type TokenLazyQueryHookResult = ReturnType<typeof useTokenLazyQuery>;
 export type TokenQueryResult = ApolloReactCommon.QueryResult<TokenQuery, TokenQueryVariables>;
 export const UserLockupsDocument = gql`
-    query UserLockups($account: Bytes!) {
+    query UserLockups($account: Bytes!) @api(name: mstable) {
   incentivisedVotingLockups {
     address: id
     stakingRewards(where: {account: $account}) {
