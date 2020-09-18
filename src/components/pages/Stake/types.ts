@@ -1,5 +1,6 @@
 import { BigDecimal } from "../../../web3/BigDecimal";
 import { SubscribedToken } from "../../../types";
+import { IncentivisedVotingLockup } from "../../../context/DataProvider/types";
 
 export enum TransactionType {
     Withdraw,
@@ -19,7 +20,8 @@ export interface State {
     touched?: boolean;
     valid: boolean;
     data: {
-        metaToken?: SubscribedToken
+        metaToken?: SubscribedToken,
+        incentivisedVotingLockup?: IncentivisedVotingLockup
     }
 }
 
@@ -47,6 +49,7 @@ export type Action =
         type: Actions.Data;
         payload: {
             metaToken: SubscribedToken | undefined;
+            incentivisedVotingLockups: {};
         };
     }
     | { type: Actions.SetVoteAmount; payload: string }

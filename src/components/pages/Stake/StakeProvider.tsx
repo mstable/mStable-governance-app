@@ -10,6 +10,7 @@ import React, {
 import { Dispatch, State, Actions } from './types';
 import { reducer } from './reducer';
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
+import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataProvider';
 
 const initialState: State = {
   valid: false,
@@ -34,13 +35,14 @@ export const StakeProvider: FC<{}> = ({
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const metaToken = useMetaToken();
+  const incentivisedVotingLockups = useIncentivisedVotingLockup();
 
   useEffect(() => {
     dispatch({
       type: Actions.Data,
-      payload: { metaToken },
+      payload: { metaToken, incentivisedVotingLockups },
     });
-  }, [metaToken, dispatch]);
+  }, [metaToken, incentivisedVotingLockups, dispatch]);
 
   const setVoteAmount = useCallback<Dispatch['setVoteAmount']>(
     amount => {

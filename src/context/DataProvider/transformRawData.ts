@@ -1,19 +1,44 @@
-import { DataState, RawData } from './types';
+import { BigNumber } from 'ethers/utils';
+import { DataState, RawData, UserLockup, IncentivisedVotingLockup } from './types';
 
-type TransformFn<T extends keyof DataState> = (
-  rawData: RawData,
-  dataState: DataState,
-) => DataState[T];
 
-type TransformPipelineItem<T extends keyof DataState> = [T, TransformFn<T>];
-
-const pipelineItems: TransformPipelineItem<keyof DataState>[] = [];
-
-export const transformRawData = (rawData: RawData): DataState =>
-  pipelineItems.reduce(
-    (_dataState, [key, transform]) => ({
-      ..._dataState,
-      [key]: transform(rawData, _dataState as DataState),
-    }),
-    {} as Partial<DataState>,
-  ) as DataState;
+export const transformRawData = (rawData: RawData): DataState => {
+  const incentivisedVotingLockups = rawData.incentivisedVotingLockups.map<IncentivisedVotingLockup>(({ address, periodFinish,
+    lastUpdateTime, duration, rewardRate, rewardsDistributor, globalEpoch, expired, stakingToken, rewardsToken, ...data }) => ({
+      address,
+      userLockups: data.userLockups.map<UserLockup>(({ value, bias, slope, ts, lockTime }) => ({
+        value: new BigNumber(value), bias: new BigNumber(bias), slope: new BigNumber(slope), ts: parseInt(ts, 10), lockTime: parseInt(lockTime, 10)
+      })),
+      stakingRewards: data.stakingRewards.map(({ amount, amountPerTokenPaid }) => ({
+        amount: new BigNumber(amount),
+        amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
+      })),
+      stakingBalances: data.stakingBalances.map(({ amount }) => ({
+        amount: new BigNumber(amount),
+      })),
+      periodFinish,
+      lastUpdateTime,
+      stakingToken: {
+        ...stakingToken,
+        name: ''
+      },
+      rewardPerTokenStored: new BigNumber(data.rewardPerTokenStored),
+      duration: new BigNumber(duration),
+      rewardRate: new BigNumber(rewardRate),
+      rewardsToken: {
+        ...rewardsToken,
+        name: ''
+      },
+      rewardsDistributor,
+      globalEpoch: new BigNumber(globalEpoch),
+      expired,
+      maxTime: new BigNumber(data.maxTime),
+      totalStaticWeight: new BigNumber(data.totalStaticWeight),
+      totalStakingRewards: new BigNumber(data.totalStakingRewards),
+      totalValue: new BigNumber(data.totalValue),
+    }))
+  return {
+    tokens: rawData.tokens,
+    incentivisedVotingLockups
+  }
+}
