@@ -13,5 +13,5 @@ export const Govern: FC<{}> = () => {
       />
       <GovernContent />
     </div>
-  )
+  );
 };

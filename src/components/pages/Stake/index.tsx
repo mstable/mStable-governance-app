@@ -4,7 +4,10 @@ import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
 import { TransactionForm } from '../../forms/TransactionForm';
 import { StakeInput } from './StakeInput';
 import { StakeProvider, useStakeState } from './StakeProvider';
-import { FormProvider, useSetFormManifest } from '../../forms/TransactionForm/FormProvider';
+import {
+  FormProvider,
+  useSetFormManifest,
+} from '../../forms/TransactionForm/FormProvider';
 import { Interfaces } from '../../../types';
 import { BigDecimal } from '../../../web3/BigDecimal';
 import { useSignerContext } from '../../../context/SignerProvider';
@@ -15,7 +18,10 @@ const StakeForm: FC<{}> = () => {
   const { valid, amount, transactionType, data, unlockTime } = useStakeState();
   const address = data.incentivisedVotingLockup?.address;
   const signer = useSignerContext();
-  const iface = address && signer ? IIncentivisedVotingLockupFactory.connect(address, signer) : undefined
+  const iface =
+    address && signer
+      ? IIncentivisedVotingLockupFactory.connect(address, signer)
+      : undefined;
 
   const setFormManifest = useSetFormManifest();
 
@@ -24,10 +30,20 @@ const StakeForm: FC<{}> = () => {
       setFormManifest<Interfaces.IncentivisedVotingLockup, 'createLock'>({
         fn: 'createLock',
         args: [(amount as BigDecimal).exact, unlockTime as number],
-        iface: (iface as IIncentivisedVotingLockup)
-      })
+        iface: iface as IIncentivisedVotingLockup,
+      });
+    } else {
+      setFormManifest(null);
     }
-  }, [amount, transactionType, unlockTime, address, valid, setFormManifest, iface])
+  }, [
+    amount,
+    transactionType,
+    unlockTime,
+    address,
+    valid,
+    setFormManifest,
+    iface,
+  ]);
 
   return (
     <div>
@@ -37,7 +53,7 @@ const StakeForm: FC<{}> = () => {
         subtitle="Stake your MTA to participate in mStable protocol governance"
       />
       <TransactionForm
-        confirmLabel='Confirm Deposit and Lockup'
+        confirmLabel="Confirm Deposit and Lockup"
         input={<StakeInput />}
         valid={valid}
       />
@@ -47,14 +63,10 @@ const StakeForm: FC<{}> = () => {
 
 export const Stake: FC<{}> = () => {
   return (
-
     <StakeProvider>
       <FormProvider formId="stake">
         <StakeForm />
       </FormProvider>
     </StakeProvider>
-  )
+  );
 };
-
-
-

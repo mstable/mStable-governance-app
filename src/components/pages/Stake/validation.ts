@@ -3,7 +3,7 @@ import { Reasons, State } from './types';
 const validateLock = ({
   amount,
   unlockTime,
-  data
+  data,
 }: State): [false, Reasons] | [true] => {
   if (!data.metaToken || !data.incentivisedVotingLockup) {
     return [false, Reasons.FetchingData];
@@ -19,14 +19,18 @@ const validateLock = ({
   }
 
   if (unlockTime && unlockTime <= 0) {
-    return [false, Reasons.PeriodMustBeSet]
+    return [false, Reasons.PeriodMustBeSet];
   }
 
   if (amount.exact.gt(metaToken.balance.exact)) {
     return [false, Reasons.AmountMustNotExceedBalance];
   }
 
-  if (!metaToken.allowances[data.incentivisedVotingLockup.address]?.exact.gte(amount.exact)) {
+  if (
+    !metaToken.allowances[data.incentivisedVotingLockup.address]?.exact.gte(
+      amount.exact,
+    )
+  ) {
     return [false, Reasons.TransfersMustBeApproved];
   }
   return [true];
@@ -41,4 +45,3 @@ export const validate = (state: State): State => {
     valid,
   };
 };
-

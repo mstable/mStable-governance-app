@@ -6,21 +6,20 @@ import { FormRow } from '../../core/Form';
 import { H3 } from '../../core/Typography';
 import { Button } from '../../core/Button';
 
-
 import {
   useIsWalletConnecting,
   useResetWallet,
   useToggleWallet,
-} from '../../../context/AppProvider'
+} from '../../../context/AppProvider';
 import { InjectedEthereum } from '../../../types';
 
 const HoverText = styled.p`
-	color: #D3D3D3;
-	:hover {
-		color: #000000	;
-		cursor: pointer;
-	}
-`
+  color: #d3d3d3;
+  :hover {
+    color: #000000;
+    cursor: pointer;
+  }
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -44,26 +43,21 @@ export const GovernContent: FC<{}> = () => {
   const connected = status === 'connected';
   const connecting = useIsWalletConnecting();
 
-
   return (
     <>
       <FormRow>
-        <H3>
-          mStable Governance
-          </H3>
+        <H3>mStable Governance</H3>
       </FormRow>
       <FormRow>
-        <H3>
-          TODO
-          </H3>
-      </FormRow >
+        <H3>TODO</H3>
+      </FormRow>
       <FormRow>
-        <H3>
-          Get Started
-        </H3>
+        <H3>Get Started</H3>
         <Container>
           <div>
-            <HoverText onClick={connecting ? resetWallet : toggleWallet}>Connect wallet</HoverText>
+            <HoverText onClick={connecting ? resetWallet : toggleWallet}>
+              Connect wallet
+            </HoverText>
           </div>
           <div>
             <HoverText>Get MTA</HoverText>
@@ -78,16 +72,15 @@ export const GovernContent: FC<{}> = () => {
             <HoverText>Claim rewards</HoverText>
           </div> */}
         </Container>
-        {!connected &&
+        {!connected && (
           <WalletContainer>
             Connect your wallet to get started
-          <Button onClick={connecting ? resetWallet : toggleWallet}>
+            <Button onClick={connecting ? resetWallet : toggleWallet}>
               Connect Wallet
-          </Button>
+            </Button>
           </WalletContainer>
-        }
-      </FormRow >
+        )}
+      </FormRow>
     </>
   );
 };
-

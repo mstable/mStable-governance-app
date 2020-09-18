@@ -13,5 +13,5 @@ export const Discuss: FC<{}> = () => {
       />
       <DiscussContent />
     </div>
-  )
+  );
 };

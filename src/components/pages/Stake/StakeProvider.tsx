@@ -17,7 +17,7 @@ const initialState: State = {
   touched: false,
   lockUpDays: 0,
   formValue: null,
-  data: {}
+  data: {},
 };
 
 const dispatchCtx = createContext<Dispatch>({} as never);
@@ -26,12 +26,9 @@ const stateCtx = createContext<State>({} as never);
 
 export const useStakeState = (): State => useContext(stateCtx);
 
-export const useStakeDispatch = (): Dispatch =>
-  useContext(dispatchCtx);
+export const useStakeDispatch = (): Dispatch => useContext(dispatchCtx);
 
-export const StakeProvider: FC<{}> = ({
-  children,
-}) => {
+export const StakeProvider: FC<{}> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const metaToken = useMetaToken();
@@ -63,12 +60,12 @@ export const StakeProvider: FC<{}> = ({
       value={useMemo(
         () => ({
           setVoteAmount,
-          setLockUpPeriod
-        }), [setVoteAmount, setLockUpPeriod])}
+          setLockUpPeriod,
+        }),
+        [setVoteAmount, setLockUpPeriod],
+      )}
     >
-      <stateCtx.Provider value={state}>
-        {children}
-      </stateCtx.Provider>
-    </dispatchCtx.Provider >
+      <stateCtx.Provider value={state}>{children}</stateCtx.Provider>
+    </dispatchCtx.Provider>
   );
 };

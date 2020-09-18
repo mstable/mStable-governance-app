@@ -20,7 +20,7 @@ export interface StakingBalance {
 }
 
 export interface IncentivisedVotingLockup {
-  address: string
+  address: string;
   userLockups: UserLockup[];
   stakingRewards: Array<StakingReward>;
   stakingBalances: Array<StakingBalance>;
@@ -31,7 +31,7 @@ export interface IncentivisedVotingLockup {
   duration: BigNumber;
   rewardRate: BigNumber;
   rewardsToken: Token;
-  rewardsDistributor: { id: string, fundManagers: string[] };
+  rewardsDistributor: { id: string; fundManagers: string[] };
   globalEpoch: BigNumber;
   expired: boolean;
   maxTime: BigNumber;
@@ -42,10 +42,15 @@ export interface IncentivisedVotingLockup {
 
 export interface RawData {
   tokens: Tokens;
-  incentivisedVotingLockups: [NonNullable<UserLockupsQueryResult['data']>['incentivisedVotingLockups'][0] | undefined]
+  incentivisedVotingLockups: [
+    | NonNullable<
+        UserLockupsQueryResult['data']
+      >['incentivisedVotingLockups'][0]
+    | undefined,
+  ];
 }
 
 export interface DataState {
   tokens: Tokens;
-  incentivisedVotingLockup?: IncentivisedVotingLockup
+  incentivisedVotingLockup?: IncentivisedVotingLockup;
 }

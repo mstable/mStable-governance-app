@@ -11,9 +11,9 @@ import { Providers } from './context';
 import { Updaters } from './updaters';
 import { Layout } from './components/layout/Layout';
 import { NotFound } from './components/pages/NotFound';
-import { Stake } from './components/pages/Stake'
-import { Discuss } from './components/pages/Discuss'
-import { Govern } from './components/pages/Govern'
+import { Stake } from './components/pages/Stake';
+import { Discuss } from './components/pages/Discuss';
+import { Govern } from './components/pages/Govern';
 
 checkRequiredEnvVars();
 
@@ -30,7 +30,7 @@ const routes = {
 };
 
 const Root: FC<{}> = () => {
-  useRedirect('/', '/govern')
+  useRedirect('/', '/govern');
   const routeResult = useRoutes(routes);
   return (
     <Providers>

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import format from 'date-fns/format'
+import format from 'date-fns/format';
 import styled from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
 import { FormRow } from '../../core/Form';
@@ -25,8 +25,6 @@ const Container = styled.div`
   padding-top: 20px;
 `;
 
-
-
 export const StakeInput: FC<{}> = () => {
   const {
     amount,
@@ -34,89 +32,74 @@ export const StakeInput: FC<{}> = () => {
     lockUpDays,
     error,
     data,
-    unlockTime
+    unlockTime,
   } = useStakeState();
-  const {
-    setVoteAmount,
-    setLockUpPeriod
-  } = useStakeDispatch();
+  const { setVoteAmount, setLockUpPeriod } = useStakeDispatch();
 
   return (
     <>
       <FormRow>
         <H3>
-          <Tooltip tip='test'>
-            Deposit Amount
-          </Tooltip>
+          <Tooltip tip="test">Deposit Amount</Tooltip>
         </H3>
         {/* TODO: add balances label */}
-        {data.metaToken && data.incentivisedVotingLockup ?
+        {data.metaToken && data.incentivisedVotingLockup ? (
           <InlineTokenAmountInput
             amount={{
               value: amount,
               formValue,
-              handleChange: setVoteAmount
+              handleChange: setVoteAmount,
               // TODO: handleSetMax
-            }
-            }
+            }}
             token={{
               address: data.metaToken.address,
             }}
             approval={{
-              spender: data.incentivisedVotingLockup.address
+              spender: data.incentivisedVotingLockup.address,
             }}
             error={error}
           />
-          :
+        ) : (
           <Skeleton />
-        }
+        )}
       </FormRow>
       <FormRow>
         <H3>
-          <Tooltip tip='test'>
-            Lock up deposit
-          </Tooltip>
+          <Tooltip tip="test">Lock up deposit</Tooltip>
         </H3>
-        <RangeInput min={0} max={365} value={lockUpDays} onChange={setLockUpPeriod} startLabel='Today' endLabel='1 Year'>
+        <RangeInput
+          min={0}
+          max={365}
+          value={lockUpDays}
+          onChange={setLockUpPeriod}
+          startLabel="Today"
+          endLabel="1 Year"
+        >
+          <div>{lockUpDays} Days</div>
           <div>
-            {lockUpDays} Days
-            </div>
-          <div>
-            {unlockTime ?
-              `(${format(unlockTime, 'dd-MM-yyyy')})`
-              : '-'
-            }
+            {unlockTime ? `(${format(unlockTime, 'dd-MM-yyyy')})` : '-'}
           </div>
         </RangeInput>
-      </FormRow >
+      </FormRow>
       <FormRow>
-        <H3>
-          Your stake
-        </H3>
-        {data.metaToken &&
+        <H3>Your stake</H3>
+        {data.metaToken && (
           <Container>
             <Symbol>
               <TokenIcon symbol={data.metaToken?.symbol} />
-              <Tooltip tip='test'>
-                vMTA
-              </Tooltip>
+              <Tooltip tip="test">vMTA</Tooltip>
             </Symbol>
             <Symbol>
               <TokenIcon symbol={data.metaToken?.symbol} />
-              <Tooltip tip='test'>
-                Boosted weight
-              </Tooltip>
+              <Tooltip tip="test">Boosted weight</Tooltip>
             </Symbol>
             <Symbol>
               <TokenIcon symbol={data.metaToken?.symbol} />
-              <Tooltip tip='test'>
-                Rewards
-              </Tooltip>
+              <Tooltip tip="test">Rewards</Tooltip>
             </Symbol>
           </Container>
-        }
+        )}
       </FormRow>
     </>
   );
 };
-

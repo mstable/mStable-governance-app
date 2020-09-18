@@ -5,7 +5,7 @@ import { Connectors } from 'use-wallet';
 import { Ierc20 } from './typechain/Ierc20.d';
 import { BigDecimal } from './web3/BigDecimal';
 import { RewardsDistributor as IRewardsDistributor } from './typechain/RewardsDistributor.d';
-import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d'
+import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d';
 
 export interface Transaction {
   formId?: string;
@@ -64,7 +64,7 @@ export interface Instances {
 export interface SendTxManifest<
   TIface extends Interfaces,
   TFn extends keyof Instances[TIface]['functions']
-  > {
+> {
   iface: Instances[TIface];
   fn: Extract<keyof Instances[TIface]['functions'], TFn> & string;
   args: Parameters<

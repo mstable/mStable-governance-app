@@ -1,48 +1,86 @@
 import { BigNumber } from 'ethers/utils';
-import { DataState, RawData, UserLockup } from './types';
+import {
+  DataState,
+  IncentivisedVotingLockup,
+  RawData,
+  StakingBalance,
+  StakingReward,
+  UserLockup,
+} from './types';
 
-
-export const transformRawData = ({ tokens, incentivisedVotingLockups }: RawData): DataState => {
-  if (!incentivisedVotingLockups[0]) {
-    return { tokens }
+export const transformRawData = ({
+  tokens,
+  incentivisedVotingLockups: [incentivisedVotingLockupData],
+}: RawData): DataState => {
+  if (!incentivisedVotingLockupData) {
+    return { tokens };
   }
-  const { address, periodFinish,
-    lastUpdateTime, duration, rewardRate, rewardsDistributor, globalEpoch, expired, stakingToken, rewardsToken, ...data } = incentivisedVotingLockups[0]
-  const incentivisedVotingLockup = {
+
+  const {
     address,
-    userLockups: data.userLockups.map<UserLockup>(({ value, bias, slope, ts, lockTime }) => ({
-      value: new BigNumber(value), bias: new BigNumber(bias), slope: new BigNumber(slope), ts: parseInt(ts, 10), lockTime: parseInt(lockTime, 10)
-    })),
-    stakingRewards: data.stakingRewards.map(({ amount, amountPerTokenPaid }) => ({
-      amount: new BigNumber(amount),
-      amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
-    })),
-    stakingBalances: data.stakingBalances.map(({ amount }) => ({
+    duration,
+    expired,
+    globalEpoch,
+    lastUpdateTime,
+    maxTime,
+    periodFinish,
+    rewardPerTokenStored,
+    rewardRate,
+    rewardsDistributor,
+    rewardsToken,
+    stakingBalances,
+    stakingRewards,
+    stakingToken,
+    totalStakingRewards,
+    totalStaticWeight,
+    totalValue,
+    userLockups,
+  } = incentivisedVotingLockupData;
+
+  const incentivisedVotingLockup: IncentivisedVotingLockup = {
+    address,
+    userLockups: userLockups.map<UserLockup>(
+      ({ value, bias, slope, ts, lockTime }) => ({
+        value: new BigNumber(value),
+        bias: new BigNumber(bias),
+        slope: new BigNumber(slope),
+        ts: parseInt(ts, 10),
+        lockTime: parseInt(lockTime, 10),
+      }),
+    ),
+    stakingRewards: stakingRewards.map<StakingReward>(
+      ({ amount, amountPerTokenPaid }) => ({
+        amount: new BigNumber(amount),
+        amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
+      }),
+    ),
+    stakingBalances: stakingBalances.map<StakingBalance>(({ amount }) => ({
       amount: new BigNumber(amount),
     })),
     periodFinish,
     lastUpdateTime,
     stakingToken: {
       ...stakingToken,
-      name: ''
+      name: '',
     },
-    rewardPerTokenStored: new BigNumber(data.rewardPerTokenStored),
+    rewardPerTokenStored: new BigNumber(rewardPerTokenStored),
     duration: new BigNumber(duration),
     rewardRate: new BigNumber(rewardRate),
     rewardsToken: {
       ...rewardsToken,
-      name: ''
+      name: '',
     },
     rewardsDistributor,
     globalEpoch: new BigNumber(globalEpoch),
     expired,
-    maxTime: new BigNumber(data.maxTime),
-    totalStaticWeight: new BigNumber(data.totalStaticWeight),
-    totalStakingRewards: new BigNumber(data.totalStakingRewards),
-    totalValue: new BigNumber(data.totalValue),
-  }
+    maxTime: new BigNumber(maxTime),
+    totalStaticWeight: new BigNumber(totalStaticWeight),
+    totalStakingRewards: new BigNumber(totalStakingRewards),
+    totalValue: new BigNumber(totalValue),
+  };
+
   return {
     tokens,
-    incentivisedVotingLockup
-  }
-}
+    incentivisedVotingLockup,
+  };
+};
