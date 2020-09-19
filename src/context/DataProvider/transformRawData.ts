@@ -3,10 +3,51 @@ import {
   DataState,
   IncentivisedVotingLockup,
   RawData,
-  StakingBalance,
-  StakingReward,
+  UserStakingReward,
   UserLockup,
 } from './types';
+
+type RawIncentivisedVotingLockup = NonNullable<
+  RawData['incentivisedVotingLockups'][0]
+>;
+
+const transformUserLockup = (
+  data: RawIncentivisedVotingLockup['userLockups'][0] | undefined,
+): UserLockup | undefined => {
+  if (data) {
+    const { value, bias, lockTime, slope, ts } = data;
+    return {
+      value: new BigNumber(value),
+      bias: new BigNumber(bias),
+      slope: new BigNumber(slope),
+      ts: parseInt(ts, 10),
+      lockTime: parseInt(lockTime, 10),
+    };
+  }
+  return undefined;
+};
+
+const transformUserStakingReward = (
+  data: RawIncentivisedVotingLockup['stakingRewards'][0] | undefined,
+): UserStakingReward | undefined => {
+  if (data) {
+    const { amount, amountPerTokenPaid } = data;
+    return {
+      amount: new BigNumber(amount),
+      amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
+    };
+  }
+  return undefined;
+};
+
+const transformUserStakingBalance = (
+  data: RawIncentivisedVotingLockup['stakingBalances'][0] | undefined,
+): BigNumber | undefined => {
+  if (data) {
+    return new BigNumber(data.amount);
+  }
+  return undefined;
+};
 
 export const transformRawData = ({
   tokens,
@@ -28,35 +69,24 @@ export const transformRawData = ({
     rewardRate,
     rewardsDistributor,
     rewardsToken,
-    stakingBalances,
-    stakingRewards,
+    stakingBalances: [rawUserStakingBalance],
+    stakingRewards: [rawUserStakingReward],
     stakingToken,
     totalStakingRewards,
     totalStaticWeight,
     totalValue,
-    userLockups,
+    userLockups: [rawUserLockup],
   } = incentivisedVotingLockupData;
+
+  const userLockup = transformUserLockup(rawUserLockup);
+  const userStakingReward = transformUserStakingReward(rawUserStakingReward);
+  const userStakingBalance = transformUserStakingBalance(rawUserStakingBalance);
 
   const incentivisedVotingLockup: IncentivisedVotingLockup = {
     address,
-    userLockups: userLockups.map<UserLockup>(
-      ({ value, bias, slope, ts, lockTime }) => ({
-        value: new BigNumber(value),
-        bias: new BigNumber(bias),
-        slope: new BigNumber(slope),
-        ts: parseInt(ts, 10),
-        lockTime: parseInt(lockTime, 10),
-      }),
-    ),
-    stakingRewards: stakingRewards.map<StakingReward>(
-      ({ amount, amountPerTokenPaid }) => ({
-        amount: new BigNumber(amount),
-        amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
-      }),
-    ),
-    stakingBalances: stakingBalances.map<StakingBalance>(({ amount }) => ({
-      amount: new BigNumber(amount),
-    })),
+    userLockup,
+    userStakingBalance,
+    userStakingReward,
     periodFinish,
     lastUpdateTime,
     stakingToken: {

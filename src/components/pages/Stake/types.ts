@@ -3,27 +3,30 @@ import { SubscribedToken } from '../../../types';
 import { IncentivisedVotingLockup } from '../../../context/DataProvider/types';
 
 export enum TransactionType {
-  Withdraw,
-  Claim,
-  Eject,
-  CreateLock,
-  IncreaseLockAmount,
-  IncreaseLockTime,
+  Claim = 'Claim',
+  CreateLock = 'CreateLock',
+  IncreaseLockAmount = 'IncreaseLockAmount',
+  IncreaseLockTime = 'IncreaseLockTime',
+  Withdraw = 'Withdraw',
 }
 
 export interface State {
-  amount?: BigDecimal;
-  transactionType?: TransactionType;
-  lockUpDays: number;
-  unlockTime?: number;
-  error?: string;
-  formValue: string | null;
-  touched?: boolean;
-  valid: boolean;
   data: {
     metaToken?: SubscribedToken;
     incentivisedVotingLockup?: IncentivisedVotingLockup;
   };
+  error?: string;
+  lockupAmount: {
+    formValue: string | null;
+    amount?: BigDecimal;
+  };
+  lockupPeriod: {
+    formValue: number;
+    unlockTime?: number;
+  };
+  touched?: boolean;
+  transactionType: TransactionType;
+  valid: boolean;
 }
 
 export enum Reasons {
@@ -31,19 +34,24 @@ export enum Reasons {
   AmountMustBeGreaterThanZero = 'Amount must be greater than zero',
   AmountMustBeSet = 'Amount must be set',
   PeriodMustBeSet = 'Lock up period must be set',
+  PeriodMustBeLongerThanOneWeek = 'Lock up period must be longer than one week',
   AmountMustNotExceedBalance = 'Amount must not exceed balance',
-  TransfersMustBeApproved = 'Transfer must be approved',
+  AmountExceedsApprovedAmount = 'Amount exceeds approved amount',
 }
 
 export interface Dispatch {
-  setVoteAmount(formValue: string): void;
-  setLockUpPeriod(lockUpPeriod: number): void;
+  setLockupAmount(formValue: string): void;
+  setLockupDays(days: number): void;
+  setTransactionType(type: TransactionType): void;
 }
 
 export enum Actions {
   Data,
-  SetVoteAmount,
-  SetLockUpPeriod,
+  SetLockupAmount,
+  SetMaxLockupAmount,
+  SetMaxLockupTime,
+  SetLockupDays,
+  SetTransactionType,
 }
 
 export type Action =
@@ -54,5 +62,8 @@ export type Action =
         incentivisedVotingLockup?: IncentivisedVotingLockup;
       };
     }
-  | { type: Actions.SetVoteAmount; payload: string }
-  | { type: Actions.SetLockUpPeriod; payload: number };
+  | { type: Actions.SetLockupAmount; payload: string }
+  | { type: Actions.SetLockupDays; payload: number }
+  | { type: Actions.SetMaxLockupAmount }
+  | { type: Actions.SetMaxLockupTime }
+  | { type: Actions.SetTransactionType; payload: TransactionType };

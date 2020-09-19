@@ -174,7 +174,7 @@ const initialState: State = {
 
 const getTxPurpose = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars
-  { args, fn, iface }: SendTxManifest<any, any>,
+  { args, fn, contract }: SendTxManifest<any, any>,
   dataState?: DataState,
 ): Purpose => {
   if (!dataState) {
@@ -359,7 +359,7 @@ const addGasSettings = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   manifest: SendTxManifest<any, any>,
 ): Promise<typeof manifest> => {
-  const { iface, fn, args } = manifest;
+  const { contract, fn, args } = manifest;
   const last = args[args.length - 1];
 
   if (
@@ -371,10 +371,10 @@ const addGasSettings = async (
   }
 
   // Set the gas limit (with the calculated gas margin)
-  const gasLimit = await iface.estimate[fn](...args);
+  const gasLimit = await contract.estimate[fn](...args);
 
   // Also set the gas price, because some providers don't
-  const gasPrice = await iface.provider.getGasPrice();
+  const gasPrice = await contract.provider.getGasPrice();
 
   return {
     ...manifest,
@@ -386,8 +386,8 @@ const sendTransaction = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   manifest: SendTxManifest<any, any>,
 ): Promise<TransactionResponse> => {
-  const { iface, fn, args } = await addGasSettings(manifest);
-  return iface[fn](...args);
+  const { contract, fn, args } = await addGasSettings(manifest);
+  return contract[fn](...args);
 };
 
 const parseTxError = (

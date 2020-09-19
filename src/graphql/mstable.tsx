@@ -1631,14 +1631,14 @@ export type TokenQueryVariables = {
 export type TokenQuery = { token?: Maybe<TokenDetailsFragment> };
 
 export type UserLockupsQueryVariables = {
-  account: Scalars['Bytes'];
+  account?: Maybe<Scalars['Bytes']>;
 };
 
 
 export type UserLockupsQuery = { incentivisedVotingLockups: Array<(
     Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
     & { address: IncentivisedVotingLockup['id'] }
-    & { stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias'>> }
+    & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias'>> }
   )> };
 
 export const TokenDetailsFragmentDoc = gql`
@@ -1749,38 +1749,38 @@ export type TokenQueryHookResult = ReturnType<typeof useTokenQuery>;
 export type TokenLazyQueryHookResult = ReturnType<typeof useTokenLazyQuery>;
 export type TokenQueryResult = ApolloReactCommon.QueryResult<TokenQuery, TokenQueryVariables>;
 export const UserLockupsDocument = gql`
-    query UserLockups($account: Bytes!) @api(name: mstable) {
+    query UserLockups($account: Bytes) @api(name: mstable) {
   incentivisedVotingLockups {
     address: id
-    stakingRewards(where: {account: $account}) {
-      amount
-      amountPerTokenPaid
-    }
-    stakingBalances(where: {account: $account}) {
-      amount
-    }
     periodFinish
     lastUpdateTime
-    stakingToken {
-      ...TokenDetails
-    }
-    rewardsToken {
-      ...TokenDetails
-    }
     rewardPerTokenStored
     duration
     rewardRate
-    rewardsDistributor {
-      id
-      fundManagers
-    }
     globalEpoch
     expired
     maxTime
     totalStaticWeight
     totalStakingRewards
     totalValue
-    userLockups(where: {account: $account}) {
+    stakingToken {
+      ...TokenDetails
+    }
+    rewardsToken {
+      ...TokenDetails
+    }
+    rewardsDistributor {
+      id
+      fundManagers
+    }
+    stakingRewards(where: {account: $account}, first: 1) {
+      amount
+      amountPerTokenPaid
+    }
+    stakingBalances(where: {account: $account}, first: 1) {
+      amount
+    }
+    userLockups(where: {account: $account}, first: 1) {
       value
       lockTime
       ts

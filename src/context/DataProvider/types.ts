@@ -10,34 +10,31 @@ export interface UserLockup {
   bias: BigNumber;
 }
 
-export interface StakingReward {
+export interface UserStakingReward {
   amount: BigNumber;
   amountPerTokenPaid: BigNumber;
 }
 
-export interface StakingBalance {
-  amount: BigNumber;
-}
-
+// TODO use BigDecimal
 export interface IncentivisedVotingLockup {
   address: string;
-  userLockups: UserLockup[];
-  stakingRewards: Array<StakingReward>;
-  stakingBalances: Array<StakingBalance>;
-  periodFinish: number;
-  lastUpdateTime: number;
-  stakingToken: Token;
-  rewardPerTokenStored: BigNumber;
   duration: BigNumber;
-  rewardRate: BigNumber;
-  rewardsToken: Token;
-  rewardsDistributor: { id: string; fundManagers: string[] };
-  globalEpoch: BigNumber;
   expired: boolean;
+  globalEpoch: BigNumber;
+  lastUpdateTime: number;
   maxTime: BigNumber;
-  totalStaticWeight: BigNumber;
+  periodFinish: number;
+  rewardPerTokenStored: BigNumber;
+  rewardRate: BigNumber;
+  rewardsDistributor: { id: string; fundManagers: string[] };
+  rewardsToken: Token;
+  stakingToken: Token;
   totalStakingRewards: BigNumber;
+  totalStaticWeight: BigNumber;
   totalValue: BigNumber;
+  userLockup?: UserLockup;
+  userStakingBalance?: BigNumber;
+  userStakingReward?: UserStakingReward;
 }
 
 export interface RawData {

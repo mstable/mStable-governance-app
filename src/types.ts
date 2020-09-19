@@ -57,7 +57,7 @@ export interface Instances {
 /**
  * Manifest for sending a transaction.
  *
- * @param iface: The contract interface, e.g. an instance of `Ierc20`
+ * @param contract: The contract interface, e.g. an instance of `Ierc20`
  * @param fn: Name of the function on the contract interface.
  * @param args: Array of arguments for the function.
  */
@@ -65,7 +65,7 @@ export interface SendTxManifest<
   TIface extends Interfaces,
   TFn extends keyof Instances[TIface]['functions']
 > {
-  iface: Instances[TIface];
+  contract: Instances[TIface];
   fn: Extract<keyof Instances[TIface]['functions'], TFn> & string;
   args: Parameters<
     Extract<

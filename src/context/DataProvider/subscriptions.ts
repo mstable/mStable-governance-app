@@ -56,9 +56,7 @@ export const useBlockPollingSubscription = <TData, TVariables>(
 export const useUserLockupsSubscription = (
   account?: string,
 ): UserLockupsQueryResult => {
-  return useBlockPollingSubscription(
-    useUserLockupsLazyQuery,
-    { variables: { account: account as string } },
-    !account,
-  );
+  return useBlockPollingSubscription(useUserLockupsLazyQuery, {
+    variables: { account: account as string },
+  });
 };

@@ -12,21 +12,46 @@ const reduce: Reducer<State, Action> = (state, action) => {
         ...state,
         data: action.payload,
       };
-    case Actions.SetVoteAmount:
+
+    case Actions.SetLockupDays: {
+      const formValue = action.payload;
+      const unlockTime = Math.floor(
+        addDays(Date.now(), formValue).getTime() / 1000,
+      );
       return {
         ...state,
-        amount: BigDecimal.maybeParse(action.payload, 18),
-        formValue: action.payload,
+        lockupPeriod: { unlockTime, formValue },
+        touched: true,
+      };
+    }
+
+    case Actions.SetLockupAmount:
+      return {
+        ...state,
+        lockupAmount: {
+          amount: BigDecimal.maybeParse(action.payload, 18),
+          formValue: action.payload,
+        },
         touched: true,
       };
 
-    case Actions.SetLockUpPeriod: {
-      const lockUpDays = action.payload;
-      const unlockTime = Math.floor(
-        addDays(Date.now(), lockUpDays).getTime() / 1000,
-      );
-      return { ...state, unlockTime, lockUpDays, touched: true };
+    case Actions.SetTransactionType: {
+      return {
+        ...state,
+        transactionType: action.payload,
+        lockupAmount: { formValue: null, amount: undefined },
+        lockupPeriod: { formValue: 0, unlockTime: undefined },
+        touched: false,
+      };
     }
+
+    case Actions.SetMaxLockupAmount:
+      // TODO
+      return state;
+
+    case Actions.SetMaxLockupTime:
+      // TODO
+      return state;
 
     default:
       throw new Error('Unhandled action type');

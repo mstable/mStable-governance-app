@@ -8,7 +8,7 @@ export const Govern: FC<{}> = () => {
     <div>
       <PageHeader
         icon={<GovernanceIcon />}
-        title="GOVERN"
+        title="Govern"
         subtitle="Learn how mStable Protocol Governance works and participate"
       />
       <GovernContent />

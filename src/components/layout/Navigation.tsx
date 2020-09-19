@@ -44,7 +44,7 @@ const Item = styled.li<{
   span {
     white-space: nowrap;
     color: ${({ theme, active }) =>
-    active ? theme.color.blue : theme.color.offBlack};
+      active ? theme.color.blue : theme.color.offBlack};
     border-bottom: none;
   }
 
@@ -61,12 +61,11 @@ const Item = styled.li<{
   }
 `;
 
-// TODO add nav items
 const navItems: NavItem[] = [
   { title: 'Govern', path: '/govern' },
   { title: 'Stake', path: '/stake' },
   { title: 'Discuss', path: '/discuss' },
-  { title: 'Vote', path: '/vote' }
+  { title: 'Vote', path: '/vote' },
 ];
 
 /**

@@ -1,7 +1,10 @@
+/* eslint-disable-next-line react/jsx-props-no-spreading */
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { Range, getTrackBackground } from 'react-range';
-import { ViewportWidth } from '../../theme';
+import { IThumbProps } from 'react-range/lib/types';
+
+import { Color, ViewportWidth } from '../../theme';
 
 interface Props {
   min: number;
@@ -12,41 +15,132 @@ interface Props {
   onChange(value: number): void;
 }
 
-const RangeValue = styled.div<Pick<Props, 'max' | 'value'>>`
-  position: relative;
-  left: ${({ value, max }) => (100 / max) * value}%;
-  width: 120px;
-  margin-left: -60px;
-  text-align: center;`;
+const ThumbCircle = styled.div`
+  outline: none;
+  height: 16px;
+  width: 16px;
+  background-color: white;
+  border-radius: 100%;
+  border: 1px #eee solid;
+`;
 
+const ThumbLabel = styled.div`
+  text-align: center;
+  text-transform: uppercase;
+  background: ${Color.offWhite};
+  padding: 4px;
+  border-radius: 4px;
+
+  > :first-child {
+    font-weight: bold;
+    font-size: 12px;
+  }
+`;
+
+const ThumbContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  top: 24px;
+  height: 64px;
+`;
+
+const Thumb: FC<Partial<IThumbProps>> = ({ children, ...props }) => (
+  <ThumbContainer {...props}>
+    <ThumbCircle />
+    <ThumbLabel>{children}</ThumbLabel>
+  </ThumbContainer>
+);
+
+const Label = styled.div`
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+`;
+
+const Track = styled.div<Pick<Props, 'value' | 'min' | 'max'>>`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 16px;
+  margin: 0 16px;
+  background: ${({ value, min, max }) =>
+    getTrackBackground({
+      values: [value],
+      colors: [Color.blue, '#ccc'],
+      min,
+      max,
+    })};
+
+  // Haxx in order to stop the circle from going beyond the ends of the track
+  // (visually, that is)
+  &:before,
+  &:after {
+    display: block;
+    content: '';
+    width: 16px;
+    height: 16px;
+  }
+  &:before {
+    margin-left: -8px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background: ${({ value, min }) =>
+      getTrackBackground({
+        values: [value],
+        colors: [Color.blue, '#ccc'],
+        min,
+        max: 8,
+      })};
+  }
+  &:after {
+    margin-right: -8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background: ${({ value, max }) =>
+      getTrackBackground({
+        values: [value],
+        colors: [Color.blue, '#ccc'],
+        min: max - 2,
+        max,
+      })};
+  }
+`;
 
 const Container = styled.div`
-  position: relative;
-  margin: 0.5rem auto 0.5rem;
-  padding-left: 50px;
-  padding-right: 50px;
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+  min-height: 60px;
+
   @media (min-width: ${ViewportWidth.m}) {
-    padding-right: none;
-    padding-left: none;
+    padding-left: 0;
+    padding-right: 0;
   }
-  `;
+`;
 
-const LabelWrapper = styled.div`
-display: flex;
-justify-content: space-between;`;
-
-export const RangeInput: FC<Props> = ({ min, max, value, onChange, startLabel, endLabel, children: valueLabel }) => {
-
-  const handleChange = useCallback(([inputValue]: number[]) => {
-    onChange(inputValue);
-  }, [onChange]);
+export const RangeInput: FC<Props> = ({
+  min,
+  max,
+  value,
+  onChange,
+  startLabel,
+  endLabel,
+  children,
+}) => {
+  const handleChange = useCallback(
+    ([inputValue]: number[]) => {
+      onChange(inputValue);
+    },
+    [onChange],
+  );
 
   return (
     <Container>
-      <RangeValue max={max} value={value}>
-        {valueLabel}
-      </RangeValue>
+      {startLabel && <Label>{startLabel}</Label>}
       <Range
         step={1}
         min={min}
@@ -54,51 +148,15 @@ export const RangeInput: FC<Props> = ({ min, max, value, onChange, startLabel, e
         values={[value]}
         onChange={handleChange}
         renderTrack={({ props, children }) => (
-          <div
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...props}
-            style={{
-              height: '6px',
-              width: '100%',
-              marginTop: '15px',
-              marginBottom: '15px',
-              background: getTrackBackground({
-                values: [value],
-                colors: ["rgb(23, 110, 222)", "#ccc"],
-                min,
-                max
-              })
-            }}
-          >
+          <Track {...props} value={value} min={min} max={max}>
             {children}
-          </div>
+          </Track>
         )}
-        renderThumb={({ props }) => (
-          <div
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...props}
-            style={{
-              outline: 'none',
-              height: '20px',
-              width: '20px',
-              backgroundColor: 'white',
-              borderRadius: '50%',
-            }}
-          />
+        renderThumb={({ props: { ref: _, ...props } }) => (
+          <Thumb {...props}>{children}</Thumb>
         )}
       />
-      {startLabel && endLabel &&
-        <LabelWrapper>
-          <div>
-            {startLabel}
-          </div>
-          <div>
-            {endLabel}
-          </div>
-        </LabelWrapper>
-      }
+      {endLabel && <Label>{endLabel}</Label>}
     </Container>
-  )
-
-}
-
+  );
+};
