@@ -61,8 +61,12 @@ const Item = styled.li<{
   }
 `;
 
-// TODO add nav items
-const navItems: NavItem[] = [];
+const navItems: NavItem[] = [
+  { title: 'Govern', path: '/govern' },
+  { title: 'Stake', path: '/stake' },
+  { title: 'Discuss', path: '/discuss' },
+  { title: 'Vote', path: '/vote' },
+];
 
 /**
  * Placeholder component for app navigation.

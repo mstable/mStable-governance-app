@@ -1,8 +1,11 @@
 import { LazyQueryHookOptions, QueryTuple } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
 import { useEffect } from 'react';
-
 import { useBlockNumber } from './BlockProvider';
+import {
+  useUserLockupsLazyQuery,
+  UserLockupsQueryResult,
+} from '../../graphql/mstable';
 
 export const useBlockPollingSubscription = <TData, TVariables>(
   lazyQuery: (
@@ -48,4 +51,12 @@ export const useBlockPollingSubscription = <TData, TVariables>(
   }, [skip, blockNumber, run]);
 
   return query as never;
+};
+
+export const useUserLockupsSubscription = (
+  account?: string,
+): UserLockupsQueryResult => {
+  return useBlockPollingSubscription(useUserLockupsLazyQuery, {
+    variables: { account: account as string },
+  });
 };

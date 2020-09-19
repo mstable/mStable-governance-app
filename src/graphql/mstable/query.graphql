@@ -17,3 +17,44 @@ query Token($id: ID!) @api(name: mstable) {
     ...TokenDetails
   }
 }
+
+query UserLockups($account: Bytes) @api(name: mstable) {
+  incentivisedVotingLockups {
+    address: id
+    periodFinish
+    lastUpdateTime
+    rewardPerTokenStored
+    duration
+    rewardRate
+    globalEpoch
+    expired
+    maxTime
+    totalStaticWeight
+    totalStakingRewards
+    totalValue
+    stakingToken {
+      ...TokenDetails
+    }
+    rewardsToken {
+      ...TokenDetails
+    }
+    rewardsDistributor {
+      id
+      fundManagers
+    }
+    stakingRewards(where: { account: $account }, first: 1) {
+      amount
+      amountPerTokenPaid
+    }
+    stakingBalances(where: { account: $account }, first: 1) {
+      amount
+    }
+    userLockups(where: { account: $account }, first: 1) {
+      value
+      lockTime
+      ts
+      slope
+      bias
+    }
+  }
+}

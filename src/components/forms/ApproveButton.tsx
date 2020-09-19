@@ -60,7 +60,7 @@ export const ApproveButton: FC<Props> = ({
   spender,
 }) => {
   const sendTransaction = useSendTransaction();
-  const tokenContract = useErc20Contract(address);
+  const contract = useErc20Contract(address);
   const formId = useFormId();
   const pending = useHasPendingApproval(address, spender);
   const allowance = useTokenAllowance(address, spender);
@@ -88,18 +88,18 @@ export const ApproveButton: FC<Props> = ({
           ? new BigDecimal(0, amount.decimals)
           : amount;
 
-      if (!(tokenContract && spender)) return;
+      if (!(contract && spender)) return;
 
       const manifest: SendTxManifest<Interfaces.ERC20, 'approve'> = {
         args: [spender, approveAmount.exact as BigNumber],
         fn: 'approve',
         formId,
-        iface: tokenContract,
+        contract,
       };
 
       sendTransaction(manifest);
     },
-    [amount, tokenContract, spender, formId, sendTransaction],
+    [amount, contract, spender, formId, sendTransaction],
   );
 
   return (

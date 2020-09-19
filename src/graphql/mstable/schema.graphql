@@ -3,7 +3,7 @@ schema {
   subscription: Subscription
 }
 type Query {
-  token(
+  userLockup(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -11,21 +11,21 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): Token
-  tokens(
+  ): UserLockup
+  userLockups(
     skip: Int = 0
     first: Int = 100
-    orderBy: Token_orderBy
+    orderBy: UserLockup_orderBy
     orderDirection: OrderDirection
-    where: Token_filter
+    where: UserLockup_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [Token!]!
-  basset(
+  ): [UserLockup!]!
+  incentivisedVotingLockup(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -33,350 +33,20 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): Basset
-  bassets(
+  ): IncentivisedVotingLockup
+  incentivisedVotingLockups(
     skip: Int = 0
     first: Int = 100
-    orderBy: Basset_orderBy
+    orderBy: IncentivisedVotingLockup_orderBy
     orderDirection: OrderDirection
-    where: Basset_filter
+    where: IncentivisedVotingLockup_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [Basset!]!
-  basket(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Basket
-  baskets(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Basket_orderBy
-    orderDirection: OrderDirection
-    where: Basket_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Basket!]!
-  masset(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Masset
-  massets(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Masset_orderBy
-    orderDirection: OrderDirection
-    where: Masset_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Masset!]!
-  account(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Account
-  accounts(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Account_orderBy
-    orderDirection: OrderDirection
-    where: Account_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Account!]!
-  accountBalance(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): AccountBalance
-  accountBalances(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: AccountBalance_orderBy
-    orderDirection: OrderDirection
-    where: AccountBalance_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [AccountBalance!]!
-  creditBalance(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): CreditBalance
-  creditBalances(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: CreditBalance_orderBy
-    orderDirection: OrderDirection
-    where: CreditBalance_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [CreditBalance!]!
-  savingsContract(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): SavingsContract
-  savingsContracts(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: SavingsContract_orderBy
-    orderDirection: OrderDirection
-    where: SavingsContract_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [SavingsContract!]!
-  exchangeRate(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): ExchangeRate
-  exchangeRates(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: ExchangeRate_orderBy
-    orderDirection: OrderDirection
-    where: ExchangeRate_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [ExchangeRate!]!
-  volumeMetric(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): VolumeMetric
-  volumeMetrics(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: VolumeMetric_orderBy
-    orderDirection: OrderDirection
-    where: VolumeMetric_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [VolumeMetric!]!
-  aggregateMetric(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): AggregateMetric
-  aggregateMetrics(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: AggregateMetric_orderBy
-    orderDirection: OrderDirection
-    where: AggregateMetric_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [AggregateMetric!]!
-  swapTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): SwapTransaction
-  swapTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: SwapTransaction_orderBy
-    orderDirection: OrderDirection
-    where: SwapTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [SwapTransaction!]!
-  feePaidTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): FeePaidTransaction
-  feePaidTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: FeePaidTransaction_orderBy
-    orderDirection: OrderDirection
-    where: FeePaidTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [FeePaidTransaction!]!
-  stakingRewardsContractTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractTransaction
-  stakingRewardsContractTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractTransaction!]!
-  stakingRewardsContractClaimRewardTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractClaimRewardTransaction
-  stakingRewardsContractClaimRewardTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractClaimRewardTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractClaimRewardTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractClaimRewardTransaction!]!
-  stakingRewardsContractStakeTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractStakeTransaction
-  stakingRewardsContractStakeTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractStakeTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractStakeTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractStakeTransaction!]!
-  stakingRewardsContractWithdrawTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractWithdrawTransaction
-  stakingRewardsContractWithdrawTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractWithdrawTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractWithdrawTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractWithdrawTransaction!]!
+  ): [IncentivisedVotingLockup!]!
   rewardsDistributor(
     id: ID!
     """
@@ -421,28 +91,6 @@ type Query {
     """
     block: Block_height
   ): [StakingReward!]!
-  stakingRewardsContract(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContract
-  stakingRewardsContracts(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContract_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContract_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContract!]!
   stakingBalance(
     id: ID!
     """
@@ -465,7 +113,7 @@ type Query {
     """
     block: Block_height
   ): [StakingBalance!]!
-  merkleDropClaim(
+  token(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -473,21 +121,21 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): MerkleDropClaim
-  merkleDropClaims(
+  ): Token
+  tokens(
     skip: Int = 0
     first: Int = 100
-    orderBy: MerkleDropClaim_orderBy
+    orderBy: Token_orderBy
     orderDirection: OrderDirection
-    where: MerkleDropClaim_filter
+    where: Token_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [MerkleDropClaim!]!
-  merkleDropTranche(
+  ): [Token!]!
+  withdrawTransaction(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -495,21 +143,21 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): MerkleDropTranche
-  merkleDropTranches(
+  ): WithdrawTransaction
+  withdrawTransactions(
     skip: Int = 0
     first: Int = 100
-    orderBy: MerkleDropTranche_orderBy
+    orderBy: WithdrawTransaction_orderBy
     orderDirection: OrderDirection
-    where: MerkleDropTranche_filter
+    where: WithdrawTransaction_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [MerkleDropTranche!]!
-  merkleDrop(
+  ): [WithdrawTransaction!]!
+  ejectTransaction(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -517,21 +165,21 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): MerkleDrop
-  merkleDrops(
+  ): EjectTransaction
+  ejectTransactions(
     skip: Int = 0
     first: Int = 100
-    orderBy: MerkleDrop_orderBy
+    orderBy: EjectTransaction_orderBy
     orderDirection: OrderDirection
-    where: MerkleDrop_filter
+    where: EjectTransaction_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [MerkleDrop!]!
-  timeMetric(
+  ): [EjectTransaction!]!
+  claimTransaction(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -539,20 +187,86 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): TimeMetric
-  timeMetrics(
+  ): ClaimTransaction
+  claimTransactions(
     skip: Int = 0
     first: Int = 100
-    orderBy: TimeMetric_orderBy
+    orderBy: ClaimTransaction_orderBy
     orderDirection: OrderDirection
-    where: TimeMetric_filter
+    where: ClaimTransaction_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [TimeMetric!]!
+  ): [ClaimTransaction!]!
+  createLockTransaction(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): CreateLockTransaction
+  createLockTransactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: CreateLockTransaction_orderBy
+    orderDirection: OrderDirection
+    where: CreateLockTransaction_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [CreateLockTransaction!]!
+  increaseLockAmountTransaction(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): IncreaseLockAmountTransaction
+  increaseLockAmountTransactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: IncreaseLockAmountTransaction_orderBy
+    orderDirection: OrderDirection
+    where: IncreaseLockAmountTransaction_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [IncreaseLockAmountTransaction!]!
+  increaseLockTimeTransaction(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): IncreaseLockTimeTransaction
+  increaseLockTimeTransactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: IncreaseLockTimeTransaction_orderBy
+    orderDirection: OrderDirection
+    where: IncreaseLockTimeTransaction_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [IncreaseLockTimeTransaction!]!
   transaction(
     id: ID!
     """
@@ -581,25 +295,417 @@ input Block_height {
   number: Int
 }
 scalar Bytes
-"""An ERC20-compatible token"""
+type UserLockup {
+  id: ID!
+  account: Bytes!
+  incentivisedVotingLockup: IncentivisedVotingLockup!
+  value: BigInt!
+  lockTime: BigInt!
+  ts: BigInt!
+  slope: BigInt!
+  bias: BigInt!
+}
+type IncentivisedVotingLockup {
+  id: ID!
+  userLockups(skip: Int = 0, first: Int = 100, orderBy: UserLockup_orderBy, orderDirection: OrderDirection, where: UserLockup_filter): [UserLockup!]!
+  stakingRewards(skip: Int = 0, first: Int = 100, orderBy: StakingReward_orderBy, orderDirection: OrderDirection, where: StakingReward_filter): [StakingReward!]!
+  stakingBalances(skip: Int = 0, first: Int = 100, orderBy: StakingBalance_orderBy, orderDirection: OrderDirection, where: StakingBalance_filter): [StakingBalance!]!
+  periodFinish: Int!
+  lastUpdateTime: Int!
+  stakingToken: Token!
+  rewardPerTokenStored: BigInt!
+  duration: BigInt!
+  rewardRate: BigInt!
+  rewardsToken: Token!
+  rewardsDistributor: RewardsDistributor!
+  globalEpoch: BigInt!
+  expired: Boolean!
+  maxTime: BigInt!
+  totalStaticWeight: BigInt!
+  totalStakingRewards: BigInt!
+  totalValue: BigInt!
+}
+enum UserLockup_orderBy {
+  id
+  account
+  incentivisedVotingLockup
+  value
+  lockTime
+  ts
+  slope
+  bias
+}
+enum OrderDirection {
+  asc
+  desc
+}
+input UserLockup_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  account: Bytes
+  account_not: Bytes
+  account_in: [Bytes!]
+  account_not_in: [Bytes!]
+  account_contains: Bytes
+  account_not_contains: Bytes
+  incentivisedVotingLockup: String
+  incentivisedVotingLockup_not: String
+  incentivisedVotingLockup_gt: String
+  incentivisedVotingLockup_lt: String
+  incentivisedVotingLockup_gte: String
+  incentivisedVotingLockup_lte: String
+  incentivisedVotingLockup_in: [String!]
+  incentivisedVotingLockup_not_in: [String!]
+  incentivisedVotingLockup_contains: String
+  incentivisedVotingLockup_not_contains: String
+  incentivisedVotingLockup_starts_with: String
+  incentivisedVotingLockup_not_starts_with: String
+  incentivisedVotingLockup_ends_with: String
+  incentivisedVotingLockup_not_ends_with: String
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
+  lockTime: BigInt
+  lockTime_not: BigInt
+  lockTime_gt: BigInt
+  lockTime_lt: BigInt
+  lockTime_gte: BigInt
+  lockTime_lte: BigInt
+  lockTime_in: [BigInt!]
+  lockTime_not_in: [BigInt!]
+  ts: BigInt
+  ts_not: BigInt
+  ts_gt: BigInt
+  ts_lt: BigInt
+  ts_gte: BigInt
+  ts_lte: BigInt
+  ts_in: [BigInt!]
+  ts_not_in: [BigInt!]
+  slope: BigInt
+  slope_not: BigInt
+  slope_gt: BigInt
+  slope_lt: BigInt
+  slope_gte: BigInt
+  slope_lte: BigInt
+  slope_in: [BigInt!]
+  slope_not_in: [BigInt!]
+  bias: BigInt
+  bias_not: BigInt
+  bias_gt: BigInt
+  bias_lt: BigInt
+  bias_gte: BigInt
+  bias_lte: BigInt
+  bias_in: [BigInt!]
+  bias_not_in: [BigInt!]
+}
+scalar BigInt
+enum StakingReward_orderBy {
+  id
+  amount
+  amountPerTokenPaid
+  account
+  incentivisedVotingLockup
+}
+input StakingReward_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  amount: BigInt
+  amount_not: BigInt
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  amount_in: [BigInt!]
+  amount_not_in: [BigInt!]
+  amountPerTokenPaid: BigInt
+  amountPerTokenPaid_not: BigInt
+  amountPerTokenPaid_gt: BigInt
+  amountPerTokenPaid_lt: BigInt
+  amountPerTokenPaid_gte: BigInt
+  amountPerTokenPaid_lte: BigInt
+  amountPerTokenPaid_in: [BigInt!]
+  amountPerTokenPaid_not_in: [BigInt!]
+  account: Bytes
+  account_not: Bytes
+  account_in: [Bytes!]
+  account_not_in: [Bytes!]
+  account_contains: Bytes
+  account_not_contains: Bytes
+  incentivisedVotingLockup: String
+  incentivisedVotingLockup_not: String
+  incentivisedVotingLockup_gt: String
+  incentivisedVotingLockup_lt: String
+  incentivisedVotingLockup_gte: String
+  incentivisedVotingLockup_lte: String
+  incentivisedVotingLockup_in: [String!]
+  incentivisedVotingLockup_not_in: [String!]
+  incentivisedVotingLockup_contains: String
+  incentivisedVotingLockup_not_contains: String
+  incentivisedVotingLockup_starts_with: String
+  incentivisedVotingLockup_not_starts_with: String
+  incentivisedVotingLockup_ends_with: String
+  incentivisedVotingLockup_not_ends_with: String
+}
+type StakingReward {
+  id: ID!
+  amount: BigInt!
+  amountPerTokenPaid: BigInt!
+  account: Bytes!
+  incentivisedVotingLockup: IncentivisedVotingLockup!
+}
+enum StakingBalance_orderBy {
+  id
+  account
+  incentivisedVotingLockup
+  amount
+}
+input StakingBalance_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  account: Bytes
+  account_not: Bytes
+  account_in: [Bytes!]
+  account_not_in: [Bytes!]
+  account_contains: Bytes
+  account_not_contains: Bytes
+  incentivisedVotingLockup: String
+  incentivisedVotingLockup_not: String
+  incentivisedVotingLockup_gt: String
+  incentivisedVotingLockup_lt: String
+  incentivisedVotingLockup_gte: String
+  incentivisedVotingLockup_lte: String
+  incentivisedVotingLockup_in: [String!]
+  incentivisedVotingLockup_not_in: [String!]
+  incentivisedVotingLockup_contains: String
+  incentivisedVotingLockup_not_contains: String
+  incentivisedVotingLockup_starts_with: String
+  incentivisedVotingLockup_not_starts_with: String
+  incentivisedVotingLockup_ends_with: String
+  incentivisedVotingLockup_not_ends_with: String
+  amount: BigInt
+  amount_not: BigInt
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  amount_in: [BigInt!]
+  amount_not_in: [BigInt!]
+}
+type StakingBalance {
+  id: ID!
+  account: Bytes!
+  incentivisedVotingLockup: IncentivisedVotingLockup!
+  amount: BigInt!
+}
 type Token {
   id: ID!
-  """Token address"""
   address: Bytes!
-  """Token decimals"""
   decimals: Int!
-  """Token name"""
   name: String!
-  """Token symbol"""
   symbol: String!
-  """Total supply of the token"""
-  totalSupply: BigDecimal!
-  """Quantity of the token that has been minted"""
-  totalMinted: BigDecimal!
-  """Quantity of the token that has been burned"""
-  totalBurned: BigDecimal!
+  totalSupply: BigInt!
 }
-scalar BigDecimal
+type RewardsDistributor {
+  id: ID!
+  fundManagers: [Bytes!]!
+}
+enum IncentivisedVotingLockup_orderBy {
+  id
+  userLockups
+  stakingRewards
+  stakingBalances
+  periodFinish
+  lastUpdateTime
+  stakingToken
+  rewardPerTokenStored
+  duration
+  rewardRate
+  rewardsToken
+  rewardsDistributor
+  globalEpoch
+  expired
+  maxTime
+  totalStaticWeight
+  totalStakingRewards
+  totalValue
+}
+input IncentivisedVotingLockup_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  periodFinish: Int
+  periodFinish_not: Int
+  periodFinish_gt: Int
+  periodFinish_lt: Int
+  periodFinish_gte: Int
+  periodFinish_lte: Int
+  periodFinish_in: [Int!]
+  periodFinish_not_in: [Int!]
+  lastUpdateTime: Int
+  lastUpdateTime_not: Int
+  lastUpdateTime_gt: Int
+  lastUpdateTime_lt: Int
+  lastUpdateTime_gte: Int
+  lastUpdateTime_lte: Int
+  lastUpdateTime_in: [Int!]
+  lastUpdateTime_not_in: [Int!]
+  stakingToken: String
+  stakingToken_not: String
+  stakingToken_gt: String
+  stakingToken_lt: String
+  stakingToken_gte: String
+  stakingToken_lte: String
+  stakingToken_in: [String!]
+  stakingToken_not_in: [String!]
+  stakingToken_contains: String
+  stakingToken_not_contains: String
+  stakingToken_starts_with: String
+  stakingToken_not_starts_with: String
+  stakingToken_ends_with: String
+  stakingToken_not_ends_with: String
+  rewardPerTokenStored: BigInt
+  rewardPerTokenStored_not: BigInt
+  rewardPerTokenStored_gt: BigInt
+  rewardPerTokenStored_lt: BigInt
+  rewardPerTokenStored_gte: BigInt
+  rewardPerTokenStored_lte: BigInt
+  rewardPerTokenStored_in: [BigInt!]
+  rewardPerTokenStored_not_in: [BigInt!]
+  duration: BigInt
+  duration_not: BigInt
+  duration_gt: BigInt
+  duration_lt: BigInt
+  duration_gte: BigInt
+  duration_lte: BigInt
+  duration_in: [BigInt!]
+  duration_not_in: [BigInt!]
+  rewardRate: BigInt
+  rewardRate_not: BigInt
+  rewardRate_gt: BigInt
+  rewardRate_lt: BigInt
+  rewardRate_gte: BigInt
+  rewardRate_lte: BigInt
+  rewardRate_in: [BigInt!]
+  rewardRate_not_in: [BigInt!]
+  rewardsToken: String
+  rewardsToken_not: String
+  rewardsToken_gt: String
+  rewardsToken_lt: String
+  rewardsToken_gte: String
+  rewardsToken_lte: String
+  rewardsToken_in: [String!]
+  rewardsToken_not_in: [String!]
+  rewardsToken_contains: String
+  rewardsToken_not_contains: String
+  rewardsToken_starts_with: String
+  rewardsToken_not_starts_with: String
+  rewardsToken_ends_with: String
+  rewardsToken_not_ends_with: String
+  rewardsDistributor: String
+  rewardsDistributor_not: String
+  rewardsDistributor_gt: String
+  rewardsDistributor_lt: String
+  rewardsDistributor_gte: String
+  rewardsDistributor_lte: String
+  rewardsDistributor_in: [String!]
+  rewardsDistributor_not_in: [String!]
+  rewardsDistributor_contains: String
+  rewardsDistributor_not_contains: String
+  rewardsDistributor_starts_with: String
+  rewardsDistributor_not_starts_with: String
+  rewardsDistributor_ends_with: String
+  rewardsDistributor_not_ends_with: String
+  globalEpoch: BigInt
+  globalEpoch_not: BigInt
+  globalEpoch_gt: BigInt
+  globalEpoch_lt: BigInt
+  globalEpoch_gte: BigInt
+  globalEpoch_lte: BigInt
+  globalEpoch_in: [BigInt!]
+  globalEpoch_not_in: [BigInt!]
+  expired: Boolean
+  expired_not: Boolean
+  expired_in: [Boolean!]
+  expired_not_in: [Boolean!]
+  maxTime: BigInt
+  maxTime_not: BigInt
+  maxTime_gt: BigInt
+  maxTime_lt: BigInt
+  maxTime_gte: BigInt
+  maxTime_lte: BigInt
+  maxTime_in: [BigInt!]
+  maxTime_not_in: [BigInt!]
+  totalStaticWeight: BigInt
+  totalStaticWeight_not: BigInt
+  totalStaticWeight_gt: BigInt
+  totalStaticWeight_lt: BigInt
+  totalStaticWeight_gte: BigInt
+  totalStaticWeight_lte: BigInt
+  totalStaticWeight_in: [BigInt!]
+  totalStaticWeight_not_in: [BigInt!]
+  totalStakingRewards: BigInt
+  totalStakingRewards_not: BigInt
+  totalStakingRewards_gt: BigInt
+  totalStakingRewards_lt: BigInt
+  totalStakingRewards_gte: BigInt
+  totalStakingRewards_lte: BigInt
+  totalStakingRewards_in: [BigInt!]
+  totalStakingRewards_not_in: [BigInt!]
+  totalValue: BigInt
+  totalValue_not: BigInt
+  totalValue_gt: BigInt
+  totalValue_lt: BigInt
+  totalValue_gte: BigInt
+  totalValue_lte: BigInt
+  totalValue_in: [BigInt!]
+  totalValue_not_in: [BigInt!]
+}
+enum RewardsDistributor_orderBy {
+  id
+  fundManagers
+}
+input RewardsDistributor_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  fundManagers: [Bytes!]
+  fundManagers_not: [Bytes!]
+  fundManagers_contains: [Bytes!]
+  fundManagers_not_contains: [Bytes!]
+}
 enum Token_orderBy {
   id
   address
@@ -607,12 +713,6 @@ enum Token_orderBy {
   name
   symbol
   totalSupply
-  totalMinted
-  totalBurned
-}
-enum OrderDirection {
-  asc
-  desc
 }
 input Token_filter {
   id: ID
@@ -665,1486 +765,6 @@ input Token_filter {
   symbol_not_starts_with: String
   symbol_ends_with: String
   symbol_not_ends_with: String
-  totalSupply: BigDecimal
-  totalSupply_not: BigDecimal
-  totalSupply_gt: BigDecimal
-  totalSupply_lt: BigDecimal
-  totalSupply_gte: BigDecimal
-  totalSupply_lte: BigDecimal
-  totalSupply_in: [BigDecimal!]
-  totalSupply_not_in: [BigDecimal!]
-  totalMinted: BigDecimal
-  totalMinted_not: BigDecimal
-  totalMinted_gt: BigDecimal
-  totalMinted_lt: BigDecimal
-  totalMinted_gte: BigDecimal
-  totalMinted_lte: BigDecimal
-  totalMinted_in: [BigDecimal!]
-  totalMinted_not_in: [BigDecimal!]
-  totalBurned: BigDecimal
-  totalBurned_not: BigDecimal
-  totalBurned_gt: BigDecimal
-  totalBurned_lt: BigDecimal
-  totalBurned_gte: BigDecimal
-  totalBurned_lte: BigDecimal
-  totalBurned_in: [BigDecimal!]
-  totalBurned_not_in: [BigDecimal!]
-}
-"""Basket Asset (e.g. DAI for the mUSD basket)"""
-type Basset {
-  id: ID!
-  """Basket the Basset is contained in"""
-  basket: Basket!
-  """Target weight of the Basset"""
-  maxWeight: BigInt!
-  """Basset to Masset ratio for quantity conversion"""
-  ratio: BigInt!
-  """Status of the Basset, e.g. 'Normal'"""
-  status: String!
-  """An ERC20 can charge transfer fee, e.g. USDT or DGX tokens"""
-  isTransferFeeCharged: Boolean!
-  """The underlying Token for the Basset"""
-  token: Token!
-  """Amount of the Basset that is held in collateral"""
-  vaultBalance: BigDecimal!
-}
-"""A Basket of Bassets (e.g. for mUSD)"""
-type Basket {
-  id: ID!
-  """The Bassets in the Basket"""
-  bassets(skip: Int = 0, first: Int = 100, orderBy: Basset_orderBy, orderDirection: OrderDirection, where: Basset_filter): [Basset!]!
-  """The collateralisation ratio of the Basket"""
-  collateralisationRatio: BigInt!
-  """Max number of Bassets that can be present in the Basket"""
-  maxBassets: Int!
-  """Flag for whether the Basket has failed"""
-  undergoingRecol: Boolean!
-  """Flag for whether the Basket has failed"""
-  failed: Boolean!
-  """Masset the Basket belongs to"""
-  masset: Masset!
-}
-enum Basset_orderBy {
-  id
-  basket
-  maxWeight
-  ratio
-  status
-  isTransferFeeCharged
-  token
-  vaultBalance
-}
-input Basset_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  maxWeight: BigInt
-  maxWeight_not: BigInt
-  maxWeight_gt: BigInt
-  maxWeight_lt: BigInt
-  maxWeight_gte: BigInt
-  maxWeight_lte: BigInt
-  maxWeight_in: [BigInt!]
-  maxWeight_not_in: [BigInt!]
-  ratio: BigInt
-  ratio_not: BigInt
-  ratio_gt: BigInt
-  ratio_lt: BigInt
-  ratio_gte: BigInt
-  ratio_lte: BigInt
-  ratio_in: [BigInt!]
-  ratio_not_in: [BigInt!]
-  status: String
-  status_not: String
-  status_gt: String
-  status_lt: String
-  status_gte: String
-  status_lte: String
-  status_in: [String!]
-  status_not_in: [String!]
-  status_contains: String
-  status_not_contains: String
-  status_starts_with: String
-  status_not_starts_with: String
-  status_ends_with: String
-  status_not_ends_with: String
-  isTransferFeeCharged: Boolean
-  isTransferFeeCharged_not: Boolean
-  isTransferFeeCharged_in: [Boolean!]
-  isTransferFeeCharged_not_in: [Boolean!]
-  token: String
-  token_not: String
-  token_gt: String
-  token_lt: String
-  token_gte: String
-  token_lte: String
-  token_in: [String!]
-  token_not_in: [String!]
-  token_contains: String
-  token_not_contains: String
-  token_starts_with: String
-  token_not_starts_with: String
-  token_ends_with: String
-  token_not_ends_with: String
-  vaultBalance: BigDecimal
-  vaultBalance_not: BigDecimal
-  vaultBalance_gt: BigDecimal
-  vaultBalance_lt: BigDecimal
-  vaultBalance_gte: BigDecimal
-  vaultBalance_lte: BigDecimal
-  vaultBalance_in: [BigDecimal!]
-  vaultBalance_not_in: [BigDecimal!]
-}
-scalar BigInt
-"""An mStable asset (e.g. mUSD)"""
-type Masset {
-  id: ID!
-  """The Basket of Bassets for this Masset"""
-  basket: Basket!
-  """The swap fee rate"""
-  feeRate: BigInt!
-  """The redemption fee rate"""
-  redemptionFeeRate: BigInt!
-  """The underlying Token for this Masset"""
-  token: Token!
-  """The token symbol"""
-  tokenSymbol: String!
-  savingsContracts(skip: Int = 0, first: Int = 100, orderBy: SavingsContract_orderBy, orderDirection: OrderDirection, where: SavingsContract_filter): [SavingsContract!]!
-}
-enum SavingsContract_orderBy {
-  id
-  masset
-  totalSavings
-  totalCredits
-  exchangeRates
-  savingsRate
-  creditBalances
-  automationEnabled
-}
-input SavingsContract_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  masset: String
-  masset_not: String
-  masset_gt: String
-  masset_lt: String
-  masset_gte: String
-  masset_lte: String
-  masset_in: [String!]
-  masset_not_in: [String!]
-  masset_contains: String
-  masset_not_contains: String
-  masset_starts_with: String
-  masset_not_starts_with: String
-  masset_ends_with: String
-  masset_not_ends_with: String
-  totalSavings: BigDecimal
-  totalSavings_not: BigDecimal
-  totalSavings_gt: BigDecimal
-  totalSavings_lt: BigDecimal
-  totalSavings_gte: BigDecimal
-  totalSavings_lte: BigDecimal
-  totalSavings_in: [BigDecimal!]
-  totalSavings_not_in: [BigDecimal!]
-  totalCredits: BigDecimal
-  totalCredits_not: BigDecimal
-  totalCredits_gt: BigDecimal
-  totalCredits_lt: BigDecimal
-  totalCredits_gte: BigDecimal
-  totalCredits_lte: BigDecimal
-  totalCredits_in: [BigDecimal!]
-  totalCredits_not_in: [BigDecimal!]
-  savingsRate: BigDecimal
-  savingsRate_not: BigDecimal
-  savingsRate_gt: BigDecimal
-  savingsRate_lt: BigDecimal
-  savingsRate_gte: BigDecimal
-  savingsRate_lte: BigDecimal
-  savingsRate_in: [BigDecimal!]
-  savingsRate_not_in: [BigDecimal!]
-  automationEnabled: Boolean
-  automationEnabled_not: Boolean
-  automationEnabled_in: [Boolean!]
-  automationEnabled_not_in: [Boolean!]
-}
-type SavingsContract {
-  id: ID!
-  masset: Masset!
-  totalSavings: BigDecimal!
-  totalCredits: BigDecimal!
-  exchangeRates(skip: Int = 0, first: Int = 100, orderBy: ExchangeRate_orderBy, orderDirection: OrderDirection, where: ExchangeRate_filter): [ExchangeRate!]!
-  savingsRate: BigDecimal!
-  creditBalances(skip: Int = 0, first: Int = 100, orderBy: CreditBalance_orderBy, orderDirection: OrderDirection, where: CreditBalance_filter): [CreditBalance!]!
-  automationEnabled: Boolean!
-}
-enum ExchangeRate_orderBy {
-  id
-  exchangeRate
-  timestamp
-  savingsContract
-}
-input ExchangeRate_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  exchangeRate: BigDecimal
-  exchangeRate_not: BigDecimal
-  exchangeRate_gt: BigDecimal
-  exchangeRate_lt: BigDecimal
-  exchangeRate_gte: BigDecimal
-  exchangeRate_lte: BigDecimal
-  exchangeRate_in: [BigDecimal!]
-  exchangeRate_not_in: [BigDecimal!]
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  savingsContract: String
-  savingsContract_not: String
-  savingsContract_gt: String
-  savingsContract_lt: String
-  savingsContract_gte: String
-  savingsContract_lte: String
-  savingsContract_in: [String!]
-  savingsContract_not_in: [String!]
-  savingsContract_contains: String
-  savingsContract_not_contains: String
-  savingsContract_starts_with: String
-  savingsContract_not_starts_with: String
-  savingsContract_ends_with: String
-  savingsContract_not_ends_with: String
-}
-type ExchangeRate {
-  id: ID!
-  exchangeRate: BigDecimal!
-  timestamp: Int!
-  savingsContract: SavingsContract!
-}
-enum CreditBalance_orderBy {
-  id
-  account
-  amount
-  savingsContract
-}
-input CreditBalance_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  account: String
-  account_not: String
-  account_gt: String
-  account_lt: String
-  account_gte: String
-  account_lte: String
-  account_in: [String!]
-  account_not_in: [String!]
-  account_contains: String
-  account_not_contains: String
-  account_starts_with: String
-  account_not_starts_with: String
-  account_ends_with: String
-  account_not_ends_with: String
-  amount: BigDecimal
-  amount_not: BigDecimal
-  amount_gt: BigDecimal
-  amount_lt: BigDecimal
-  amount_gte: BigDecimal
-  amount_lte: BigDecimal
-  amount_in: [BigDecimal!]
-  amount_not_in: [BigDecimal!]
-  savingsContract: String
-  savingsContract_not: String
-  savingsContract_gt: String
-  savingsContract_lt: String
-  savingsContract_gte: String
-  savingsContract_lte: String
-  savingsContract_in: [String!]
-  savingsContract_not_in: [String!]
-  savingsContract_contains: String
-  savingsContract_not_contains: String
-  savingsContract_starts_with: String
-  savingsContract_not_starts_with: String
-  savingsContract_ends_with: String
-  savingsContract_not_ends_with: String
-}
-"""A credit balance for a given savings contract"""
-type CreditBalance {
-  id: ID!
-  """Account"""
-  account: Account!
-  """Amount as a decimal value"""
-  amount: BigDecimal!
-  """Savings contract"""
-  savingsContract: SavingsContract!
-}
-"""An Ethereum account with balances/credit balances"""
-type Account {
-  id: ID!
-  """Address of the account"""
-  address: Bytes!
-  """AccountBalances of the account"""
-  balances(skip: Int = 0, first: Int = 100, orderBy: AccountBalance_orderBy, orderDirection: OrderDirection, where: AccountBalance_filter): [AccountBalance!]!
-  """CreditBalances of the account"""
-  creditBalances(skip: Int = 0, first: Int = 100, orderBy: CreditBalance_orderBy, orderDirection: OrderDirection, where: CreditBalance_filter): [CreditBalance!]!
-}
-enum AccountBalance_orderBy {
-  id
-  account
-  amount
-  token
-}
-input AccountBalance_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  account: String
-  account_not: String
-  account_gt: String
-  account_lt: String
-  account_gte: String
-  account_lte: String
-  account_in: [String!]
-  account_not_in: [String!]
-  account_contains: String
-  account_not_contains: String
-  account_starts_with: String
-  account_not_starts_with: String
-  account_ends_with: String
-  account_not_ends_with: String
-  amount: BigDecimal
-  amount_not: BigDecimal
-  amount_gt: BigDecimal
-  amount_lt: BigDecimal
-  amount_gte: BigDecimal
-  amount_lte: BigDecimal
-  amount_in: [BigDecimal!]
-  amount_not_in: [BigDecimal!]
-  token: String
-  token_not: String
-  token_gt: String
-  token_lt: String
-  token_gte: String
-  token_lte: String
-  token_in: [String!]
-  token_not_in: [String!]
-  token_contains: String
-  token_not_contains: String
-  token_starts_with: String
-  token_not_starts_with: String
-  token_ends_with: String
-  token_not_ends_with: String
-}
-"""An account balance for a given token"""
-type AccountBalance {
-  id: ID!
-  """Account"""
-  account: Account!
-  """Amount as a decimal value"""
-  amount: BigDecimal!
-  """Token"""
-  token: Token!
-}
-enum Basket_orderBy {
-  id
-  bassets
-  collateralisationRatio
-  maxBassets
-  undergoingRecol
-  failed
-  masset
-}
-input Basket_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  bassets: [String!]
-  bassets_not: [String!]
-  bassets_contains: [String!]
-  bassets_not_contains: [String!]
-  collateralisationRatio: BigInt
-  collateralisationRatio_not: BigInt
-  collateralisationRatio_gt: BigInt
-  collateralisationRatio_lt: BigInt
-  collateralisationRatio_gte: BigInt
-  collateralisationRatio_lte: BigInt
-  collateralisationRatio_in: [BigInt!]
-  collateralisationRatio_not_in: [BigInt!]
-  maxBassets: Int
-  maxBassets_not: Int
-  maxBassets_gt: Int
-  maxBassets_lt: Int
-  maxBassets_gte: Int
-  maxBassets_lte: Int
-  maxBassets_in: [Int!]
-  maxBassets_not_in: [Int!]
-  undergoingRecol: Boolean
-  undergoingRecol_not: Boolean
-  undergoingRecol_in: [Boolean!]
-  undergoingRecol_not_in: [Boolean!]
-  failed: Boolean
-  failed_not: Boolean
-  failed_in: [Boolean!]
-  failed_not_in: [Boolean!]
-}
-enum Masset_orderBy {
-  id
-  basket
-  feeRate
-  redemptionFeeRate
-  token
-  tokenSymbol
-  savingsContracts
-}
-input Masset_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  basket: String
-  basket_not: String
-  basket_gt: String
-  basket_lt: String
-  basket_gte: String
-  basket_lte: String
-  basket_in: [String!]
-  basket_not_in: [String!]
-  basket_contains: String
-  basket_not_contains: String
-  basket_starts_with: String
-  basket_not_starts_with: String
-  basket_ends_with: String
-  basket_not_ends_with: String
-  feeRate: BigInt
-  feeRate_not: BigInt
-  feeRate_gt: BigInt
-  feeRate_lt: BigInt
-  feeRate_gte: BigInt
-  feeRate_lte: BigInt
-  feeRate_in: [BigInt!]
-  feeRate_not_in: [BigInt!]
-  redemptionFeeRate: BigInt
-  redemptionFeeRate_not: BigInt
-  redemptionFeeRate_gt: BigInt
-  redemptionFeeRate_lt: BigInt
-  redemptionFeeRate_gte: BigInt
-  redemptionFeeRate_lte: BigInt
-  redemptionFeeRate_in: [BigInt!]
-  redemptionFeeRate_not_in: [BigInt!]
-  token: String
-  token_not: String
-  token_gt: String
-  token_lt: String
-  token_gte: String
-  token_lte: String
-  token_in: [String!]
-  token_not_in: [String!]
-  token_contains: String
-  token_not_contains: String
-  token_starts_with: String
-  token_not_starts_with: String
-  token_ends_with: String
-  token_not_ends_with: String
-  tokenSymbol: String
-  tokenSymbol_not: String
-  tokenSymbol_gt: String
-  tokenSymbol_lt: String
-  tokenSymbol_gte: String
-  tokenSymbol_lte: String
-  tokenSymbol_in: [String!]
-  tokenSymbol_not_in: [String!]
-  tokenSymbol_contains: String
-  tokenSymbol_not_contains: String
-  tokenSymbol_starts_with: String
-  tokenSymbol_not_starts_with: String
-  tokenSymbol_ends_with: String
-  tokenSymbol_not_ends_with: String
-}
-enum Account_orderBy {
-  id
-  address
-  balances
-  creditBalances
-}
-input Account_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  address: Bytes
-  address_not: Bytes
-  address_in: [Bytes!]
-  address_not_in: [Bytes!]
-  address_contains: Bytes
-  address_not_contains: Bytes
-}
-type VolumeMetric implements TimeMetric {
-  id: ID!
-  value: BigDecimal!
-  timestamp: Int!
-  period: TimeMetricPeriod!
-  type: TransactionType!
-}
-interface TimeMetric {
-  id: ID!
-  value: BigDecimal!
-  timestamp: Int!
-  period: TimeMetricPeriod!
-}
-enum TimeMetricPeriod {
-  HOUR
-  DAY
-  WEEK
-  MONTH
-  QUARTER
-  YEAR
-}
-enum TransactionType {
-  MASSET_MINT
-  MASSET_SWAP
-  MASSET_REDEEM
-  MASSET_REDEEM_MASSET
-  MASSET_PAID_FEE
-  SAVINGS_CONTRACT_DEPOSIT
-  SAVINGS_CONTRACT_WITHDRAW
-  STAKING_REWARDS_CONTRACT_CLAIM_REWARD
-  STAKING_REWARDS_CONTRACT_EXIT
-  STAKING_REWARDS_CONTRACT_STAKE
-  STAKING_REWARDS_CONTRACT_WITHDRAW
-}
-enum VolumeMetric_orderBy {
-  id
-  value
-  timestamp
-  period
-  type
-}
-input VolumeMetric_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  value: BigDecimal
-  value_not: BigDecimal
-  value_gt: BigDecimal
-  value_lt: BigDecimal
-  value_gte: BigDecimal
-  value_lte: BigDecimal
-  value_in: [BigDecimal!]
-  value_not_in: [BigDecimal!]
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  period: TimeMetricPeriod
-  period_not: TimeMetricPeriod
-  type: TransactionType
-  type_not: TransactionType
-}
-type AggregateMetric implements TimeMetric {
-  id: ID!
-  value: BigDecimal!
-  timestamp: Int!
-  period: TimeMetricPeriod!
-  type: AggregateMetricType!
-}
-enum AggregateMetricType {
-  TOTAL_SUPPLY
-  TOTAL_SAVINGS
-}
-enum AggregateMetric_orderBy {
-  id
-  value
-  timestamp
-  period
-  type
-}
-input AggregateMetric_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  value: BigDecimal
-  value_not: BigDecimal
-  value_gt: BigDecimal
-  value_lt: BigDecimal
-  value_gte: BigDecimal
-  value_lte: BigDecimal
-  value_in: [BigDecimal!]
-  value_not_in: [BigDecimal!]
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  period: TimeMetricPeriod
-  period_not: TimeMetricPeriod
-  type: AggregateMetricType
-  type_not: AggregateMetricType
-}
-"""A bAsset<>bAsset swap"""
-type SwapTransaction implements Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  sender: Bytes!
-  timestamp: Int!
-  """Which mAsset is this tx in?"""
-  mAsset: Masset!
-  mAssetUnits: BigDecimal!
-  inputBasset: Basset!
-  outputBasset: Basset!
-  recipient: Bytes!
-}
-"""A common transaction type"""
-interface Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  timestamp: Int!
-  sender: Bytes!
-}
-enum SwapTransaction_orderBy {
-  id
-  tx
-  type
-  sender
-  timestamp
-  mAsset
-  mAssetUnits
-  inputBasset
-  outputBasset
-  recipient
-}
-input SwapTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  mAsset: String
-  mAsset_not: String
-  mAsset_gt: String
-  mAsset_lt: String
-  mAsset_gte: String
-  mAsset_lte: String
-  mAsset_in: [String!]
-  mAsset_not_in: [String!]
-  mAsset_contains: String
-  mAsset_not_contains: String
-  mAsset_starts_with: String
-  mAsset_not_starts_with: String
-  mAsset_ends_with: String
-  mAsset_not_ends_with: String
-  mAssetUnits: BigDecimal
-  mAssetUnits_not: BigDecimal
-  mAssetUnits_gt: BigDecimal
-  mAssetUnits_lt: BigDecimal
-  mAssetUnits_gte: BigDecimal
-  mAssetUnits_lte: BigDecimal
-  mAssetUnits_in: [BigDecimal!]
-  mAssetUnits_not_in: [BigDecimal!]
-  inputBasset: String
-  inputBasset_not: String
-  inputBasset_gt: String
-  inputBasset_lt: String
-  inputBasset_gte: String
-  inputBasset_lte: String
-  inputBasset_in: [String!]
-  inputBasset_not_in: [String!]
-  inputBasset_contains: String
-  inputBasset_not_contains: String
-  inputBasset_starts_with: String
-  inputBasset_not_starts_with: String
-  inputBasset_ends_with: String
-  inputBasset_not_ends_with: String
-  outputBasset: String
-  outputBasset_not: String
-  outputBasset_gt: String
-  outputBasset_lt: String
-  outputBasset_gte: String
-  outputBasset_lte: String
-  outputBasset_in: [String!]
-  outputBasset_not_in: [String!]
-  outputBasset_contains: String
-  outputBasset_not_contains: String
-  outputBasset_starts_with: String
-  outputBasset_not_starts_with: String
-  outputBasset_ends_with: String
-  outputBasset_not_ends_with: String
-  recipient: Bytes
-  recipient_not: Bytes
-  recipient_in: [Bytes!]
-  recipient_not_in: [Bytes!]
-  recipient_contains: Bytes
-  recipient_not_contains: Bytes
-}
-"""Log of the Fee payment"""
-type FeePaidTransaction implements Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  timestamp: Int!
-  sender: Bytes!
-  """Which mAsset is this tx in?"""
-  mAsset: Masset!
-  mAssetUnits: BigDecimal!
-  asset: Basset!
-}
-enum FeePaidTransaction_orderBy {
-  id
-  tx
-  type
-  timestamp
-  sender
-  mAsset
-  mAssetUnits
-  asset
-}
-input FeePaidTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  mAsset: String
-  mAsset_not: String
-  mAsset_gt: String
-  mAsset_lt: String
-  mAsset_gte: String
-  mAsset_lte: String
-  mAsset_in: [String!]
-  mAsset_not_in: [String!]
-  mAsset_contains: String
-  mAsset_not_contains: String
-  mAsset_starts_with: String
-  mAsset_not_starts_with: String
-  mAsset_ends_with: String
-  mAsset_not_ends_with: String
-  mAssetUnits: BigDecimal
-  mAssetUnits_not: BigDecimal
-  mAssetUnits_gt: BigDecimal
-  mAssetUnits_lt: BigDecimal
-  mAssetUnits_gte: BigDecimal
-  mAssetUnits_lte: BigDecimal
-  mAssetUnits_in: [BigDecimal!]
-  mAssetUnits_not_in: [BigDecimal!]
-  asset: String
-  asset_not: String
-  asset_gt: String
-  asset_lt: String
-  asset_gte: String
-  asset_lte: String
-  asset_in: [String!]
-  asset_not_in: [String!]
-  asset_contains: String
-  asset_not_contains: String
-  asset_starts_with: String
-  asset_not_starts_with: String
-  asset_ends_with: String
-  asset_not_ends_with: String
-}
-type StakingRewardsContractTransaction implements Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  sender: Bytes!
-  timestamp: Int!
-  stakingRewardsContract: StakingRewardsContract!
-}
-type StakingRewardsContract {
-  """ID of the staking rewards contract"""
-  id: ID!
-  """The type of staking rewards contract, e.g. `STAKING_REWARDS` or `STAKING_REWARDS_WITH_PLATFORM_TOKEN`"""
-  type: StakingRewardsContractType!
-  """Duration"""
-  duration: Int!
-  """Period finish"""
-  periodFinish: Int!
-  """Last update time"""
-  lastUpdateTime: Int!
-  """Staking token"""
-  stakingToken: Token!
-  """Reward per token stored"""
-  rewardPerTokenStored: BigInt!
-  """Reward rate"""
-  rewardRate: BigInt!
-  """Rewards token"""
-  rewardsToken: Token!
-  """Rewards distributor"""
-  rewardsDistributor: RewardsDistributor!
-  """Total supply"""
-  totalSupply: BigInt!
-  """Total staking rewards"""
-  totalStakingRewards: BigInt!
-  """Accessor for staking balances kept on this contract"""
-  stakingBalances(skip: Int = 0, first: Int = 100, orderBy: StakingBalance_orderBy, orderDirection: OrderDirection, where: StakingBalance_filter): [StakingBalance!]!
-  """Accessor for staking rewards kept on this contract"""
-  stakingRewards(skip: Int = 0, first: Int = 100, orderBy: StakingReward_orderBy, orderDirection: OrderDirection, where: StakingReward_filter): [StakingReward!]!
-  """Accessor for claim reward transactions sent to this contract"""
-  claimRewardTransactions(skip: Int = 0, first: Int = 100, orderBy: StakingRewardsContractClaimRewardTransaction_orderBy, orderDirection: OrderDirection, where: StakingRewardsContractClaimRewardTransaction_filter): [StakingRewardsContractClaimRewardTransaction!]!
-  """Accessor for stake transactions sent to this contract"""
-  stakeTransactions(skip: Int = 0, first: Int = 100, orderBy: StakingRewardsContractStakeTransaction_orderBy, orderDirection: OrderDirection, where: StakingRewardsContractStakeTransaction_filter): [StakingRewardsContractStakeTransaction!]!
-  """Accessor for withdraw transactions sent to this contract"""
-  withdrawTransactions(skip: Int = 0, first: Int = 100, orderBy: StakingRewardsContractWithdrawTransaction_orderBy, orderDirection: OrderDirection, where: StakingRewardsContractWithdrawTransaction_filter): [StakingRewardsContractWithdrawTransaction!]!
-  """Platform token"""
-  platformToken: Token
-  """Platform reward rate"""
-  platformRewardRate: BigInt
-  """Platform reward per token stored"""
-  platformRewardPerTokenStored: BigInt
-  """Total platform rewards"""
-  totalPlatformRewards: BigInt
-}
-enum StakingRewardsContractType {
-  STAKING_REWARDS
-  STAKING_REWARDS_WITH_PLATFORM_TOKEN
-}
-type RewardsDistributor {
-  """ID of the rewards distributor contract"""
-  id: ID!
-  """Whitelisted fund managers"""
-  fundManagers: [Bytes!]!
-}
-enum StakingBalance_orderBy {
-  id
-  account
-  stakingRewardsContract
-  amount
-}
-input StakingBalance_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  account: Bytes
-  account_not: Bytes
-  account_in: [Bytes!]
-  account_not_in: [Bytes!]
-  account_contains: Bytes
-  account_not_contains: Bytes
-  stakingRewardsContract: String
-  stakingRewardsContract_not: String
-  stakingRewardsContract_gt: String
-  stakingRewardsContract_lt: String
-  stakingRewardsContract_gte: String
-  stakingRewardsContract_lte: String
-  stakingRewardsContract_in: [String!]
-  stakingRewardsContract_not_in: [String!]
-  stakingRewardsContract_contains: String
-  stakingRewardsContract_not_contains: String
-  stakingRewardsContract_starts_with: String
-  stakingRewardsContract_not_starts_with: String
-  stakingRewardsContract_ends_with: String
-  stakingRewardsContract_not_ends_with: String
-  amount: BigInt
-  amount_not: BigInt
-  amount_gt: BigInt
-  amount_lt: BigInt
-  amount_gte: BigInt
-  amount_lte: BigInt
-  amount_in: [BigInt!]
-  amount_not_in: [BigInt!]
-}
-type StakingBalance {
-  id: ID!
-  """Account this staking balance belongs to"""
-  account: Bytes!
-  """Staking rewards contract this staking balance is kept on"""
-  stakingRewardsContract: StakingRewardsContract!
-  """Staking balance amount"""
-  amount: BigInt!
-}
-enum StakingReward_orderBy {
-  id
-  amount
-  amountPerTokenPaid
-  stakingRewardsContract
-  account
-  type
-}
-input StakingReward_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  amount: BigInt
-  amount_not: BigInt
-  amount_gt: BigInt
-  amount_lt: BigInt
-  amount_gte: BigInt
-  amount_lte: BigInt
-  amount_in: [BigInt!]
-  amount_not_in: [BigInt!]
-  amountPerTokenPaid: BigInt
-  amountPerTokenPaid_not: BigInt
-  amountPerTokenPaid_gt: BigInt
-  amountPerTokenPaid_lt: BigInt
-  amountPerTokenPaid_gte: BigInt
-  amountPerTokenPaid_lte: BigInt
-  amountPerTokenPaid_in: [BigInt!]
-  amountPerTokenPaid_not_in: [BigInt!]
-  stakingRewardsContract: String
-  stakingRewardsContract_not: String
-  stakingRewardsContract_gt: String
-  stakingRewardsContract_lt: String
-  stakingRewardsContract_gte: String
-  stakingRewardsContract_lte: String
-  stakingRewardsContract_in: [String!]
-  stakingRewardsContract_not_in: [String!]
-  stakingRewardsContract_contains: String
-  stakingRewardsContract_not_contains: String
-  stakingRewardsContract_starts_with: String
-  stakingRewardsContract_not_starts_with: String
-  stakingRewardsContract_ends_with: String
-  stakingRewardsContract_not_ends_with: String
-  account: Bytes
-  account_not: Bytes
-  account_in: [Bytes!]
-  account_not_in: [Bytes!]
-  account_contains: Bytes
-  account_not_contains: Bytes
-  type: StakingRewardType
-  type_not: StakingRewardType
-}
-enum StakingRewardType {
-  REWARD
-  PLATFORM_REWARD
-}
-type StakingReward {
-  id: ID!
-  """Reward amount"""
-  amount: BigInt!
-  """The reward amount per token paid"""
-  amountPerTokenPaid: BigInt!
-  """The staking rewards contract this reward is kept on"""
-  stakingRewardsContract: StakingRewardsContract!
-  """The account the reward belongs to"""
-  account: Bytes!
-  """
-  The type of staking reward, e.g. "REWARD" or "PLATFORM_REWARD"
-  """
-  type: StakingRewardType!
-}
-enum StakingRewardsContractClaimRewardTransaction_orderBy {
-  id
-  tx
-  type
-  sender
-  timestamp
-  stakingRewardsContract
-  amount
-}
-input StakingRewardsContractClaimRewardTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  stakingRewardsContract: String
-  stakingRewardsContract_not: String
-  stakingRewardsContract_gt: String
-  stakingRewardsContract_lt: String
-  stakingRewardsContract_gte: String
-  stakingRewardsContract_lte: String
-  stakingRewardsContract_in: [String!]
-  stakingRewardsContract_not_in: [String!]
-  stakingRewardsContract_contains: String
-  stakingRewardsContract_not_contains: String
-  stakingRewardsContract_starts_with: String
-  stakingRewardsContract_not_starts_with: String
-  stakingRewardsContract_ends_with: String
-  stakingRewardsContract_not_ends_with: String
-  amount: BigInt
-  amount_not: BigInt
-  amount_gt: BigInt
-  amount_lt: BigInt
-  amount_gte: BigInt
-  amount_lte: BigInt
-  amount_in: [BigInt!]
-  amount_not_in: [BigInt!]
-}
-type StakingRewardsContractClaimRewardTransaction implements Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  sender: Bytes!
-  timestamp: Int!
-  stakingRewardsContract: StakingRewardsContract!
-  amount: BigInt!
-}
-enum StakingRewardsContractStakeTransaction_orderBy {
-  id
-  tx
-  type
-  sender
-  timestamp
-  stakingRewardsContract
-  amount
-}
-input StakingRewardsContractStakeTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  stakingRewardsContract: String
-  stakingRewardsContract_not: String
-  stakingRewardsContract_gt: String
-  stakingRewardsContract_lt: String
-  stakingRewardsContract_gte: String
-  stakingRewardsContract_lte: String
-  stakingRewardsContract_in: [String!]
-  stakingRewardsContract_not_in: [String!]
-  stakingRewardsContract_contains: String
-  stakingRewardsContract_not_contains: String
-  stakingRewardsContract_starts_with: String
-  stakingRewardsContract_not_starts_with: String
-  stakingRewardsContract_ends_with: String
-  stakingRewardsContract_not_ends_with: String
-  amount: BigInt
-  amount_not: BigInt
-  amount_gt: BigInt
-  amount_lt: BigInt
-  amount_gte: BigInt
-  amount_lte: BigInt
-  amount_in: [BigInt!]
-  amount_not_in: [BigInt!]
-}
-type StakingRewardsContractStakeTransaction implements Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  sender: Bytes!
-  timestamp: Int!
-  stakingRewardsContract: StakingRewardsContract!
-  amount: BigInt!
-}
-enum StakingRewardsContractWithdrawTransaction_orderBy {
-  id
-  tx
-  type
-  sender
-  timestamp
-  stakingRewardsContract
-  amount
-}
-input StakingRewardsContractWithdrawTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  stakingRewardsContract: String
-  stakingRewardsContract_not: String
-  stakingRewardsContract_gt: String
-  stakingRewardsContract_lt: String
-  stakingRewardsContract_gte: String
-  stakingRewardsContract_lte: String
-  stakingRewardsContract_in: [String!]
-  stakingRewardsContract_not_in: [String!]
-  stakingRewardsContract_contains: String
-  stakingRewardsContract_not_contains: String
-  stakingRewardsContract_starts_with: String
-  stakingRewardsContract_not_starts_with: String
-  stakingRewardsContract_ends_with: String
-  stakingRewardsContract_not_ends_with: String
-  amount: BigInt
-  amount_not: BigInt
-  amount_gt: BigInt
-  amount_lt: BigInt
-  amount_gte: BigInt
-  amount_lte: BigInt
-  amount_in: [BigInt!]
-  amount_not_in: [BigInt!]
-}
-type StakingRewardsContractWithdrawTransaction implements Transaction {
-  id: ID!
-  tx: Bytes!
-  type: TransactionType!
-  sender: Bytes!
-  timestamp: Int!
-  stakingRewardsContract: StakingRewardsContract!
-  amount: BigInt!
-}
-enum StakingRewardsContractTransaction_orderBy {
-  id
-  tx
-  type
-  sender
-  timestamp
-  stakingRewardsContract
-}
-input StakingRewardsContractTransaction_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  stakingRewardsContract: String
-  stakingRewardsContract_not: String
-  stakingRewardsContract_gt: String
-  stakingRewardsContract_lt: String
-  stakingRewardsContract_gte: String
-  stakingRewardsContract_lte: String
-  stakingRewardsContract_in: [String!]
-  stakingRewardsContract_not_in: [String!]
-  stakingRewardsContract_contains: String
-  stakingRewardsContract_not_contains: String
-  stakingRewardsContract_starts_with: String
-  stakingRewardsContract_not_starts_with: String
-  stakingRewardsContract_ends_with: String
-  stakingRewardsContract_not_ends_with: String
-}
-enum RewardsDistributor_orderBy {
-  id
-  fundManagers
-}
-input RewardsDistributor_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  fundManagers: [Bytes!]
-  fundManagers_not: [Bytes!]
-  fundManagers_contains: [Bytes!]
-  fundManagers_not_contains: [Bytes!]
-}
-enum StakingRewardsContract_orderBy {
-  id
-  type
-  duration
-  periodFinish
-  lastUpdateTime
-  stakingToken
-  rewardPerTokenStored
-  rewardRate
-  rewardsToken
-  rewardsDistributor
-  totalSupply
-  totalStakingRewards
-  stakingBalances
-  stakingRewards
-  claimRewardTransactions
-  stakeTransactions
-  withdrawTransactions
-  platformToken
-  platformRewardRate
-  platformRewardPerTokenStored
-  totalPlatformRewards
-}
-input StakingRewardsContract_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  type: StakingRewardsContractType
-  type_not: StakingRewardsContractType
-  duration: Int
-  duration_not: Int
-  duration_gt: Int
-  duration_lt: Int
-  duration_gte: Int
-  duration_lte: Int
-  duration_in: [Int!]
-  duration_not_in: [Int!]
-  periodFinish: Int
-  periodFinish_not: Int
-  periodFinish_gt: Int
-  periodFinish_lt: Int
-  periodFinish_gte: Int
-  periodFinish_lte: Int
-  periodFinish_in: [Int!]
-  periodFinish_not_in: [Int!]
-  lastUpdateTime: Int
-  lastUpdateTime_not: Int
-  lastUpdateTime_gt: Int
-  lastUpdateTime_lt: Int
-  lastUpdateTime_gte: Int
-  lastUpdateTime_lte: Int
-  lastUpdateTime_in: [Int!]
-  lastUpdateTime_not_in: [Int!]
-  stakingToken: String
-  stakingToken_not: String
-  stakingToken_gt: String
-  stakingToken_lt: String
-  stakingToken_gte: String
-  stakingToken_lte: String
-  stakingToken_in: [String!]
-  stakingToken_not_in: [String!]
-  stakingToken_contains: String
-  stakingToken_not_contains: String
-  stakingToken_starts_with: String
-  stakingToken_not_starts_with: String
-  stakingToken_ends_with: String
-  stakingToken_not_ends_with: String
-  rewardPerTokenStored: BigInt
-  rewardPerTokenStored_not: BigInt
-  rewardPerTokenStored_gt: BigInt
-  rewardPerTokenStored_lt: BigInt
-  rewardPerTokenStored_gte: BigInt
-  rewardPerTokenStored_lte: BigInt
-  rewardPerTokenStored_in: [BigInt!]
-  rewardPerTokenStored_not_in: [BigInt!]
-  rewardRate: BigInt
-  rewardRate_not: BigInt
-  rewardRate_gt: BigInt
-  rewardRate_lt: BigInt
-  rewardRate_gte: BigInt
-  rewardRate_lte: BigInt
-  rewardRate_in: [BigInt!]
-  rewardRate_not_in: [BigInt!]
-  rewardsToken: String
-  rewardsToken_not: String
-  rewardsToken_gt: String
-  rewardsToken_lt: String
-  rewardsToken_gte: String
-  rewardsToken_lte: String
-  rewardsToken_in: [String!]
-  rewardsToken_not_in: [String!]
-  rewardsToken_contains: String
-  rewardsToken_not_contains: String
-  rewardsToken_starts_with: String
-  rewardsToken_not_starts_with: String
-  rewardsToken_ends_with: String
-  rewardsToken_not_ends_with: String
-  rewardsDistributor: String
-  rewardsDistributor_not: String
-  rewardsDistributor_gt: String
-  rewardsDistributor_lt: String
-  rewardsDistributor_gte: String
-  rewardsDistributor_lte: String
-  rewardsDistributor_in: [String!]
-  rewardsDistributor_not_in: [String!]
-  rewardsDistributor_contains: String
-  rewardsDistributor_not_contains: String
-  rewardsDistributor_starts_with: String
-  rewardsDistributor_not_starts_with: String
-  rewardsDistributor_ends_with: String
-  rewardsDistributor_not_ends_with: String
   totalSupply: BigInt
   totalSupply_not: BigInt
   totalSupply_gt: BigInt
@@ -2153,236 +773,44 @@ input StakingRewardsContract_filter {
   totalSupply_lte: BigInt
   totalSupply_in: [BigInt!]
   totalSupply_not_in: [BigInt!]
-  totalStakingRewards: BigInt
-  totalStakingRewards_not: BigInt
-  totalStakingRewards_gt: BigInt
-  totalStakingRewards_lt: BigInt
-  totalStakingRewards_gte: BigInt
-  totalStakingRewards_lte: BigInt
-  totalStakingRewards_in: [BigInt!]
-  totalStakingRewards_not_in: [BigInt!]
-  platformToken: String
-  platformToken_not: String
-  platformToken_gt: String
-  platformToken_lt: String
-  platformToken_gte: String
-  platformToken_lte: String
-  platformToken_in: [String!]
-  platformToken_not_in: [String!]
-  platformToken_contains: String
-  platformToken_not_contains: String
-  platformToken_starts_with: String
-  platformToken_not_starts_with: String
-  platformToken_ends_with: String
-  platformToken_not_ends_with: String
-  platformRewardRate: BigInt
-  platformRewardRate_not: BigInt
-  platformRewardRate_gt: BigInt
-  platformRewardRate_lt: BigInt
-  platformRewardRate_gte: BigInt
-  platformRewardRate_lte: BigInt
-  platformRewardRate_in: [BigInt!]
-  platformRewardRate_not_in: [BigInt!]
-  platformRewardPerTokenStored: BigInt
-  platformRewardPerTokenStored_not: BigInt
-  platformRewardPerTokenStored_gt: BigInt
-  platformRewardPerTokenStored_lt: BigInt
-  platformRewardPerTokenStored_gte: BigInt
-  platformRewardPerTokenStored_lte: BigInt
-  platformRewardPerTokenStored_in: [BigInt!]
-  platformRewardPerTokenStored_not_in: [BigInt!]
-  totalPlatformRewards: BigInt
-  totalPlatformRewards_not: BigInt
-  totalPlatformRewards_gt: BigInt
-  totalPlatformRewards_lt: BigInt
-  totalPlatformRewards_gte: BigInt
-  totalPlatformRewards_lte: BigInt
-  totalPlatformRewards_in: [BigInt!]
-  totalPlatformRewards_not_in: [BigInt!]
 }
-type MerkleDropClaim {
+type WithdrawTransaction implements Transaction {
   id: ID!
-  account: Bytes!
-  merkleDrop: MerkleDrop!
-  tranche: MerkleDropTranche!
-  balance: BigInt!
+  block: Int!
+  hash: Bytes!
+  provider: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+  value: BigInt!
 }
-type MerkleDrop {
+interface Transaction {
   id: ID!
-  token: Token!
-  claims(skip: Int = 0, first: Int = 100, orderBy: MerkleDropClaim_orderBy, orderDirection: OrderDirection, where: MerkleDropClaim_filter): [MerkleDropClaim!]!
-  tranches(skip: Int = 0, first: Int = 100, orderBy: MerkleDropTranche_orderBy, orderDirection: OrderDirection, where: MerkleDropTranche_filter): [MerkleDropTranche!]!
-  funders: [Bytes!]!
+  block: Int!
+  hash: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
 }
-enum MerkleDropClaim_orderBy {
+enum TransactionType {
+  CREATE_LOCK
+  INCREASE_LOCK_TIME
+  INCREASE_LOCK_AMOUNT
+  WITHDRAW
+  EJECT
+  CLAIM
+}
+enum WithdrawTransaction_orderBy {
   id
-  account
-  merkleDrop
-  tranche
-  balance
-}
-input MerkleDropClaim_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  account: Bytes
-  account_not: Bytes
-  account_in: [Bytes!]
-  account_not_in: [Bytes!]
-  account_contains: Bytes
-  account_not_contains: Bytes
-  merkleDrop: String
-  merkleDrop_not: String
-  merkleDrop_gt: String
-  merkleDrop_lt: String
-  merkleDrop_gte: String
-  merkleDrop_lte: String
-  merkleDrop_in: [String!]
-  merkleDrop_not_in: [String!]
-  merkleDrop_contains: String
-  merkleDrop_not_contains: String
-  merkleDrop_starts_with: String
-  merkleDrop_not_starts_with: String
-  merkleDrop_ends_with: String
-  merkleDrop_not_ends_with: String
-  tranche: String
-  tranche_not: String
-  tranche_gt: String
-  tranche_lt: String
-  tranche_gte: String
-  tranche_lte: String
-  tranche_in: [String!]
-  tranche_not_in: [String!]
-  tranche_contains: String
-  tranche_not_contains: String
-  tranche_starts_with: String
-  tranche_not_starts_with: String
-  tranche_ends_with: String
-  tranche_not_ends_with: String
-  balance: BigInt
-  balance_not: BigInt
-  balance_gt: BigInt
-  balance_lt: BigInt
-  balance_gte: BigInt
-  balance_lte: BigInt
-  balance_in: [BigInt!]
-  balance_not_in: [BigInt!]
-}
-enum MerkleDropTranche_orderBy {
-  id
-  merkleDrop
-  expired
-  trancheNumber
-  merkleRoot
-  totalAmount
-  claims
-}
-input MerkleDropTranche_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  merkleDrop: String
-  merkleDrop_not: String
-  merkleDrop_gt: String
-  merkleDrop_lt: String
-  merkleDrop_gte: String
-  merkleDrop_lte: String
-  merkleDrop_in: [String!]
-  merkleDrop_not_in: [String!]
-  merkleDrop_contains: String
-  merkleDrop_not_contains: String
-  merkleDrop_starts_with: String
-  merkleDrop_not_starts_with: String
-  merkleDrop_ends_with: String
-  merkleDrop_not_ends_with: String
-  expired: Boolean
-  expired_not: Boolean
-  expired_in: [Boolean!]
-  expired_not_in: [Boolean!]
-  trancheNumber: Int
-  trancheNumber_not: Int
-  trancheNumber_gt: Int
-  trancheNumber_lt: Int
-  trancheNumber_gte: Int
-  trancheNumber_lte: Int
-  trancheNumber_in: [Int!]
-  trancheNumber_not_in: [Int!]
-  merkleRoot: Bytes
-  merkleRoot_not: Bytes
-  merkleRoot_in: [Bytes!]
-  merkleRoot_not_in: [Bytes!]
-  merkleRoot_contains: Bytes
-  merkleRoot_not_contains: Bytes
-  totalAmount: BigInt
-  totalAmount_not: BigInt
-  totalAmount_gt: BigInt
-  totalAmount_lt: BigInt
-  totalAmount_gte: BigInt
-  totalAmount_lte: BigInt
-  totalAmount_in: [BigInt!]
-  totalAmount_not_in: [BigInt!]
-}
-type MerkleDropTranche {
-  id: ID!
-  merkleDrop: MerkleDrop!
-  expired: Boolean!
-  trancheNumber: Int!
-  merkleRoot: Bytes!
-  totalAmount: BigInt!
-  claims(skip: Int = 0, first: Int = 100, orderBy: MerkleDropClaim_orderBy, orderDirection: OrderDirection, where: MerkleDropClaim_filter): [MerkleDropClaim!]!
-}
-enum MerkleDrop_orderBy {
-  id
-  token
-  claims
-  tranches
-  funders
-}
-input MerkleDrop_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  token: String
-  token_not: String
-  token_gt: String
-  token_lt: String
-  token_gte: String
-  token_lte: String
-  token_in: [String!]
-  token_not_in: [String!]
-  token_contains: String
-  token_not_contains: String
-  token_starts_with: String
-  token_not_starts_with: String
-  token_ends_with: String
-  token_not_ends_with: String
-  funders: [Bytes!]
-  funders_not: [Bytes!]
-  funders_contains: [Bytes!]
-  funders_not_contains: [Bytes!]
-}
-enum TimeMetric_orderBy {
-  id
-  value
+  block
+  hash
+  provider
+  sender
   timestamp
-  period
+  type
+  value
 }
-input TimeMetric_filter {
+input WithdrawTransaction_filter {
   id: ID
   id_not: ID
   id_gt: ID
@@ -2391,31 +819,436 @@ input TimeMetric_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  value: BigDecimal
-  value_not: BigDecimal
-  value_gt: BigDecimal
-  value_lt: BigDecimal
-  value_gte: BigDecimal
-  value_lte: BigDecimal
-  value_in: [BigDecimal!]
-  value_not_in: [BigDecimal!]
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
-  period: TimeMetricPeriod
-  period_not: TimeMetricPeriod
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
+}
+type EjectTransaction implements Transaction {
+  id: ID!
+  block: Int!
+  ejected: Bytes!
+  ejector: Bytes!
+  hash: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+}
+enum EjectTransaction_orderBy {
+  id
+  block
+  ejected
+  ejector
+  hash
+  sender
+  timestamp
+  type
+}
+input EjectTransaction_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  ejected: Bytes
+  ejected_not: Bytes
+  ejected_in: [Bytes!]
+  ejected_not_in: [Bytes!]
+  ejected_contains: Bytes
+  ejected_not_contains: Bytes
+  ejector: Bytes
+  ejector_not: Bytes
+  ejector_in: [Bytes!]
+  ejector_not_in: [Bytes!]
+  ejector_contains: Bytes
+  ejector_not_contains: Bytes
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+}
+type ClaimTransaction implements Transaction {
+  id: ID!
+  block: Int!
+  hash: Bytes!
+  reward: BigInt!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+  user: Bytes!
+}
+enum ClaimTransaction_orderBy {
+  id
+  block
+  hash
+  reward
+  sender
+  timestamp
+  type
+  user
+}
+input ClaimTransaction_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  reward: BigInt
+  reward_not: BigInt
+  reward_gt: BigInt
+  reward_lt: BigInt
+  reward_gte: BigInt
+  reward_lte: BigInt
+  reward_in: [BigInt!]
+  reward_not_in: [BigInt!]
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+  user: Bytes
+  user_not: Bytes
+  user_in: [Bytes!]
+  user_not_in: [Bytes!]
+  user_contains: Bytes
+  user_not_contains: Bytes
+}
+type CreateLockTransaction implements Transaction {
+  id: ID!
+  block: Int!
+  hash: Bytes!
+  lockTime: BigInt!
+  provider: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+  value: BigInt!
+}
+enum CreateLockTransaction_orderBy {
+  id
+  block
+  hash
+  lockTime
+  provider
+  sender
+  timestamp
+  type
+  value
+}
+input CreateLockTransaction_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  lockTime: BigInt
+  lockTime_not: BigInt
+  lockTime_gt: BigInt
+  lockTime_lt: BigInt
+  lockTime_gte: BigInt
+  lockTime_lte: BigInt
+  lockTime_in: [BigInt!]
+  lockTime_not_in: [BigInt!]
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
+}
+type IncreaseLockAmountTransaction implements Transaction {
+  id: ID!
+  block: Int!
+  hash: Bytes!
+  provider: Bytes!
+  sender: Bytes!
+  timestamp: BigInt!
+  type: TransactionType!
+  value: BigInt!
+}
+enum IncreaseLockAmountTransaction_orderBy {
+  id
+  block
+  hash
+  provider
+  sender
+  timestamp
+  type
+  value
+}
+input IncreaseLockAmountTransaction_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
+}
+type IncreaseLockTimeTransaction implements Transaction {
+  id: ID!
+  block: Int!
+  hash: Bytes!
+  lockTime: BigInt!
+  provider: Bytes!
+  sender: Bytes!
+  type: TransactionType!
+  timestamp: BigInt!
+}
+enum IncreaseLockTimeTransaction_orderBy {
+  id
+  block
+  hash
+  lockTime
+  provider
+  sender
+  type
+  timestamp
+}
+input IncreaseLockTimeTransaction_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
+  lockTime: BigInt
+  lockTime_not: BigInt
+  lockTime_gt: BigInt
+  lockTime_lt: BigInt
+  lockTime_gte: BigInt
+  lockTime_lte: BigInt
+  lockTime_in: [BigInt!]
+  lockTime_not_in: [BigInt!]
+  provider: Bytes
+  provider_not: Bytes
+  provider_in: [Bytes!]
+  provider_not_in: [Bytes!]
+  provider_contains: Bytes
+  provider_not_contains: Bytes
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+  type: TransactionType
+  type_not: TransactionType
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
 }
 enum Transaction_orderBy {
   id
-  tx
-  type
-  timestamp
+  block
+  hash
   sender
+  timestamp
+  type
 }
 input Transaction_filter {
   id: ID
@@ -2426,31 +1259,39 @@ input Transaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
-  tx: Bytes
-  tx_not: Bytes
-  tx_in: [Bytes!]
-  tx_not_in: [Bytes!]
-  tx_contains: Bytes
-  tx_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
-  timestamp: Int
-  timestamp_not: Int
-  timestamp_gt: Int
-  timestamp_lt: Int
-  timestamp_gte: Int
-  timestamp_lte: Int
-  timestamp_in: [Int!]
-  timestamp_not_in: [Int!]
+  block: Int
+  block_not: Int
+  block_gt: Int
+  block_lt: Int
+  block_gte: Int
+  block_lte: Int
+  block_in: [Int!]
+  block_not_in: [Int!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
   sender: Bytes
   sender_not: Bytes
   sender_in: [Bytes!]
   sender_not_in: [Bytes!]
   sender_contains: Bytes
   sender_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  type: TransactionType
+  type_not: TransactionType
 }
 type Subscription {
-  token(
+  userLockup(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -2458,21 +1299,21 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): Token
-  tokens(
+  ): UserLockup
+  userLockups(
     skip: Int = 0
     first: Int = 100
-    orderBy: Token_orderBy
+    orderBy: UserLockup_orderBy
     orderDirection: OrderDirection
-    where: Token_filter
+    where: UserLockup_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [Token!]!
-  basset(
+  ): [UserLockup!]!
+  incentivisedVotingLockup(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -2480,350 +1321,20 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): Basset
-  bassets(
+  ): IncentivisedVotingLockup
+  incentivisedVotingLockups(
     skip: Int = 0
     first: Int = 100
-    orderBy: Basset_orderBy
+    orderBy: IncentivisedVotingLockup_orderBy
     orderDirection: OrderDirection
-    where: Basset_filter
+    where: IncentivisedVotingLockup_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [Basset!]!
-  basket(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Basket
-  baskets(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Basket_orderBy
-    orderDirection: OrderDirection
-    where: Basket_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Basket!]!
-  masset(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Masset
-  massets(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Masset_orderBy
-    orderDirection: OrderDirection
-    where: Masset_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Masset!]!
-  account(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Account
-  accounts(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Account_orderBy
-    orderDirection: OrderDirection
-    where: Account_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Account!]!
-  accountBalance(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): AccountBalance
-  accountBalances(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: AccountBalance_orderBy
-    orderDirection: OrderDirection
-    where: AccountBalance_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [AccountBalance!]!
-  creditBalance(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): CreditBalance
-  creditBalances(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: CreditBalance_orderBy
-    orderDirection: OrderDirection
-    where: CreditBalance_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [CreditBalance!]!
-  savingsContract(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): SavingsContract
-  savingsContracts(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: SavingsContract_orderBy
-    orderDirection: OrderDirection
-    where: SavingsContract_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [SavingsContract!]!
-  exchangeRate(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): ExchangeRate
-  exchangeRates(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: ExchangeRate_orderBy
-    orderDirection: OrderDirection
-    where: ExchangeRate_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [ExchangeRate!]!
-  volumeMetric(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): VolumeMetric
-  volumeMetrics(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: VolumeMetric_orderBy
-    orderDirection: OrderDirection
-    where: VolumeMetric_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [VolumeMetric!]!
-  aggregateMetric(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): AggregateMetric
-  aggregateMetrics(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: AggregateMetric_orderBy
-    orderDirection: OrderDirection
-    where: AggregateMetric_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [AggregateMetric!]!
-  swapTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): SwapTransaction
-  swapTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: SwapTransaction_orderBy
-    orderDirection: OrderDirection
-    where: SwapTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [SwapTransaction!]!
-  feePaidTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): FeePaidTransaction
-  feePaidTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: FeePaidTransaction_orderBy
-    orderDirection: OrderDirection
-    where: FeePaidTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [FeePaidTransaction!]!
-  stakingRewardsContractTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractTransaction
-  stakingRewardsContractTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractTransaction!]!
-  stakingRewardsContractClaimRewardTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractClaimRewardTransaction
-  stakingRewardsContractClaimRewardTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractClaimRewardTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractClaimRewardTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractClaimRewardTransaction!]!
-  stakingRewardsContractStakeTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractStakeTransaction
-  stakingRewardsContractStakeTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractStakeTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractStakeTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractStakeTransaction!]!
-  stakingRewardsContractWithdrawTransaction(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContractWithdrawTransaction
-  stakingRewardsContractWithdrawTransactions(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContractWithdrawTransaction_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContractWithdrawTransaction_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContractWithdrawTransaction!]!
+  ): [IncentivisedVotingLockup!]!
   rewardsDistributor(
     id: ID!
     """
@@ -2868,28 +1379,6 @@ type Subscription {
     """
     block: Block_height
   ): [StakingReward!]!
-  stakingRewardsContract(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): StakingRewardsContract
-  stakingRewardsContracts(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: StakingRewardsContract_orderBy
-    orderDirection: OrderDirection
-    where: StakingRewardsContract_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [StakingRewardsContract!]!
   stakingBalance(
     id: ID!
     """
@@ -2912,7 +1401,7 @@ type Subscription {
     """
     block: Block_height
   ): [StakingBalance!]!
-  merkleDropClaim(
+  token(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -2920,21 +1409,21 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): MerkleDropClaim
-  merkleDropClaims(
+  ): Token
+  tokens(
     skip: Int = 0
     first: Int = 100
-    orderBy: MerkleDropClaim_orderBy
+    orderBy: Token_orderBy
     orderDirection: OrderDirection
-    where: MerkleDropClaim_filter
+    where: Token_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [MerkleDropClaim!]!
-  merkleDropTranche(
+  ): [Token!]!
+  withdrawTransaction(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -2942,21 +1431,21 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): MerkleDropTranche
-  merkleDropTranches(
+  ): WithdrawTransaction
+  withdrawTransactions(
     skip: Int = 0
     first: Int = 100
-    orderBy: MerkleDropTranche_orderBy
+    orderBy: WithdrawTransaction_orderBy
     orderDirection: OrderDirection
-    where: MerkleDropTranche_filter
+    where: WithdrawTransaction_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [MerkleDropTranche!]!
-  merkleDrop(
+  ): [WithdrawTransaction!]!
+  ejectTransaction(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -2964,21 +1453,21 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): MerkleDrop
-  merkleDrops(
+  ): EjectTransaction
+  ejectTransactions(
     skip: Int = 0
     first: Int = 100
-    orderBy: MerkleDrop_orderBy
+    orderBy: EjectTransaction_orderBy
     orderDirection: OrderDirection
-    where: MerkleDrop_filter
+    where: EjectTransaction_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [MerkleDrop!]!
-  timeMetric(
+  ): [EjectTransaction!]!
+  claimTransaction(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -2986,20 +1475,86 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): TimeMetric
-  timeMetrics(
+  ): ClaimTransaction
+  claimTransactions(
     skip: Int = 0
     first: Int = 100
-    orderBy: TimeMetric_orderBy
+    orderBy: ClaimTransaction_orderBy
     orderDirection: OrderDirection
-    where: TimeMetric_filter
+    where: ClaimTransaction_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [TimeMetric!]!
+  ): [ClaimTransaction!]!
+  createLockTransaction(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): CreateLockTransaction
+  createLockTransactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: CreateLockTransaction_orderBy
+    orderDirection: OrderDirection
+    where: CreateLockTransaction_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [CreateLockTransaction!]!
+  increaseLockAmountTransaction(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): IncreaseLockAmountTransaction
+  increaseLockAmountTransactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: IncreaseLockAmountTransaction_orderBy
+    orderDirection: OrderDirection
+    where: IncreaseLockAmountTransaction_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [IncreaseLockAmountTransaction!]!
+  increaseLockTimeTransaction(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): IncreaseLockTimeTransaction
+  increaseLockTimeTransactions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: IncreaseLockTimeTransaction_orderBy
+    orderDirection: OrderDirection
+    where: IncreaseLockTimeTransaction_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [IncreaseLockTimeTransaction!]!
   transaction(
     id: ID!
     """
@@ -3022,4 +1577,11 @@ type Subscription {
     """
     block: Block_height
   ): [Transaction!]!
+}
+scalar BigDecimal
+enum LockAction {
+  DEPOSIT_FOR
+  CREATE_LOCK
+  INCREASE_LOCK_AMOUNT
+  INCREASE_LOCK_TIME
 }

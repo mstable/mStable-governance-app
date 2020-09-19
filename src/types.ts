@@ -3,13 +3,9 @@ import { TransactionResponse, Log } from 'ethers/providers';
 import { BigNumber, LogDescription } from 'ethers/utils';
 import { Connectors } from 'use-wallet';
 import { Ierc20 } from './typechain/Ierc20.d';
-import { ISavingsContract } from './typechain/ISavingsContract.d';
-import { IMasset } from './typechain/IMasset.d';
-import { StakingRewards as IStakingRewards } from './typechain/StakingRewards.d';
-import { StakingRewardsWithPlatformToken as IStakingRewardsWithPlatformToken } from './typechain/StakingRewardsWithPlatformToken.d';
 import { BigDecimal } from './web3/BigDecimal';
 import { RewardsDistributor as IRewardsDistributor } from './typechain/RewardsDistributor.d';
-import { MerkleDrop as IMerkleDrop } from './typechain/MerkleDrop.d';
+import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d';
 
 export interface Transaction {
   formId?: string;
@@ -47,29 +43,21 @@ export enum TransactionStatus {
 }
 
 export enum Interfaces {
-  Masset,
   ERC20,
-  SavingsContract,
-  StakingRewards,
-  StakingRewardsWithPlatformToken,
   RewardsDistibutor,
-  MerkleDrop,
+  IncentivisedVotingLockup,
 }
 
 export interface Instances {
-  [Interfaces.Masset]: IMasset;
   [Interfaces.ERC20]: Ierc20;
-  [Interfaces.SavingsContract]: ISavingsContract;
-  [Interfaces.StakingRewards]: IStakingRewards;
-  [Interfaces.StakingRewardsWithPlatformToken]: IStakingRewardsWithPlatformToken;
   [Interfaces.RewardsDistibutor]: IRewardsDistributor;
-  [Interfaces.MerkleDrop]: IMerkleDrop;
+  [Interfaces.IncentivisedVotingLockup]: IIncentivisedVotingLockup;
 }
 
 /**
  * Manifest for sending a transaction.
  *
- * @param iface: The contract interface, e.g. an instance of `Ierc20`
+ * @param contract: The contract interface, e.g. an instance of `Ierc20`
  * @param fn: Name of the function on the contract interface.
  * @param args: Array of arguments for the function.
  */
@@ -77,7 +65,7 @@ export interface SendTxManifest<
   TIface extends Interfaces,
   TFn extends keyof Instances[TIface]['functions']
 > {
-  iface: Instances[TIface];
+  contract: Instances[TIface];
   fn: Extract<keyof Instances[TIface]['functions'], TFn> & string;
   args: Parameters<
     Extract<
