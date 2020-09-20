@@ -1,4 +1,6 @@
-/* eslint-disable-next-line react/jsx-props-no-spreading */
+/* eslint-disable no-shadow */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { Range, getTrackBackground } from 'react-range';
@@ -88,24 +90,24 @@ const Track = styled.div<Pick<Props, 'value' | 'min' | 'max'>>`
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     background: ${({ value, min }) =>
-      getTrackBackground({
-        values: [value],
-        colors: [Color.blue, '#ccc'],
-        min,
-        max: 8,
-      })};
+    getTrackBackground({
+      values: [value],
+      colors: [Color.blue, '#ccc'],
+      min,
+      max: 8,
+    })};
   }
   &:after {
     margin-right: -8px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     background: ${({ value, max }) =>
-      getTrackBackground({
-        values: [value],
-        colors: [Color.blue, '#ccc'],
-        min: max - 2,
-        max,
-      })};
+    getTrackBackground({
+      values: [value],
+      colors: [Color.blue, '#ccc'],
+      min: max - 2,
+      max,
+    })};
   }
 `;
 

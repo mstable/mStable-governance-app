@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React, { FC, useEffect } from 'react';
 
 import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
