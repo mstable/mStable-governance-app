@@ -13,14 +13,12 @@ import { ReactComponent as LinkIcon } from '../../icons/wizard/link.svg';
 import { ReactComponent as GetIcon } from '../../icons/wizard/get.svg';
 import { ReactComponent as StakeIcon } from '../../icons/wizard/stake.svg';
 import { ReactComponent as VoteIcon } from '../../icons/wizard/vote.svg';
-
-interface Props {
-  current: number;
-}
+import { ReactComponent as BalancerIcon } from '../../icons/wizard/balancer.svg';
+import { ReactComponent as UniswapIcon } from '../../icons/wizard/uniswap.svg';
 
 // TODO highlight the active step, rather than subduing the non-active ones
-const Step = styled.div<{ active?: boolean, completed?: boolean, number?: number }>`
-  opacity: ${({ active, completed }) => ((!completed && active) ? 1 : 0.4)};
+const Step = styled.div<{ active?: boolean, completed?: boolean }>`
+  opacity: ${({ active }) => (active ? 1 : 0.4)};
   H4 {
     color: ${({ completed }) => (completed && 'green')};
   }
@@ -32,9 +30,15 @@ const Container = styled.div``;
 const ExchangesContainer = styled.div`
 display: flex;
 flex-direction: column;
-  A {
+  a {
     border-bottom: none;
     padding-bottom: 5px;
+    display: flex;
+    align-items: center;
+  svg {
+    width: 20px;
+    height: auto;
+  }
   }
 `;
 
@@ -57,7 +61,6 @@ export const OnboardingWizard: FC = () => {
 
   const incentivisedVotingLockup = useIncentivisedVotingLockup();
   const hasStakingBalance = incentivisedVotingLockup?.userStakingBalance?.gt(0);
-
   const metaToken = useMetaToken();
   const hasMetaBalance = metaToken?.balance.exact.gt(0);
 
@@ -65,7 +68,7 @@ export const OnboardingWizard: FC = () => {
   // get activated in order as the pre-requisites are provided
   return (
     <Container>
-      <Step number={1} completed={account !== null} active={!account} >
+      <Step completed={account !== null} active={!account}>
         <IconsContainer completed={account !== null}>
           <H4>1. Connect account</H4>
           <LinkIcon />
@@ -82,24 +85,24 @@ export const OnboardingWizard: FC = () => {
             </>
           )}
       </Step>
-      <Step number={2} completed={hasMetaBalance} active={!hasMetaBalance && !hasStakingBalance}>
+      <Step completed={hasMetaBalance} active={!hasMetaBalance && !hasStakingBalance && account !== null}>
         <IconsContainer completed={hasMetaBalance}>
           <H4>2. Get MTA</H4>
           <GetIcon />
         </IconsContainer>
         <ExchangesContainer>
-          <a href='https://balancer.exchange/#/swap'>Balancer</a>
-          <a href='https://app.uniswap.org/#/swap'>Uniswap</a>
+          <a href='https://balancer.exchange/#/swap'>Balancer <BalancerIcon /></a>
+          <a href='https://app.uniswap.org/#/swap'>Uniswap <UniswapIcon /></a>
         </ExchangesContainer>
       </Step>
-      <Step number={3} completed={hasStakingBalance} active={hasMetaBalance && !hasStakingBalance}>
+      <Step completed={hasStakingBalance} active={hasMetaBalance && !hasStakingBalance}>
         <IconsContainer completed={hasStakingBalance}>
           <H4>3. Stake your MTA</H4>
           <StakeIcon />
         </IconsContainer>
         <A href="/stake">Stake MTA</A>
       </Step>
-      <Step number={4} active={hasStakingBalance}>
+      <Step active={hasStakingBalance}>
         <IconsContainer completed={hasStakingBalance}>
           <H4>4. Vote with your MTA</H4>
           <VoteIcon />
