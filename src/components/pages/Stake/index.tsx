@@ -115,7 +115,7 @@ const StakeForm: FC = () => {
       }
     }
 
-    setFormManifest(null);
+    return setFormManifest(null);
   }, [amount, transactionType, unlockTime, valid, setFormManifest, contract]);
 
   const { confirmLabel, confirm, input } = TX_TYPES[transactionType];

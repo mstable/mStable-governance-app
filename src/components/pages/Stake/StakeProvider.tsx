@@ -14,7 +14,7 @@ import { Actions, Dispatch, State, TransactionType } from './types';
 import { reducer } from './reducer';
 import { IIncentivisedVotingLockupFactory } from '../../../typechain/IIncentivisedVotingLockupFactory';
 import { useSignerContext } from '../../../context/SignerProvider';
-import { IIncentivisedVotingLockup } from '../../../typechain/IIncentivisedVotingLockup';
+import { IIncentivisedVotingLockup } from '../../../typechain/IIncentivisedVotingLockup.d';
 
 const initialState: State = {
   data: {},
