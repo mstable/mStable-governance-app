@@ -18,7 +18,8 @@ import { ReactComponent as UniswapIcon } from '../../icons/wizard/uniswap.svg';
 
 // TODO highlight the active step, rather than subduing the non-active ones
 const Step = styled.div<{ active?: boolean, completed?: boolean }>`
-  opacity: ${({ active }) => (active ? 1 : 0.4)};
+  opacity: ${({ active, completed }) => ((completed || active) ? 1 : 0.4)};
+  pointer-events: ${({ active, completed }) => ((!active && !completed) && 'none')};
   H4 {
     color: ${({ completed }) => (completed && 'green')};
   }
