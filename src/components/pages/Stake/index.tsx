@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React, { FC, useEffect } from 'react';
 
 import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
@@ -116,7 +115,7 @@ const StakeForm: FC = () => {
       }
     }
 
-    setFormManifest(null);
+    return setFormManifest(null);
   }, [amount, transactionType, unlockTime, valid, setFormManifest, contract]);
 
   const { confirmLabel, confirm, input } = TX_TYPES[transactionType];
