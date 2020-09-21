@@ -32,10 +32,10 @@ const ExchangesContainer = styled.div`
 display: flex;
 flex-direction: column;
   a {
-    border-bottom: none;
     padding-bottom: 5px;
     display: flex;
     align-items: center;
+    width: max-content;
   svg {
     width: 20px;
     height: auto;
@@ -45,6 +45,7 @@ flex-direction: column;
 
 const IconsContainer = styled.div<{ completed?: boolean }>`
   display: flex;
+  padding-bottom: 8px;
   svg {
     width: 20px;
     height: auto;
@@ -89,7 +90,7 @@ export const OnboardingWizard: FC = () => {
       <Step completed={hasMetaBalance} active={!hasMetaBalance && !hasStakingBalance && account !== null}>
         <IconsContainer completed={hasMetaBalance}>
           <H4>2. Get MTA</H4>
-          <GetIcon />
+          <GetIcon style={{ position: 'relative', bottom: '3px' }} />
         </IconsContainer>
         <ExchangesContainer>
           <a href='https://balancer.exchange/#/swap'>Balancer <BalancerIcon /></a>
@@ -106,7 +107,7 @@ export const OnboardingWizard: FC = () => {
       <Step active={hasStakingBalance}>
         <IconsContainer completed={hasStakingBalance}>
           <H4>4. Vote with your MTA</H4>
-          <VoteIcon />
+          <VoteIcon style={{ position: 'relative', bottom: '3px' }} />
         </IconsContainer>
         <A href="/vote">Vote</A>
       </Step>
