@@ -16,7 +16,7 @@ export const CreateLockInput: FC = () => {
     error,
     data,
   } = useStakeState();
-  const { setLockupAmount, setLockupDays } = useStakeDispatch();
+  const { setLockupAmount, setLockupDays, setMaxLockupAmount, setMaxLockupDays } = useStakeDispatch();
 
   return (
     <>
@@ -31,7 +31,7 @@ export const CreateLockInput: FC = () => {
               value: amount,
               formValue: amountFormValue,
               handleChange: setLockupAmount,
-              // TODO: handleSetMax
+              handleSetMax: setMaxLockupAmount,
             }}
             token={{
               address: data.metaToken.address,
@@ -42,8 +42,8 @@ export const CreateLockInput: FC = () => {
             error={error}
           />
         ) : (
-          <Skeleton />
-        )}
+            <Skeleton />
+          )}
       </FormRow>
       <FormRow>
         <H3>
@@ -56,6 +56,7 @@ export const CreateLockInput: FC = () => {
           onChange={setLockupDays}
           startLabel="Today"
           endLabel="One Year"
+          onSetMax={setMaxLockupDays}
         >
           <div>{lockupDays} Days</div>
           <div>

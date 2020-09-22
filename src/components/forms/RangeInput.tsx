@@ -7,6 +7,7 @@ import { Range, getTrackBackground } from 'react-range';
 import { IThumbProps } from 'react-range/lib/types';
 
 import { Color, ViewportWidth } from '../../theme';
+import { Button } from '../core/Button';
 
 interface Props {
   min: number;
@@ -15,6 +16,7 @@ interface Props {
   startLabel?: string;
   endLabel?: string;
   onChange(value: number): void;
+  onSetMax(max: number): void;
 }
 
 const ThumbCircle = styled.div`
@@ -132,6 +134,7 @@ export const RangeInput: FC<Props> = ({
   startLabel,
   endLabel,
   children,
+  onSetMax
 }) => {
   const handleChange = useCallback(
     ([inputValue]: number[]) => {
@@ -139,6 +142,7 @@ export const RangeInput: FC<Props> = ({
     },
     [onChange],
   );
+
 
   return (
     <Container>
@@ -159,6 +163,11 @@ export const RangeInput: FC<Props> = ({
         )}
       />
       {endLabel && <Label>{endLabel}</Label>}
+      {onSetMax ? (
+        <Button style={{ marginLeft: '20px' }} type="button" onClick={() => onSetMax(max)}>
+          Max
+        </Button>
+      ) : null}
     </Container>
   );
 };
