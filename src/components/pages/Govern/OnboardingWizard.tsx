@@ -7,7 +7,7 @@ import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataP
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
 import { Button } from '../../core/Button';
 import { useAccount } from '../../../context/UserProvider';
-import { H4 } from '../../core/Typography';
+import { H2 } from '../../core/Typography';
 import { EtherscanLink } from '../../core/EtherscanLink';
 import { ReactComponent as LinkIcon } from '../../icons/wizard/link.svg';
 import { ReactComponent as GetIcon } from '../../icons/wizard/get.svg';
@@ -17,11 +17,11 @@ import { ReactComponent as BalancerIcon } from '../../icons/wizard/balancer.svg'
 import { ReactComponent as UniswapIcon } from '../../icons/wizard/uniswap.svg';
 
 // TODO highlight the active step, rather than subduing the non-active ones
-const Step = styled.div<{ active?: boolean, completed?: boolean }>`
-  opacity: ${({ active, completed }) => ((completed || active) ? 1 : 0.4)};
-  pointer-events: ${({ active, completed }) => ((!active && !completed) && 'none')};
-  H4 {
-    color: ${({ completed }) => (completed && 'green')};
+const Step = styled.div<{ active?: boolean; completed?: boolean }>`
+  opacity: ${({ active, completed }) => (completed || active ? 1 : 0.4)};
+  pointer-events: ${({ active, completed }) => !active && !completed && 'none'};
+  h2 {
+    color: ${({ completed, theme }) => completed && theme.color.green};
   }
   padding-bottom: 16px;
 `;
@@ -29,17 +29,17 @@ const Step = styled.div<{ active?: boolean, completed?: boolean }>`
 const Container = styled.div``;
 
 const ExchangesContainer = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
   a {
     padding-bottom: 5px;
     display: flex;
     align-items: center;
     width: max-content;
-  svg {
-    width: 20px;
-    height: auto;
-  }
+    svg {
+      width: 20px;
+      height: auto;
+    }
   }
 `;
 
@@ -50,8 +50,9 @@ const IconsContainer = styled.div<{ completed?: boolean }>`
     width: 20px;
     height: auto;
     fill: ${({ completed }) => (completed ? 'green' : 'black')};
+    padding-bottom: 10px;
   }
-  H4 {
+  h2 {
     padding-right: 10px;
   }
 `;
@@ -72,7 +73,7 @@ export const OnboardingWizard: FC = () => {
     <Container>
       <Step completed={account !== null} active={!account}>
         <IconsContainer completed={account !== null}>
-          <H4>1. Connect account</H4>
+          <H2>1. Connect account</H2>
           <LinkIcon />
         </IconsContainer>
         {account ? (
@@ -81,33 +82,44 @@ export const OnboardingWizard: FC = () => {
             <EtherscanLink data={account} type="account" showData truncate />
           </>
         ) : (
-            <>
-              <div>Connect your wallet to get started</div>
-              <Button onClick={toggleWallet}>Connect Wallet</Button>
-            </>
-          )}
+          <>
+            <div>Connect your wallet to get started</div>
+            <Button onClick={toggleWallet}>Connect Wallet</Button>
+          </>
+        )}
       </Step>
-      <Step completed={hasMetaBalance} active={!hasMetaBalance && !hasStakingBalance && account !== null}>
+      <Step
+        completed={hasMetaBalance}
+        active={!hasMetaBalance && !hasStakingBalance && account !== null}
+      >
         <IconsContainer completed={hasMetaBalance}>
-          <H4>2. Get MTA</H4>
-          <GetIcon style={{ position: 'relative', bottom: '3px' }} />
+          <H2>2. Get MTA</H2>
+          <GetIcon />
         </IconsContainer>
         <ExchangesContainer>
-          <a href='https://balancer.exchange/#/swap'>Balancer <BalancerIcon /></a>
-          <a href='https://app.uniswap.org/#/swap'>Uniswap <UniswapIcon /></a>
+          <a href="https://balancer.exchange/#/swap">
+            Balancer <BalancerIcon />
+          </a>
+          <br />
+          <a href="https://app.uniswap.org/#/swap">
+            Uniswap <UniswapIcon />
+          </a>
         </ExchangesContainer>
       </Step>
-      <Step completed={hasStakingBalance} active={hasMetaBalance && !hasStakingBalance}>
+      <Step
+        completed={hasStakingBalance}
+        active={hasMetaBalance && !hasStakingBalance}
+      >
         <IconsContainer completed={hasStakingBalance}>
-          <H4>3. Stake your MTA</H4>
+          <H2>3. Stake your MTA</H2>
           <StakeIcon />
         </IconsContainer>
         <A href="/stake">Stake MTA</A>
       </Step>
       <Step active={hasStakingBalance}>
-        <IconsContainer completed={hasStakingBalance}>
-          <H4>4. Vote with your MTA</H4>
-          <VoteIcon style={{ position: 'relative', bottom: '3px' }} />
+        <IconsContainer>
+          <H2>4. Vote with your MTA</H2>
+          <VoteIcon />
         </IconsContainer>
         <A href="/vote">Vote</A>
       </Step>

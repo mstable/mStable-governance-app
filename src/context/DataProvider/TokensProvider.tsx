@@ -13,6 +13,7 @@ import React, {
 import { Erc20TokensQueryResult } from '../../graphql/mstable';
 import { Allowances, SubscribedToken } from '../../types';
 import { BigDecimal } from '../../web3/BigDecimal';
+import { useAccount } from '../UserProvider';
 
 interface State {
   tokens: {
@@ -461,15 +462,16 @@ export const useToken = (
   const id = useMemo(() => Math.random().toString(), []);
 
   const state = useTokensState();
+  const acc = useAccount();
   const { subscribeBalance, unsubscribeBalance } = useTokensDispatch();
 
   useEffect(() => {
-    if (address) subscribeBalance(address, id);
+    if (address && acc) subscribeBalance(address, id);
 
     return () => {
-      if (address) unsubscribeBalance(address, id);
+      if (address && acc) unsubscribeBalance(address, id);
     };
-  }, [address, subscribeBalance, unsubscribeBalance, id]);
+  }, [address, subscribeBalance, unsubscribeBalance, id, acc]);
 
   return address ? state.tokens[address] : undefined;
 };
