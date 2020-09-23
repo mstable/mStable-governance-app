@@ -14,6 +14,7 @@ import { NotFound } from './components/pages/NotFound';
 import { Stake } from './components/pages/Stake';
 import { Discuss } from './components/pages/Discuss';
 import { Govern } from './components/pages/Govern';
+import { Vote } from './components/pages/Vote';
 
 checkRequiredEnvVars();
 
@@ -26,7 +27,7 @@ const routes = {
   '/govern': () => <Govern />,
   '/stake': () => <Stake />,
   '/discuss': () => <Discuss />,
-  '/vote': () => <div>Vote</div>,
+  '/vote': () => <Vote />
 };
 
 const Root: FC<{}> = () => {

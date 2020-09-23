@@ -81,8 +81,7 @@ const Container = styled.div<{ accountOpen?: boolean }>`
   justify-content: space-between;
   align-items: center;
 
-  // The sticky header won't always be 80px, so this is less than ideal
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 180px);
 
   background: ${({ accountOpen }) =>
     accountOpen ? Color.black : 'transparent'};
