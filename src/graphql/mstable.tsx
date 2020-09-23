@@ -310,6 +310,7 @@ export type IncentivisedVotingLockup = {
   userLockups: Array<UserLockup>;
   stakingRewards: Array<StakingReward>;
   stakingBalances: Array<StakingBalance>;
+  end: Scalars['BigInt'];
   periodFinish: Scalars['Int'];
   lastUpdateTime: Scalars['Int'];
   stakingToken: Token;
@@ -362,6 +363,14 @@ export type IncentivisedVotingLockup_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
+  end?: Maybe<Scalars['BigInt']>;
+  end_not?: Maybe<Scalars['BigInt']>;
+  end_gt?: Maybe<Scalars['BigInt']>;
+  end_lt?: Maybe<Scalars['BigInt']>;
+  end_gte?: Maybe<Scalars['BigInt']>;
+  end_lte?: Maybe<Scalars['BigInt']>;
+  end_in?: Maybe<Array<Scalars['BigInt']>>;
+  end_not_in?: Maybe<Array<Scalars['BigInt']>>;
   periodFinish?: Maybe<Scalars['Int']>;
   periodFinish_not?: Maybe<Scalars['Int']>;
   periodFinish_gt?: Maybe<Scalars['Int']>;
@@ -495,6 +504,7 @@ export enum IncentivisedVotingLockup_OrderBy {
   UserLockups = 'userLockups',
   StakingRewards = 'stakingRewards',
   StakingBalances = 'stakingBalances',
+  End = 'end',
   PeriodFinish = 'periodFinish',
   LastUpdateTime = 'lastUpdateTime',
   StakingToken = 'stakingToken',
@@ -666,7 +676,6 @@ export enum IncreaseLockTimeTransaction_OrderBy {
 }
 
 export enum LockAction {
-  DepositFor = 'DEPOSIT_FOR',
   CreateLock = 'CREATE_LOCK',
   IncreaseLockAmount = 'INCREASE_LOCK_AMOUNT',
   IncreaseLockTime = 'INCREASE_LOCK_TIME'
@@ -995,6 +1004,7 @@ export enum StakingBalance_OrderBy {
 export type StakingReward = {
   id: Scalars['ID'];
   amount: Scalars['BigInt'];
+  rewardsPaid: Scalars['BigInt'];
   amountPerTokenPaid: Scalars['BigInt'];
   account: Scalars['Bytes'];
   incentivisedVotingLockup: IncentivisedVotingLockup;
@@ -1017,6 +1027,14 @@ export type StakingReward_Filter = {
   amount_lte?: Maybe<Scalars['BigInt']>;
   amount_in?: Maybe<Array<Scalars['BigInt']>>;
   amount_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  rewardsPaid?: Maybe<Scalars['BigInt']>;
+  rewardsPaid_not?: Maybe<Scalars['BigInt']>;
+  rewardsPaid_gt?: Maybe<Scalars['BigInt']>;
+  rewardsPaid_lt?: Maybe<Scalars['BigInt']>;
+  rewardsPaid_gte?: Maybe<Scalars['BigInt']>;
+  rewardsPaid_lte?: Maybe<Scalars['BigInt']>;
+  rewardsPaid_in?: Maybe<Array<Scalars['BigInt']>>;
+  rewardsPaid_not_in?: Maybe<Array<Scalars['BigInt']>>;
   amountPerTokenPaid?: Maybe<Scalars['BigInt']>;
   amountPerTokenPaid_not?: Maybe<Scalars['BigInt']>;
   amountPerTokenPaid_gt?: Maybe<Scalars['BigInt']>;
@@ -1050,6 +1068,7 @@ export type StakingReward_Filter = {
 export enum StakingReward_OrderBy {
   Id = 'id',
   Amount = 'amount',
+  RewardsPaid = 'rewardsPaid',
   AmountPerTokenPaid = 'amountPerTokenPaid',
   Account = 'account',
   IncentivisedVotingLockup = 'incentivisedVotingLockup'
