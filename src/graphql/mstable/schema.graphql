@@ -310,6 +310,7 @@ type IncentivisedVotingLockup {
   userLockups(skip: Int = 0, first: Int = 100, orderBy: UserLockup_orderBy, orderDirection: OrderDirection, where: UserLockup_filter): [UserLockup!]!
   stakingRewards(skip: Int = 0, first: Int = 100, orderBy: StakingReward_orderBy, orderDirection: OrderDirection, where: StakingReward_filter): [StakingReward!]!
   stakingBalances(skip: Int = 0, first: Int = 100, orderBy: StakingBalance_orderBy, orderDirection: OrderDirection, where: StakingBalance_filter): [StakingBalance!]!
+  end: BigInt!
   periodFinish: Int!
   lastUpdateTime: Int!
   stakingToken: Token!
@@ -413,6 +414,7 @@ scalar BigInt
 enum StakingReward_orderBy {
   id
   amount
+  rewardsPaid
   amountPerTokenPaid
   account
   incentivisedVotingLockup
@@ -434,6 +436,14 @@ input StakingReward_filter {
   amount_lte: BigInt
   amount_in: [BigInt!]
   amount_not_in: [BigInt!]
+  rewardsPaid: BigInt
+  rewardsPaid_not: BigInt
+  rewardsPaid_gt: BigInt
+  rewardsPaid_lt: BigInt
+  rewardsPaid_gte: BigInt
+  rewardsPaid_lte: BigInt
+  rewardsPaid_in: [BigInt!]
+  rewardsPaid_not_in: [BigInt!]
   amountPerTokenPaid: BigInt
   amountPerTokenPaid_not: BigInt
   amountPerTokenPaid_gt: BigInt
@@ -466,6 +476,7 @@ input StakingReward_filter {
 type StakingReward {
   id: ID!
   amount: BigInt!
+  rewardsPaid: BigInt!
   amountPerTokenPaid: BigInt!
   account: Bytes!
   incentivisedVotingLockup: IncentivisedVotingLockup!
@@ -537,6 +548,7 @@ enum IncentivisedVotingLockup_orderBy {
   userLockups
   stakingRewards
   stakingBalances
+  end
   periodFinish
   lastUpdateTime
   stakingToken
@@ -561,6 +573,14 @@ input IncentivisedVotingLockup_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
+  end: BigInt
+  end_not: BigInt
+  end_gt: BigInt
+  end_lt: BigInt
+  end_gte: BigInt
+  end_lte: BigInt
+  end_in: [BigInt!]
+  end_not_in: [BigInt!]
   periodFinish: Int
   periodFinish_not: Int
   periodFinish_gt: Int
@@ -1580,7 +1600,6 @@ type Subscription {
 }
 scalar BigDecimal
 enum LockAction {
-  DEPOSIT_FOR
   CREATE_LOCK
   INCREASE_LOCK_AMOUNT
   INCREASE_LOCK_TIME
