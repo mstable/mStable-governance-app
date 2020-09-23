@@ -6,7 +6,9 @@ import { FormRow } from '../../core/Form';
 import { H3 } from '../../core/Typography';
 import { RangeInput } from '../../forms/RangeInput';
 import { Tooltip } from '../../core/ReactTooltip';
-import { InlineTokenAmountInput } from '../../forms/InlineTokenAmountInput';
+import { Protip } from '../../core/Protip';
+import { ExternalLink } from '../../core/ExternalLink';
+import { TokenAmountInput } from '../../forms/TokenAmountInput';
 import { useStakeDispatch, useStakeState } from './StakeProvider';
 
 export const CreateLockInput: FC = () => {
@@ -16,7 +18,13 @@ export const CreateLockInput: FC = () => {
     error,
     data,
   } = useStakeState();
-  const { setLockupAmount, setLockupDays, setMaxLockupAmount, setMaxLockupDays } = useStakeDispatch();
+  // const { end } = data.incentivisedVotingLockup;
+  const {
+    setLockupAmount,
+    setLockupDays,
+    setMaxLockupAmount,
+    setMaxLockupDays,
+  } = useStakeDispatch();
 
   return (
     <>
@@ -26,24 +34,32 @@ export const CreateLockInput: FC = () => {
         </H3>
         {/* TODO: add balances label */}
         {data.metaToken && data.incentivisedVotingLockup ? (
-          <InlineTokenAmountInput
-            amount={{
-              value: amount,
-              formValue: amountFormValue,
-              handleChange: setLockupAmount,
-              handleSetMax: setMaxLockupAmount,
-            }}
-            token={{
-              address: data.metaToken.address,
-            }}
-            approval={{
-              spender: data.incentivisedVotingLockup.address,
-            }}
-            error={error}
-          />
+          <>
+            <TokenAmountInput
+              needsUnlock
+              amountValue={amountFormValue}
+              error={error}
+              exactDecimals
+              name="stake"
+              spender={data.incentivisedVotingLockup.address}
+              onChangeAmount={setLockupAmount}
+              onSetMax={setMaxLockupAmount}
+              tokenAddresses={[data.metaToken.address as string]}
+              tokenDisabled
+              tokenValue={data.metaToken.address || null}
+              approveAmount={amount}
+            />
+            {data.metaToken && data.metaToken?.balance.simple < 1000 ? (
+              <Protip title="Need tokens to stake?">
+                <ExternalLink href="https://balancer.exchange/#/swap">
+                  Get MTA tokens on Balancer
+                </ExternalLink>
+              </Protip>
+            ) : null}
+          </>
         ) : (
-            <Skeleton />
-          )}
+          <Skeleton />
+        )}
       </FormRow>
       <FormRow>
         <H3>

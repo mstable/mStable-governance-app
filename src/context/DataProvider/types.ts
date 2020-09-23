@@ -13,12 +13,14 @@ export interface UserLockup {
 export interface UserStakingReward {
   amount: BigNumber;
   amountPerTokenPaid: BigNumber;
+  rewardsPaid: BigNumber;
 }
 
 // TODO use BigDecimal
 export interface IncentivisedVotingLockup {
   address: string;
   duration: BigNumber;
+  end: BigNumber;
   expired: boolean;
   globalEpoch: BigNumber;
   lastUpdateTime: number;
