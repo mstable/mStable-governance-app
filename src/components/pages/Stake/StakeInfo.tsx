@@ -50,10 +50,8 @@ export const StakeInfo: FC = () => {
           </Row>
           <Row>
             <Tooltip tip="test">Boosted weight</Tooltip>
-
             <p>{userStatic.simple}</p>
-            <br />
-            {totalStatic.simple}
+            <p>{totalStatic.simple}</p>
           </Row>
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>
