@@ -5,9 +5,12 @@ import { H3 } from '../../core/Typography';
 import { Tooltip } from '../../core/ReactTooltip';
 import { FormRow } from '../../core/Form';
 import { useStakeState } from './StakeProvider';
+import { useToken } from '../../../context/DataProvider/TokensProvider';
+import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
+import { BigDecimal } from '../../../web3/BigDecimal';
 
 const Row = styled.div`
-  display: flex;
+  /* display: flex; */
   align-items: center;
   padding-bottom: 8px;
 `;
@@ -17,20 +20,44 @@ const Container = styled.div`
 `;
 
 export const StakeInfo: FC = () => {
-  const { data } = useStakeState();
+  const {
+    // lockupAmount: { formValue: amountFormValue, amount },
+    // lockupPeriod: { formValue: lockupDays, unlockTime },
+    data: { incentivisedVotingLockup, metaToken },
+  } = useStakeState();
+  const vmta = useToken(incentivisedVotingLockup?.address);
+  const s = useTotalSupply(incentivisedVotingLockup?.address);
+  const userStatic = new BigDecimal(
+    incentivisedVotingLockup?.userStakingBalance || 0,
+    18,
+  );
+  const totalStatic = new BigDecimal(
+    incentivisedVotingLockup?.totalStaticWeight || 0,
+    18,
+  );
+
+  // useEffect(() => {}, []);
+
   return (
     <FormRow>
       <H3>Your stake</H3>
-      {data.metaToken && (
+      {metaToken && (
         <Container>
           <Row>
             <Tooltip tip="test">vMTA</Tooltip>
+            <p>{vmta?.balance.simple}</p>
+            <p>{s.simple}</p>
           </Row>
           <Row>
             <Tooltip tip="test">Boosted weight</Tooltip>
+
+            <p>{userStatic.simple}</p>
+            <br />
+            {totalStatic.simple}
           </Row>
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>
+            <br />
           </Row>
         </Container>
       )}

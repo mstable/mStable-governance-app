@@ -1,11 +1,15 @@
 import { LazyQueryHookOptions, QueryTuple } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useBlockNumber } from './BlockProvider';
 import {
   useUserLockupsLazyQuery,
   UserLockupsQueryResult,
 } from '../../graphql/mstable';
+import { useSignerContext, useWeb3Provider } from '../SignerProvider';
+
+import { BigDecimal } from '../../web3/BigDecimal';
+import { Erc20DetailedFactory } from '../../typechain/Erc20DetailedFactory';
 
 export const useBlockPollingSubscription = <TData, TVariables>(
   lazyQuery: (
@@ -59,4 +63,44 @@ export const useUserLockupsSubscription = (
   return useBlockPollingSubscription(useUserLockupsLazyQuery, {
     variables: { account: account as string },
   });
+};
+
+/**
+ * Update the state of affected transactions when the provider or
+ * block number changes.
+ */
+export const useTotalSupply = (
+  address: string | null | undefined,
+): BigDecimal => {
+  // const account = useAccount();
+  const provider = useWeb3Provider();
+  const blockNumber = useBlockNumber();
+  const signer = useSignerContext();
+
+  const totalSupply = useRef(new BigDecimal(0, 18));
+
+  /**
+   * Check pending transaction status on new blocks, and finalize if possible.
+   */
+  useEffect(
+    () => {
+      if (provider && blockNumber && signer && address) {
+        const factory = Erc20DetailedFactory.connect(address, signer);
+        factory.totalSupply().then(s => {
+          const sd = new BigDecimal(s, 18);
+          if (totalSupply.current !== sd) {
+            totalSupply.current = sd;
+          }
+        });
+      }
+
+      return () => {};
+    },
+    // `blockNumber` and `provider` should be the only deps; otherwise it will
+    // check too often.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [address, blockNumber, provider],
+  );
+
+  return totalSupply.current;
 };

@@ -25,6 +25,28 @@ type Query {
     """
     block: Block_height
   ): [UserLockup!]!
+  token(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Token
+  tokens(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Token_orderBy
+    orderDirection: OrderDirection
+    where: Token_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Token!]!
   incentivisedVotingLockup(
     id: ID!
     """
@@ -113,28 +135,6 @@ type Query {
     """
     block: Block_height
   ): [StakingBalance!]!
-  token(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Token
-  tokens(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Token_orderBy
-    orderDirection: OrderDirection
-    where: Token_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Token!]!
   withdrawTransaction(
     id: ID!
     """
@@ -310,6 +310,7 @@ type IncentivisedVotingLockup {
   userLockups(skip: Int = 0, first: Int = 100, orderBy: UserLockup_orderBy, orderDirection: OrderDirection, where: UserLockup_filter): [UserLockup!]!
   stakingRewards(skip: Int = 0, first: Int = 100, orderBy: StakingReward_orderBy, orderDirection: OrderDirection, where: StakingReward_filter): [StakingReward!]!
   stakingBalances(skip: Int = 0, first: Int = 100, orderBy: StakingBalance_orderBy, orderDirection: OrderDirection, where: StakingBalance_filter): [StakingBalance!]!
+  votingToken: Token!
   end: BigInt!
   periodFinish: Int!
   lastUpdateTime: Int!
@@ -543,11 +544,80 @@ type RewardsDistributor {
   id: ID!
   fundManagers: [Bytes!]!
 }
+enum Token_orderBy {
+  id
+  address
+  decimals
+  name
+  symbol
+  totalSupply
+}
+input Token_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  address: Bytes
+  address_not: Bytes
+  address_in: [Bytes!]
+  address_not_in: [Bytes!]
+  address_contains: Bytes
+  address_not_contains: Bytes
+  decimals: Int
+  decimals_not: Int
+  decimals_gt: Int
+  decimals_lt: Int
+  decimals_gte: Int
+  decimals_lte: Int
+  decimals_in: [Int!]
+  decimals_not_in: [Int!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  symbol: String
+  symbol_not: String
+  symbol_gt: String
+  symbol_lt: String
+  symbol_gte: String
+  symbol_lte: String
+  symbol_in: [String!]
+  symbol_not_in: [String!]
+  symbol_contains: String
+  symbol_not_contains: String
+  symbol_starts_with: String
+  symbol_not_starts_with: String
+  symbol_ends_with: String
+  symbol_not_ends_with: String
+  totalSupply: BigInt
+  totalSupply_not: BigInt
+  totalSupply_gt: BigInt
+  totalSupply_lt: BigInt
+  totalSupply_gte: BigInt
+  totalSupply_lte: BigInt
+  totalSupply_in: [BigInt!]
+  totalSupply_not_in: [BigInt!]
+}
 enum IncentivisedVotingLockup_orderBy {
   id
   userLockups
   stakingRewards
   stakingBalances
+  votingToken
   end
   periodFinish
   lastUpdateTime
@@ -573,6 +643,20 @@ input IncentivisedVotingLockup_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
+  votingToken: String
+  votingToken_not: String
+  votingToken_gt: String
+  votingToken_lt: String
+  votingToken_gte: String
+  votingToken_lte: String
+  votingToken_in: [String!]
+  votingToken_not_in: [String!]
+  votingToken_contains: String
+  votingToken_not_contains: String
+  votingToken_starts_with: String
+  votingToken_not_starts_with: String
+  votingToken_ends_with: String
+  votingToken_not_ends_with: String
   end: BigInt
   end_not: BigInt
   end_gt: BigInt
@@ -725,74 +809,6 @@ input RewardsDistributor_filter {
   fundManagers_not: [Bytes!]
   fundManagers_contains: [Bytes!]
   fundManagers_not_contains: [Bytes!]
-}
-enum Token_orderBy {
-  id
-  address
-  decimals
-  name
-  symbol
-  totalSupply
-}
-input Token_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  address: Bytes
-  address_not: Bytes
-  address_in: [Bytes!]
-  address_not_in: [Bytes!]
-  address_contains: Bytes
-  address_not_contains: Bytes
-  decimals: Int
-  decimals_not: Int
-  decimals_gt: Int
-  decimals_lt: Int
-  decimals_gte: Int
-  decimals_lte: Int
-  decimals_in: [Int!]
-  decimals_not_in: [Int!]
-  name: String
-  name_not: String
-  name_gt: String
-  name_lt: String
-  name_gte: String
-  name_lte: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  symbol: String
-  symbol_not: String
-  symbol_gt: String
-  symbol_lt: String
-  symbol_gte: String
-  symbol_lte: String
-  symbol_in: [String!]
-  symbol_not_in: [String!]
-  symbol_contains: String
-  symbol_not_contains: String
-  symbol_starts_with: String
-  symbol_not_starts_with: String
-  symbol_ends_with: String
-  symbol_not_ends_with: String
-  totalSupply: BigInt
-  totalSupply_not: BigInt
-  totalSupply_gt: BigInt
-  totalSupply_lt: BigInt
-  totalSupply_gte: BigInt
-  totalSupply_lte: BigInt
-  totalSupply_in: [BigInt!]
-  totalSupply_not_in: [BigInt!]
 }
 type WithdrawTransaction implements Transaction {
   id: ID!
@@ -1333,6 +1349,28 @@ type Subscription {
     """
     block: Block_height
   ): [UserLockup!]!
+  token(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Token
+  tokens(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Token_orderBy
+    orderDirection: OrderDirection
+    where: Token_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Token!]!
   incentivisedVotingLockup(
     id: ID!
     """
@@ -1421,28 +1459,6 @@ type Subscription {
     """
     block: Block_height
   ): [StakingBalance!]!
-  token(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): Token
-  tokens(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: Token_orderBy
-    orderDirection: OrderDirection
-    where: Token_filter
-    """
-    The block at which the query should be executed. Can either be an `{ number:
-    Int }` containing the block number or a `{ hash: Bytes }` value containing a
-    block hash. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-  ): [Token!]!
   withdrawTransaction(
     id: ID!
     """

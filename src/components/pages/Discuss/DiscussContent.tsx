@@ -45,6 +45,8 @@ const ImageContainer = styled.div`
     height: auto;
     max-width: 500px;
     max-height: 350px;
+    border-radius: 6px;
+    margin: auto;
   }
 
   @media (min-width: ${ViewportWidth.m}) {

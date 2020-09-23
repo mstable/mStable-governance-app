@@ -7,6 +7,7 @@ import { FontSize, ViewportWidth } from '../../theme';
 interface NavItem {
   title: string;
   path?: string;
+  external?: boolean;
 }
 
 const Container = styled.nav`
@@ -65,7 +66,7 @@ const navItems: NavItem[] = [
   { title: 'Govern', path: '/govern' },
   { title: 'Stake', path: '/stake' },
   { title: 'Discuss', path: '/discuss' },
-  { title: 'Vote', path: '/vote' },
+  { title: 'Vote', path: 'https://snapshot.page/#/mstable', external: true },
 ];
 
 /**
@@ -86,9 +87,19 @@ export const Navigation: FC<{}> = () => {
   return (
     <Container>
       <List>
-        {items.map(({ title, path, active }) => (
+        {items.map(({ title, path, active, external }) => (
           <Item key={title} active={active} onClick={collapseWallet}>
-            {path ? <A href={path}>{title}</A> : <span>{title}</span>}
+            {path ? (
+              external ? (
+                <a href={path}>{title}</a>
+              ) : (
+                <A href={path} target="_blank">
+                  {title}
+                </A>
+              )
+            ) : (
+              <span>{title}</span>
+            )}
           </Item>
         ))}
       </List>
