@@ -24,6 +24,7 @@ query UserLockups($account: Bytes) @api(name: mstable) {
     periodFinish
     lastUpdateTime
     rewardPerTokenStored
+    end
     duration
     rewardRate
     globalEpoch
@@ -45,6 +46,7 @@ query UserLockups($account: Bytes) @api(name: mstable) {
     stakingRewards(where: { account: $account }, first: 1) {
       amount
       amountPerTokenPaid
+      rewardsPaid
     }
     stakingBalances(where: { account: $account }, first: 1) {
       amount

@@ -31,10 +31,11 @@ const transformUserStakingReward = (
   data: RawIncentivisedVotingLockup['stakingRewards'][0] | undefined,
 ): UserStakingReward | undefined => {
   if (data) {
-    const { amount, amountPerTokenPaid } = data;
+    const { amount, amountPerTokenPaid, rewardsPaid } = data;
     return {
       amount: new BigNumber(amount),
       amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
+      rewardsPaid: new BigNumber(rewardsPaid),
     };
   }
   return undefined;
@@ -59,6 +60,7 @@ export const transformRawData = ({
 
   const {
     address,
+    end,
     duration,
     expired,
     globalEpoch,
@@ -95,6 +97,7 @@ export const transformRawData = ({
     },
     rewardPerTokenStored: new BigNumber(rewardPerTokenStored),
     duration: new BigNumber(duration),
+    end: new BigNumber(end),
     rewardRate: new BigNumber(rewardRate),
     rewardsToken: {
       ...rewardsToken,

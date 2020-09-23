@@ -1655,9 +1655,9 @@ export type UserLockupsQueryVariables = {
 
 
 export type UserLockupsQuery = { incentivisedVotingLockups: Array<(
-    Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
+    Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'end' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
     & { address: IncentivisedVotingLockup['id'] }
-    & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias'>> }
+    & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias'>> }
   )> };
 
 export const TokenDetailsFragmentDoc = gql`
@@ -1774,6 +1774,7 @@ export const UserLockupsDocument = gql`
     periodFinish
     lastUpdateTime
     rewardPerTokenStored
+    end
     duration
     rewardRate
     globalEpoch
@@ -1795,6 +1796,7 @@ export const UserLockupsDocument = gql`
     stakingRewards(where: {account: $account}, first: 1) {
       amount
       amountPerTokenPaid
+      rewardsPaid
     }
     stakingBalances(where: {account: $account}, first: 1) {
       amount

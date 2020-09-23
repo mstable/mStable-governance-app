@@ -43,27 +43,29 @@ export interface Dispatch {
   setLockupAmount(formValue: string): void;
   setLockupDays(days: number): void;
   setTransactionType(type: TransactionType): void;
+  setMaxLockupAmount(): void;
+  setMaxLockupDays(max: number): void;
 }
 
 export enum Actions {
   Data,
   SetLockupAmount,
   SetMaxLockupAmount,
-  SetMaxLockupTime,
+  SetMaxLockupDays,
   SetLockupDays,
   SetTransactionType,
 }
 
 export type Action =
   | {
-      type: Actions.Data;
-      payload: {
-        metaToken?: SubscribedToken;
-        incentivisedVotingLockup?: IncentivisedVotingLockup;
-      };
-    }
+    type: Actions.Data;
+    payload: {
+      metaToken?: SubscribedToken;
+      incentivisedVotingLockup?: IncentivisedVotingLockup;
+    };
+  }
   | { type: Actions.SetLockupAmount; payload: string }
   | { type: Actions.SetLockupDays; payload: number }
   | { type: Actions.SetMaxLockupAmount }
-  | { type: Actions.SetMaxLockupTime }
+  | { type: Actions.SetMaxLockupDays; payload: number }
   | { type: Actions.SetTransactionType; payload: TransactionType };

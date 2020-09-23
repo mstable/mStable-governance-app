@@ -45,13 +45,35 @@ const reduce: Reducer<State, Action> = (state, action) => {
       };
     }
 
-    case Actions.SetMaxLockupAmount:
-      // TODO
-      return state;
+    case Actions.SetMaxLockupAmount: {
+      if (!state.data) return state;
 
-    case Actions.SetMaxLockupTime:
-      // TODO
-      return state;
+      const { data } = state;
+
+      if (!data.metaToken) return state;
+
+      return {
+        ...state,
+        lockupAmount: {
+          amount: data.metaToken?.balance,
+          formValue: data.metaToken?.balance.format(data.metaToken?.balance.decimals, false),
+          touched: true
+        },
+      }
+    }
+
+    case Actions.SetMaxLockupDays: {
+      const formValue = action.payload;
+      const unlockTime = Math.floor(
+        addDays(Date.now(), formValue).getTime() / 1000,
+      );
+      return {
+        ...state,
+        lockupPeriod: { unlockTime, formValue },
+        touched: true,
+      };
+    }
+
 
     default:
       throw new Error('Unhandled action type');

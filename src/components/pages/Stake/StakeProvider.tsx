@@ -95,6 +95,20 @@ export const StakeProvider: FC<{}> = ({ children }) => {
     [dispatch],
   );
 
+  const setMaxLockupAmount = useCallback<
+    Dispatch['setMaxLockupAmount']
+  >(() => {
+    dispatch({ type: Actions.SetMaxLockupAmount });
+  }, [dispatch]);
+
+  const setMaxLockupDays = useCallback<Dispatch['setMaxLockupDays']>(
+    days => {
+      dispatch({ type: Actions.SetMaxLockupDays, payload: days });
+    },
+    [dispatch],
+  );
+
+
   return (
     <dispatchCtx.Provider
       value={useMemo(
@@ -102,8 +116,10 @@ export const StakeProvider: FC<{}> = ({ children }) => {
           setLockupAmount,
           setLockupDays,
           setTransactionType,
+          setMaxLockupAmount,
+          setMaxLockupDays
         }),
-        [setLockupAmount, setLockupDays, setTransactionType],
+        [setLockupAmount, setLockupDays, setTransactionType, setMaxLockupAmount, setMaxLockupDays],
       )}
     >
       <stateCtx.Provider value={state}>
