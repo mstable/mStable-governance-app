@@ -110,11 +110,6 @@ const StakeForm: FC = () => {
       <>
         <Protip emoji="😊" title="You have already staked!">
           <br />
-          Whilst it's possible to both extend your lockup time and increase
-          lockup amount, this hasn't been added to the UI yet - hold tight!
-        </Protip>
-        <br />
-        <p>
           Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
           {incentivisedVotingLockup.userLockup?.lockTime
@@ -123,7 +118,12 @@ const StakeForm: FC = () => {
                 'dd-MM-yyyy',
               )
             : null}
-        </p>
+          <br />
+          <br />
+          Whilst it's possible to both extend your lockup time and increase
+          lockup amount, this hasn't been added to the UI yet - hold tight!
+        </Protip>
+        <br />
       </>
     )
   ) : (

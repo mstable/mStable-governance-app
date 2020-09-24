@@ -145,12 +145,10 @@ const calculate = (state: State): State => {
     lockupPeriod.unlockTime &&
     lockupPeriod.unlockTime > nowSimple()
   ) {
+    // userLockup?: UserLockup; & bias
     // totalStaticWeight: BigDecimal;
-    // totalValue: BigDecimal;
-    // userLockup?: UserLockup;
     // userStakingBalance?: BigDecimal;
-    // userStakingReward?: UserStakingReward;
-    // const staticWeight =
+    // userStakingReward?: UserStakingReward; > apy
   }
   return {
     ...state,

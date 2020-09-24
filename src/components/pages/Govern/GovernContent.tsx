@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import styled from 'styled-components';
 import { FormRow } from '../../core/Form';
-import { H3, P } from '../../core/Typography';
+import { H2, P } from '../../core/Typography';
 import { OnboardingWizard } from './OnboardingWizard';
 import { ExternalLink } from '../../core/ExternalLink';
 import { ViewportWidth } from '../../../theme';
@@ -30,7 +30,7 @@ const ImageContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     img {
-      width: auto;
+      width: 90%;
       height: auto;
       max-width: 1000px;
       max-height: 500px;
@@ -42,7 +42,7 @@ export const GovernContent: FC<{}> = () => {
   return (
     <>
       <FormRow>
-        <H3>mStable Governance</H3>
+        <H2>mStable Governance</H2>
         <P>
           mStable is governed by MTA holders who have staked their tokens to
           participate in our community-based proposal system.
@@ -66,7 +66,7 @@ export const GovernContent: FC<{}> = () => {
         </ImageContainer>
       </FormRow>
       <FormRow>
-        <H3>Get Started</H3>
+        <H2>Get Started</H2>
         <OnboardingWizard />
       </FormRow>
     </>
