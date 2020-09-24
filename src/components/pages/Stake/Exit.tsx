@@ -7,23 +7,9 @@ import {
   FormProvider,
   useSetFormManifest,
 } from '../../forms/TransactionForm/FormProvider';
-import { H3 } from '../../core/Typography';
-import { StakeAmountInput } from '../../forms/StakeAmountInput';
 import { useStakeState, useStakeContract } from './StakeProvider';
-
-const Row = styled.div`
-  width: 100%;
-  padding-bottom: 16px;
-`;
-
-const Input: FC<{}> = () => {
-  return (
-    <Row>
-      <H3>Withdraw stake or exit</H3>
-      <StakeAmountInput />
-    </Row>
-  );
-};
+import { ExitInput } from './ExitInput';
+import { ExitConfirm } from './ExitConfirm';
 
 const StyledTransactionForm = styled(TransactionForm)`
   h3 {
@@ -33,13 +19,14 @@ const StyledTransactionForm = styled(TransactionForm)`
 
 const ExitForm: FC<{}> = () => {
   const {
-    valid,
+    data: { incentivisedVotingLockup },
   } = useStakeState();
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
+  const canUnlock = incentivisedVotingLockup?.userLockup?.lockTime as number > Date.now();
 
   useEffect(() => {
-    if (valid && contract) {
+    if (canUnlock && contract) {
       return setFormManifest<
         Interfaces.IncentivisedVotingLockup,
         'withdraw'
@@ -50,15 +37,15 @@ const ExitForm: FC<{}> = () => {
       });
     }
     return setFormManifest(null);
-  }, [setFormManifest, valid, contract]);
+  }, [setFormManifest, canUnlock, contract]);
 
   return (
     <StyledTransactionForm
       confirmLabel='Withdraw'
-      confirm={<div>TODO</div>}
-      input={<Input />}
+      confirm={<ExitConfirm />}
+      input={<ExitInput />}
       transactionsLabel="Transactions"
-      valid={valid}
+      valid={canUnlock}
     />
   );
 };
