@@ -19,11 +19,15 @@ const Container = styled.div`
   padding-top: 16px;
 `;
 
+const SimulatedData = styled.p`
+  color: green;
+`;
+
 export const StakeInfo: FC = () => {
   const {
     // lockupAmount: { formValue: amountFormValue, amount },
     // lockupPeriod: { formValue: lockupDays, unlockTime },
-    data: { incentivisedVotingLockup, metaToken },
+    data: { incentivisedVotingLockup, metaToken, simulatedData },
   } = useStakeState();
   const vmta = useToken(incentivisedVotingLockup?.address);
   const s = useTotalSupply(incentivisedVotingLockup?.address);
@@ -42,7 +46,13 @@ export const StakeInfo: FC = () => {
           <Row>
             <Tooltip tip="test">MTA</Tooltip>
             <p>Yours: {incentivisedVotingLockup?.userLockup?.value.simple}</p>
+            <SimulatedData>
+              Simulated: {simulatedData?.userLockup?.value.simple}
+            </SimulatedData>
             <p>Total: {incentivisedVotingLockup?.totalValue.simple}</p>
+            <SimulatedData>
+              Simulated Total: {simulatedData?.totalValue.simple}
+            </SimulatedData>
           </Row>
         </Container>
       )}
@@ -52,12 +62,25 @@ export const StakeInfo: FC = () => {
           <Row>
             <Tooltip tip="test">vMTA</Tooltip>
             <p>Yours: {vmta?.balance.simple}</p>
+            <SimulatedData>
+              Simulated: {simulatedData?.userLockup?.bias}
+            </SimulatedData>
             <p>Total: {s.simple}</p>
           </Row>
           <Row>
             <Tooltip tip="test">Boosted weight</Tooltip>
             <p>Yours: {userStatic.simple}</p>
+            <SimulatedData>
+              Simulated: {simulatedData?.userStakingBalance?.simple}
+            </SimulatedData>
             <p>Total: {totalStatic.simple}</p>
+            <p>
+              Share:{' '}
+              {incentivisedVotingLockup?.userStakingReward?.poolShare?.simple}
+            </p>
+            <SimulatedData>
+              Simulated Share: {simulatedData?.userStakingReward?.poolShare}
+            </SimulatedData>
           </Row>
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>
@@ -65,6 +88,9 @@ export const StakeInfo: FC = () => {
             <p>
               APY: {incentivisedVotingLockup?.userStakingReward?.currentAPY} %
             </p>
+            <SimulatedData>
+              Simulated APY: {simulatedData?.userStakingReward?.currentAPY}
+            </SimulatedData>
           </Row>
         </Container>
       )}

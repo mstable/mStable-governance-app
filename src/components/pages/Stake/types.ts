@@ -1,11 +1,22 @@
 import { BigDecimal } from '../../../web3/BigDecimal';
 import { SubscribedToken } from '../../../types';
-import { IncentivisedVotingLockup } from '../../../context/DataProvider/types';
+import {
+  IncentivisedVotingLockup,
+  UserLockup,
+  UserStakingReward,
+} from '../../../context/DataProvider/types';
 
 export interface RewardsEarned {
   rewards?: BigDecimal;
   rewardsUsd?: BigDecimal;
-  apy?: BigDecimal;
+}
+
+export interface SimulatedData {
+  totalStaticWeight: BigDecimal;
+  totalValue: BigDecimal;
+  userLockup?: UserLockup;
+  userStakingBalance?: BigDecimal;
+  userStakingReward?: UserStakingReward;
 }
 
 export enum TransactionType {
@@ -20,6 +31,7 @@ export interface State {
   data: {
     metaToken?: SubscribedToken;
     incentivisedVotingLockup?: IncentivisedVotingLockup;
+    simulatedData?: SimulatedData;
   };
   error?: string;
   lockupAmount: {

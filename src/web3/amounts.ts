@@ -1,6 +1,8 @@
 import { BigNumber, parseUnits, formatUnits } from 'ethers/utils';
 import { Amount } from '../types';
 
+export const nowSimple = (): number => Math.ceil(Date.now() / 1000);
+
 /**
  * @dev Formats a simple amount to 2 decimal places
  * @param simpleAmount Simple amount to parse

@@ -65,20 +65,23 @@ export const CreateLockInput: FC = () => {
         <H3>
           <Tooltip tip="test">Lock up deposit</Tooltip>
         </H3>
-        <RangeInput
-          min={0}
-          max={365}
-          value={lockupDays}
-          onChange={setLockupDays}
-          startLabel="Today"
-          endLabel="One Year"
-          onSetMax={setMaxLockupDays}
-        >
-          <div>{lockupDays} Days</div>
-          <div>
-            {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
-          </div>
-        </RangeInput>
+        {data.incentivisedVotingLockup && (
+          <RangeInput
+            min={0}
+            step={7}
+            max={365}
+            value={lockupDays}
+            onChange={setLockupDays}
+            startLabel="Today"
+            endLabel="One Year"
+            onSetMax={setMaxLockupDays}
+          >
+            <div>{lockupDays} Days</div>
+            <div>
+              {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
+            </div>
+          </RangeInput>
+        )}
       </FormRow>
     </>
   );

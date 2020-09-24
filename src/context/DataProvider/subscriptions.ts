@@ -6,7 +6,7 @@ import {
   useUserLockupsLazyQuery,
   UserLockupsQueryResult,
 } from '../../graphql/mstable';
-import { useSignerContext, useWeb3Provider } from '../SignerProvider';
+import { useWeb3Provider } from '../SignerProvider';
 
 import { BigDecimal } from '../../web3/BigDecimal';
 import { Erc20DetailedFactory } from '../../typechain/Erc20DetailedFactory';
