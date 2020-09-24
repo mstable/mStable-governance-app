@@ -75,7 +75,6 @@ export const useTotalSupply = (
   // const account = useAccount();
   const provider = useWeb3Provider();
   const blockNumber = useBlockNumber();
-  const signer = useSignerContext();
 
   const totalSupply = useRef(new BigDecimal(0, 18));
 
@@ -84,8 +83,8 @@ export const useTotalSupply = (
    */
   useEffect(
     () => {
-      if (provider && blockNumber && signer && address) {
-        const factory = Erc20DetailedFactory.connect(address, signer);
+      if (provider && blockNumber && address) {
+        const factory = Erc20DetailedFactory.connect(address, provider);
         factory.totalSupply().then(s => {
           const sd = new BigDecimal(s, 18);
           if (totalSupply.current !== sd) {

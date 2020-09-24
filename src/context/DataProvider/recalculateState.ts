@@ -13,7 +13,7 @@ export const recalculateState = ({
     !incentivisedVotingLockup.userStakingBalance ||
     !incentivisedVotingLockup.userLockup
   ) {
-    return { tokens };
+    return { tokens, incentivisedVotingLockup };
   }
 
   const r = incentivisedVotingLockup.rewardRate;
