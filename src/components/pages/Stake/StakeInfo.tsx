@@ -71,87 +71,95 @@ export const StakeInfo: FC = () => {
         </Container>
       </FormRow>
       {userStakingBalance && userLockup && userStakingBalance.simple > 0 ? (
-        <FormRow>
-          <H3>Your stake</H3>
-          <Container>
-            <Row>
-              You staked <CountUp end={userLockup.value.simple} suffix=" MTA" />{' '}
-              for {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks
-              on{' '}
-              {userLockup.ts
-                ? format(userLockup.ts * 1000, 'dd-MM-yyyy')
-                : null}
-            </Row>
-            <Row>
-              <Tooltip tip="This">Voting Power: </Tooltip> You have{' '}
-              {vmta && s && s.simple > 0 ? (
-                <CountUp
-                  end={(vmta.balance.simple / s.simple) * 100}
-                  suffix=" %"
-                />
-              ) : (
-                <Skeleton width={100} />
-              )}{' '}
-              of the voting power (
-              {vmta ? (
-                <CountUp end={vmta.balance.simple} suffix=" vMTA" />
-              ) : (
-                <Skeleton width={100} />
-              )}{' '}
-              out of{' '}
-              {s ? (
-                <CountUp end={s.simple} suffix=" vMTA" />
-              ) : (
-                <Skeleton width={100} />
-              )}
-              )
-            </Row>
-            <Row>
-              <Tooltip tip="This">Earning Power: </Tooltip> You have{' '}
-              {userStakingBalance.simple > 0 &&
-              totalStaticWeight &&
-              totalStaticWeight?.simple > 0 ? (
-                <CountUp
-                  end={
-                    (userStakingBalance.simple / totalStaticWeight.simple) * 100
-                  }
-                  suffix=" %"
-                />
-              ) : (
-                <Skeleton width={100} />
-              )}{' '}
-              of the earning power (
-              {userStakingBalance ? (
-                <CountUp end={userStakingBalance.simple} suffix=" sMTA" />
-              ) : (
-                <Skeleton width={100} />
-              )}{' '}
-              out of{' '}
-              {totalStaticWeight ? (
-                <CountUp end={totalStaticWeight.simple} suffix=" sMTA" />
-              ) : (
-                <Skeleton width={100} />
-              )}
-              )
-            </Row>
-            <Row>
-              <Tooltip tip="test">Rewards Earned</Tooltip>{' '}
-              {rewards.rewards ? (
-                <CountUp end={rewards.rewards.simple} suffix=" MTA" />
-              ) : (
-                <Skeleton width={100} />
-              )}
-            </Row>
-            <Row>
-              <Tooltip tip="test">Current Rewards APY</Tooltip>{' '}
-              {userStakingReward && userStakingReward.currentAPY ? (
-                <CountUp end={userStakingReward.currentAPY} suffix=" %" />
-              ) : (
-                <Skeleton width={100} />
-              )}
-            </Row>
-          </Container>
-        </FormRow>
+        <>
+          <FormRow>
+            <H3>Your Stake</H3>
+            <Container>
+              <Row>
+                You staked{' '}
+                <CountUp end={userLockup.value.simple} suffix=" MTA" /> for{' '}
+                {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks on{' '}
+                {userLockup.ts
+                  ? format(userLockup.ts * 1000, 'dd-MM-yyyy')
+                  : null}
+              </Row>
+              <Row>
+                <Tooltip tip="This">Voting Power: </Tooltip> You have{' '}
+                {vmta && s && s.simple > 0 ? (
+                  <CountUp
+                    end={(vmta.balance.simple / s.simple) * 100}
+                    suffix=" %"
+                  />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                of the voting power (
+                {vmta ? (
+                  <CountUp end={vmta.balance.simple} suffix=" vMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                out of{' '}
+                {s ? (
+                  <CountUp end={s.simple} suffix=" vMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+                )
+              </Row>
+            </Container>
+          </FormRow>
+          <FormRow>
+            <H3>Your Rewards</H3>
+            <Container>
+              <Row>
+                <Tooltip tip="This">Earning Power: </Tooltip> You have{' '}
+                {userStakingBalance.simple > 0 &&
+                totalStaticWeight &&
+                totalStaticWeight?.simple > 0 ? (
+                  <CountUp
+                    end={
+                      (userStakingBalance.simple / totalStaticWeight.simple) *
+                      100
+                    }
+                    suffix=" %"
+                  />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                of the earning power (
+                {userStakingBalance ? (
+                  <CountUp end={userStakingBalance.simple} suffix=" sMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                out of{' '}
+                {totalStaticWeight ? (
+                  <CountUp end={totalStaticWeight.simple} suffix=" sMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+                )
+              </Row>
+              <Row>
+                <Tooltip tip="test">Your Rewards APY</Tooltip>{' '}
+                {userStakingReward && userStakingReward.currentAPY ? (
+                  <CountUp end={userStakingReward.currentAPY} suffix=" %" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+              </Row>
+              <Row>
+                <Tooltip tip="test">Unclaimed Rewards</Tooltip>{' '}
+                {rewards.rewards ? (
+                  <CountUp end={rewards.rewards.simple} suffix=" MTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+              </Row>
+            </Container>
+          </FormRow>
+        </>
       ) : simulatedData ? (
         <FormRow>
           <H3>Potential Stake</H3>
