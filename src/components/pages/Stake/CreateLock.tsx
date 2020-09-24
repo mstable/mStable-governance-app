@@ -14,6 +14,7 @@ import {
   useStakeState,
 } from './StakeProvider';
 import { TransactionType } from './types';
+import { CreateLockConfirm } from './CreateLockConfirm';
 
 // const TX_TYPES = {
 //   [TransactionType.CreateLock]: {
@@ -117,14 +118,14 @@ const StakeForm: FC = () => {
   return (
     <TransactionForm
       confirmLabel='Lock up and stake MTA'
-      confirm={<div>TODO</div>}
+      confirm={<CreateLockConfirm />}
       input={<CreateLockInput />}
       valid={valid}
     />
   );
 };
 
-export const Stake: FC = () => {
+export const CreateLock: FC = () => {
   return (
     <>
       <FormProvider formId="stake">

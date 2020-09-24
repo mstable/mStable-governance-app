@@ -1,19 +1,24 @@
-export {};
-// import React, { FC } from 'react';
-// import styled from 'styled-components';
-// import { FormRow } from '../../core/Form';
-// import { H3 } from '../../core/Typography';
-// import { useStakeState } from './StakeProvider';
-// import { TokenIcon } from '../../icons/TokenIcon';
-// import { Tooltip } from '../../core/ReactTooltip';
+import React, { FC } from 'react';
+import { useStakeState } from './StakeProvider';
+import { TransactionType } from './types';
+import { CountUp } from '../../core/CountUp';
 
-// TODO: CONFIRMATION MESSAGES
+export const CreateLockConfirm: FC<{}> = () => {
+    const { data: { metaToken },
+        valid, transactionType,
+        lockupAmount: { amount },
+        lockupPeriod: { formValue } } = useStakeState();
+    const txCheck = transactionType === TransactionType.CreateLock;
 
-// export const StakeConfirm: FC<{}> = () => {
-//   const { valid, transactionType, amount, data } = useStakeState();
+    return amount && valid && txCheck && metaToken ? (
+        <div>
+            You are staking{' '}
+            <CountUp end={amount?.simpleRounded} suffix={` ${metaToken.symbol}`} />{' '}
+        for {formValue} days.
+        </div>
+    ) : null;
+};
 
-//   return (
-//     <>
-//     </>
-//   );
-// };
+
+
+

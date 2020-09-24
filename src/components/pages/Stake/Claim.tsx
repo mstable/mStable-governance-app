@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import styled from 'styled-components';
 
 import { Interfaces } from '../../../types';
 import { TransactionForm } from '../../forms/TransactionForm';
@@ -7,39 +6,16 @@ import {
   FormProvider,
   useSetFormManifest,
 } from '../../forms/TransactionForm/FormProvider';
-import { CountUp } from '../../core/CountUp';
-import { H3 } from '../../core/Typography';
-import { useStakeContract, useStakeState } from './StakeProvider';
-
-const Row = styled.div`
-  width: 100%;
-  padding-bottom: 16px;
-`;
-
-const Input: FC<{}> = () => {
-  // TODO add rewards state
-
-  return (
-    <Row>
-      <H3>Claim rewards</H3>
-      <div>
-        <>
-          Claim{' '}
-          <CountUp end={10} />
-        </>
-      </div>
-    </Row>
-  );
-};
+import { useStakeContract, useRewardsEarned } from './StakeProvider';
+import { ClaimInput } from './ClaimInput';
+import { ClaimConfirm } from './ClaimConfirm';
 
 const Form: FC<{}> = () => {
 
-  // TODO add rewards state
-  const {
-    valid,
-  } = useStakeState();
-  const setFormManifest = useSetFormManifest();
+  const rewards = useRewardsEarned();
   const contract = useStakeContract();
+  const setFormManifest = useSetFormManifest();
+  const valid = !!rewards.rewards?.exact.gt(0);
 
   useEffect(() => {
     if (valid && contract) {
@@ -58,8 +34,8 @@ const Form: FC<{}> = () => {
   return (
     <TransactionForm
       confirmLabel="Claim"
-      input={<Input />}
-      confirm={<div>TODO</div>}
+      input={<ClaimInput />}
+      confirm={<ClaimConfirm />}
       transactionsLabel="Claim transactions"
       valid={valid}
     />

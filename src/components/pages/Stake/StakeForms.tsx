@@ -8,7 +8,7 @@ import {
   useStakeState,
   useStakeDispatch,
 } from './StakeProvider';
-import { Stake } from './Stake';
+import { CreateLock } from './CreateLock';
 import { Claim } from './Claim';
 import { Exit } from './Exit';
 
@@ -64,7 +64,7 @@ export const StakeForms: FC = () => {
       </TabsContainer>
       <div>
         {transactionType === TransactionType.CreateLock ? (
-          <Stake />
+          <CreateLock />
         ) : transactionType === TransactionType.Claim ? (
           <Claim />
         ) : transactionType === TransactionType.Withdraw ? (
