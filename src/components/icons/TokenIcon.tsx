@@ -17,6 +17,7 @@ export const TOKEN_ICONS: Record<string, string> = {
   WETH: ETH,
   MTA,
   'MK-MTA': MTA,
+  'VMTA': MTA
 };
 
 const SVG_ICONS: Record<string, SvgComponent> = {
@@ -24,6 +25,7 @@ const SVG_ICONS: Record<string, SvgComponent> = {
   WETH: EtherSvg as SvgComponent,
   MTA: MtaSvg as SvgComponent,
   'MK-MTA': MtaSvg as SvgComponent,
+  'VMTA': MtaSvg as SvgComponent
 };
 
 const Image = styled.img`

@@ -68,8 +68,6 @@ const InputsRow = styled.div`
 export const StakeAmountInput: FC = () => {
   const { data, error } = useStakeState();
   const balance = data.incentivisedVotingLockup?.userStakingBalance;
-  // eslint-disable-next-line no-console
-  console.log('data', data.incentivisedVotingLockup?.userStakingBalance);
   return (
     <>
       <InputsRow>
