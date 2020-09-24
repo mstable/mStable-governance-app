@@ -30,7 +30,7 @@ export interface IncentivisedVotingLockup {
   end: BigNumber;
   lockTimes: LockTimes;
   expired: boolean;
-  globalEpoch: BigNumber;
+  globalEpoch: BigDecimal;
   lastUpdateTime: number;
   maxTime: BigNumber;
   periodFinish: number;
@@ -51,8 +51,8 @@ export interface RawData {
   tokens: Tokens;
   incentivisedVotingLockups: [
     | NonNullable<
-        UserLockupsQueryResult['data']
-      >['incentivisedVotingLockups'][0]
+      UserLockupsQueryResult['data']
+    >['incentivisedVotingLockups'][0]
     | undefined,
   ];
 }

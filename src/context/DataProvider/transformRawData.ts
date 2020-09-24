@@ -125,7 +125,7 @@ export const transformRawData = ({
       name: '',
     },
     rewardsDistributor,
-    globalEpoch: new BigNumber(globalEpoch),
+    globalEpoch: new BigDecimal(globalEpoch, 18),
     expired,
     maxTime: new BigNumber(maxTime),
     totalStaticWeight: new BigDecimal(totalStaticWeight, 18),
