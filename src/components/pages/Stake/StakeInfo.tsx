@@ -7,7 +7,6 @@ import { FormRow } from '../../core/Form';
 import { useStakeState } from './StakeProvider';
 import { useToken } from '../../../context/DataProvider/TokensProvider';
 import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
-import { BigDecimal } from '../../../web3/BigDecimal';
 
 const Row = styled.div`
   /* display: flex; */
