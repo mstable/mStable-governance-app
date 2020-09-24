@@ -5,6 +5,7 @@ import { IncentivisedVotingLockup } from '../../../context/DataProvider/types';
 export interface RewardsEarned {
   rewards?: BigDecimal;
   rewardsUsd?: BigDecimal;
+  apy?: BigDecimal;
 }
 
 export enum TransactionType {

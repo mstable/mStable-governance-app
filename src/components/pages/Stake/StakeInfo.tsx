@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { H3 } from '../../core/Typography';
 import { Tooltip } from '../../core/ReactTooltip';
 import { FormRow } from '../../core/Form';
-import { useStakeState } from './StakeProvider';
+import { useStakeState, useRewardsEarned } from './StakeProvider';
 import { useToken } from '../../../context/DataProvider/TokensProvider';
 import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
 import { BigDecimal } from '../../../web3/BigDecimal';
@@ -31,7 +31,7 @@ export const StakeInfo: FC = () => {
     incentivisedVotingLockup?.userStakingBalance || new BigDecimal(0, 18);
   const totalStatic =
     incentivisedVotingLockup?.totalStaticWeight || new BigDecimal(0, 18);
-  // const rewards = useRewardsEarned();
+  const rewards = useRewardsEarned();
   // useEffect(() => {}, []);
 
   return (
@@ -61,7 +61,10 @@ export const StakeInfo: FC = () => {
           </Row>
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>
-            {/* <p>Yours: {rewards.rewards?.simple}</p> */}
+            <p>Yours: {rewards.rewards?.simple}</p>
+            <p>
+              APY: {incentivisedVotingLockup?.userStakingReward?.currentAPY} %
+            </p>
           </Row>
         </Container>
       )}
