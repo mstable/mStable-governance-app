@@ -6,17 +6,20 @@ import { NotificationsProvider } from './NotificationsProvider';
 import { SignerProvider } from './SignerProvider';
 import { TransactionsProvider } from './TransactionsProvider';
 import { ThemeProvider } from './ThemeProvider';
+// import { EarnDataProvider } from './EarnDataProvider';
 
 export const Providers: FC<{}> = ({ children }) => (
   <NotificationsProvider>
     <UserProvider>
       <SignerProvider>
         <AllDataProviders>
+          {/* <EarnDataProvider> */}
           <TransactionsProvider>
             <AppProvider>
               <ThemeProvider>{children}</ThemeProvider>
             </AppProvider>
           </TransactionsProvider>
+          {/* </EarnDataProvider> */}
         </AllDataProviders>
       </SignerProvider>
     </UserProvider>

@@ -62,7 +62,9 @@ export const OnboardingWizard: FC = () => {
   const account = useAccount();
 
   const incentivisedVotingLockup = useIncentivisedVotingLockup();
-  const hasStakingBalance = incentivisedVotingLockup?.userStakingBalance?.gt(0);
+  const hasStakingBalance = incentivisedVotingLockup?.userStakingBalance?.exact.gt(
+    0,
+  );
   const metaToken = useMetaToken();
   const hasMetaBalance = metaToken?.balance.exact.gt(0);
 

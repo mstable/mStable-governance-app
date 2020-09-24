@@ -6,11 +6,21 @@ import React, {
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from 'react';
+import useInterval from 'react-use/lib/useInterval';
 
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
 import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataProvider';
-import { Actions, Dispatch, State, TransactionType } from './types';
+import {
+  Actions,
+  Dispatch,
+  State,
+  TransactionType,
+  RewardsEarned,
+} from './types';
+import { SCALE } from '../../../web3/constants';
+import { BigDecimal } from '../../../web3/BigDecimal';
 import { reducer } from './reducer';
 import { IIncentivisedVotingLockupFactory } from '../../../typechain/IIncentivisedVotingLockupFactory';
 import { useSignerContext } from '../../../context/SignerProvider';
@@ -36,6 +46,7 @@ const stateCtx = createContext<State>({} as never);
 const contractCtx = createContext<IIncentivisedVotingLockup | undefined>(
   undefined,
 );
+const rewardsEarnedCtx = createContext<RewardsEarned>({});
 
 export const useStakeState = (): State => useContext(stateCtx);
 
@@ -43,6 +54,9 @@ export const useStakeDispatch = (): Dispatch => useContext(dispatchCtx);
 
 export const useStakeContract = (): IIncentivisedVotingLockup | undefined =>
   useContext(contractCtx);
+
+export const useRewardsEarned = (): RewardsEarned =>
+  useContext(rewardsEarnedCtx);
 
 const StakeContractProvider: FC = ({ children }) => {
   const { address } = useIncentivisedVotingLockup() ?? {};
@@ -58,6 +72,82 @@ const StakeContractProvider: FC = ({ children }) => {
 
   return (
     <contractCtx.Provider value={contract}>{children}</contractCtx.Provider>
+  );
+};
+
+const useRewardsEarnedInterval = (): RewardsEarned => {
+  const [value, setValue] = useState<
+    ReturnType<typeof useRewardsEarnedInterval>
+  >({});
+  const incentivisedVotingLockup = useIncentivisedVotingLockup();
+  // const rewardsToken = useToken(incentivisedVotingLockup?.stakingToken.address);
+  // const platformToken = useCurrentPlatformToken();
+
+  useInterval(() => {
+    if (!incentivisedVotingLockup) {
+      return setValue({});
+    }
+
+    const {
+      lastUpdateTime,
+      periodFinish,
+      rewardPerTokenStored,
+      rewardRate,
+      userStakingBalance,
+      userStakingReward,
+      totalStaticWeight: { exact: totalTokens },
+    } = incentivisedVotingLockup;
+
+    if (totalTokens.eq(0) || !userStakingReward || !userStakingBalance) {
+      // If there is no StakingToken liquidity, avoid div(0)
+      return { rewardPerTokenStored };
+    }
+
+    const lastTimeRewardApplicable = Math.min(
+      periodFinish,
+      Math.floor(Date.now() / 1e3),
+    );
+
+    const timeSinceLastUpdate = lastTimeRewardApplicable - lastUpdateTime;
+
+    // New reward units to distribute = rewardRate * timeSinceLastUpdate
+    const rewardUnitsToDistribute = rewardRate.exact.mul(timeSinceLastUpdate);
+
+    // New reward units per token = (rewardUnitsToDistribute * 1e18) / totalTokens
+    const unitsToDistributePerToken = new BigDecimal(
+      rewardUnitsToDistribute.mul(SCALE).div(totalTokens),
+      18,
+    );
+
+    const rewardPerTokenStoredNow = rewardPerTokenStored.add(
+      unitsToDistributePerToken,
+    );
+
+    // Current rate per token - rate user previously received
+    const userRewardDelta = rewardPerTokenStoredNow.sub(
+      userStakingReward.amountPerTokenPaid,
+    );
+
+    // New reward = staked tokens * difference in rate
+    const userNewReward = userStakingBalance.mulTruncate(userRewardDelta.exact);
+
+    // Add to previous rewards
+    const summedRewards = userStakingReward.amount.add(userNewReward);
+
+    return setValue({
+      rewards: summedRewards,
+    });
+  }, 1e3);
+
+  return value;
+};
+
+const RewardsEarnedProvider: FC<{}> = ({ children }) => {
+  const rewardsEarned = useRewardsEarnedInterval();
+  return (
+    <rewardsEarnedCtx.Provider value={rewardsEarned}>
+      {children}
+    </rewardsEarnedCtx.Provider>
   );
 };
 
@@ -95,9 +185,7 @@ export const StakeProvider: FC<{}> = ({ children }) => {
     [dispatch],
   );
 
-  const setMaxLockupAmount = useCallback<
-    Dispatch['setMaxLockupAmount']
-  >(() => {
+  const setMaxLockupAmount = useCallback<Dispatch['setMaxLockupAmount']>(() => {
     dispatch({ type: Actions.SetMaxLockupAmount });
   }, [dispatch]);
 
@@ -108,7 +196,6 @@ export const StakeProvider: FC<{}> = ({ children }) => {
     [dispatch],
   );
 
-
   return (
     <dispatchCtx.Provider
       value={useMemo(
@@ -117,13 +204,21 @@ export const StakeProvider: FC<{}> = ({ children }) => {
           setLockupDays,
           setTransactionType,
           setMaxLockupAmount,
-          setMaxLockupDays
+          setMaxLockupDays,
         }),
-        [setLockupAmount, setLockupDays, setTransactionType, setMaxLockupAmount, setMaxLockupDays],
+        [
+          setLockupAmount,
+          setLockupDays,
+          setTransactionType,
+          setMaxLockupAmount,
+          setMaxLockupDays,
+        ],
       )}
     >
       <stateCtx.Provider value={state}>
-        <StakeContractProvider>{children}</StakeContractProvider>
+        <StakeContractProvider>
+          <RewardsEarnedProvider>{children}</RewardsEarnedProvider>
+        </StakeContractProvider>
       </stateCtx.Provider>
     </dispatchCtx.Provider>
   );
