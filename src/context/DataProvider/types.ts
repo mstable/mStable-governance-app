@@ -1,41 +1,41 @@
-import { BigNumber } from 'ethers/utils';
 import { Tokens } from './TokensProvider';
 import { UserLockupsQueryResult, Token } from '../../graphql/mstable';
+import { BigDecimal } from '../../web3/BigDecimal';
 
 export interface UserLockup {
-  value: BigNumber;
+  value: BigDecimal;
   lockTime: number;
   ts: number;
-  slope: BigNumber;
-  bias: BigNumber;
+  slope: BigDecimal;
+  bias: BigDecimal;
 }
 
 export interface UserStakingReward {
-  amount: BigNumber;
-  amountPerTokenPaid: BigNumber;
-  rewardsPaid: BigNumber;
+  amount: BigDecimal;
+  amountPerTokenPaid: BigDecimal;
+  rewardsPaid: BigDecimal;
 }
 
 // TODO use BigDecimal
 export interface IncentivisedVotingLockup {
   address: string;
-  duration: BigNumber;
-  end: BigNumber;
+  duration: BigDecimal;
+  end: BigDecimal;
   expired: boolean;
-  globalEpoch: BigNumber;
+  globalEpoch: BigDecimal;
   lastUpdateTime: number;
-  maxTime: BigNumber;
+  maxTime: BigDecimal;
   periodFinish: number;
-  rewardPerTokenStored: BigNumber;
-  rewardRate: BigNumber;
+  rewardPerTokenStored: BigDecimal;
+  rewardRate: BigDecimal;
   rewardsDistributor: { id: string; fundManagers: string[] };
   rewardsToken: Token;
   stakingToken: Token;
-  totalStakingRewards: BigNumber;
-  totalStaticWeight: BigNumber;
-  totalValue: BigNumber;
+  totalStakingRewards: BigDecimal;
+  totalStaticWeight: BigDecimal;
+  totalValue: BigDecimal;
   userLockup?: UserLockup;
-  userStakingBalance?: BigNumber;
+  userStakingBalance?: BigDecimal;
   userStakingReward?: UserStakingReward;
 }
 
@@ -43,8 +43,8 @@ export interface RawData {
   tokens: Tokens;
   incentivisedVotingLockups: [
     | NonNullable<
-        UserLockupsQueryResult['data']
-      >['incentivisedVotingLockups'][0]
+      UserLockupsQueryResult['data']
+    >['incentivisedVotingLockups'][0]
     | undefined,
   ];
 }

@@ -27,15 +27,8 @@ export const StakeInfo: FC = () => {
   } = useStakeState();
   const vmta = useToken(incentivisedVotingLockup?.address);
   const s = useTotalSupply(incentivisedVotingLockup?.address);
-  const userStatic = new BigDecimal(
-    incentivisedVotingLockup?.userStakingBalance || 0,
-    18,
-  );
-  const totalStatic = new BigDecimal(
-    incentivisedVotingLockup?.totalStaticWeight || 0,
-    18,
-  );
-
+  const userStatic = incentivisedVotingLockup?.userStakingBalance;
+  const totalStatic = incentivisedVotingLockup?.totalStaticWeight;
   // useEffect(() => {}, []);
 
   return (
@@ -50,8 +43,8 @@ export const StakeInfo: FC = () => {
           </Row>
           <Row>
             <Tooltip tip="test">Boosted weight</Tooltip>
-            <p>{userStatic.simple}</p>
-            <p>{totalStatic.simple}</p>
+            <p>{userStatic?.simple}</p>
+            <p>{totalStatic?.simple}</p>
           </Row>
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>

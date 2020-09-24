@@ -1,4 +1,3 @@
-import { BigNumber } from 'ethers/utils';
 import {
   DataState,
   IncentivisedVotingLockup,
@@ -6,6 +5,7 @@ import {
   UserStakingReward,
   UserLockup,
 } from './types';
+import { BigDecimal } from '../../web3/BigDecimal';
 
 type RawIncentivisedVotingLockup = NonNullable<
   RawData['incentivisedVotingLockups'][0]
@@ -17,9 +17,9 @@ const transformUserLockup = (
   if (data) {
     const { value, bias, lockTime, slope, ts } = data;
     return {
-      value: new BigNumber(value),
-      bias: new BigNumber(bias),
-      slope: new BigNumber(slope),
+      value: new BigDecimal(value, 18),
+      bias: new BigDecimal(bias, 18),
+      slope: new BigDecimal(slope, 18),
       ts: parseInt(ts, 10),
       lockTime: parseInt(lockTime, 10),
     };
@@ -33,9 +33,9 @@ const transformUserStakingReward = (
   if (data) {
     const { amount, amountPerTokenPaid, rewardsPaid } = data;
     return {
-      amount: new BigNumber(amount),
-      amountPerTokenPaid: new BigNumber(amountPerTokenPaid),
-      rewardsPaid: new BigNumber(rewardsPaid),
+      amount: new BigDecimal(amount, 18),
+      amountPerTokenPaid: new BigDecimal(amountPerTokenPaid, 18),
+      rewardsPaid: new BigDecimal(rewardsPaid, 18),
     };
   }
   return undefined;
@@ -43,9 +43,9 @@ const transformUserStakingReward = (
 
 const transformUserStakingBalance = (
   data: RawIncentivisedVotingLockup['stakingBalances'][0] | undefined,
-): BigNumber | undefined => {
+): BigDecimal | undefined => {
   if (data) {
-    return new BigNumber(data.amount);
+    return new BigDecimal(data.amount, 18);
   }
   return undefined;
 };
@@ -95,21 +95,21 @@ export const transformRawData = ({
       ...stakingToken,
       name: '',
     },
-    rewardPerTokenStored: new BigNumber(rewardPerTokenStored),
-    duration: new BigNumber(duration),
-    end: new BigNumber(end),
-    rewardRate: new BigNumber(rewardRate),
+    rewardPerTokenStored: new BigDecimal(rewardPerTokenStored, 18),
+    duration: new BigDecimal(duration, 18),
+    end: new BigDecimal(end, 18),
+    rewardRate: new BigDecimal(rewardRate, 18),
     rewardsToken: {
       ...rewardsToken,
       name: '',
     },
     rewardsDistributor,
-    globalEpoch: new BigNumber(globalEpoch),
+    globalEpoch: new BigDecimal(globalEpoch, 18),
     expired,
-    maxTime: new BigNumber(maxTime),
-    totalStaticWeight: new BigNumber(totalStaticWeight),
-    totalStakingRewards: new BigNumber(totalStakingRewards),
-    totalValue: new BigNumber(totalValue),
+    maxTime: new BigDecimal(maxTime, 18),
+    totalStaticWeight: new BigDecimal(totalStaticWeight, 18),
+    totalStakingRewards: new BigDecimal(totalStakingRewards, 18),
+    totalValue: new BigDecimal(totalValue, 18),
   };
 
   return {

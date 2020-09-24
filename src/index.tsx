@@ -11,7 +11,7 @@ import { Providers } from './context';
 import { Updaters } from './updaters';
 import { Layout } from './components/layout/Layout';
 import { NotFound } from './components/pages/NotFound';
-import { Stake } from './components/pages/Stake';
+import { StakeTabs } from './components/pages/Stake';
 import { Discuss } from './components/pages/Discuss';
 import { Govern } from './components/pages/Govern';
 
@@ -24,7 +24,7 @@ Sentry.init({
 
 const routes = {
   '/govern': () => <Govern />,
-  '/stake': () => <Stake />,
+  '/stake': () => <StakeTabs />,
   '/discuss': () => <Discuss />,
 };
 
