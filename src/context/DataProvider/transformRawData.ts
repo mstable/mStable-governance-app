@@ -1,5 +1,7 @@
 import { BigNumber } from 'ethers/utils';
 import { BigDecimal } from '../../web3/BigDecimal';
+import { ONE_DAY, ONE_WEEK } from '../../web3/constants';
+import { nowSimple } from '../../web3/amounts';
 import {
   DataState,
   IncentivisedVotingLockup,
@@ -85,6 +87,20 @@ export const transformRawData = ({
   const userStakingReward = transformUserStakingReward(rawUserStakingReward);
   const userStakingBalance = transformUserStakingBalance(rawUserStakingBalance);
 
+  // Get current unix
+  const now = nowSimple();
+  const unixWeekCount = Math.floor(now / ONE_WEEK.toNumber());
+  const nextUnixWeek = (unixWeekCount + 1) * ONE_WEEK.toNumber();
+  const minDays = Math.ceil((nextUnixWeek - now) / ONE_DAY.toNumber());
+  // Min days = nextUniWeekStart - now
+
+  // Max days = END - now
+  // let maxDays = 365;
+  const endBN = new BigNumber(end);
+  const maxDays = Math.floor(
+    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber(),
+  );
+
   const incentivisedVotingLockup: IncentivisedVotingLockup = {
     address,
     userLockup,
@@ -98,7 +114,11 @@ export const transformRawData = ({
     },
     rewardPerTokenStored: new BigDecimal(rewardPerTokenStored, 18),
     duration: new BigNumber(duration),
-    end: new BigNumber(end),
+    end: endBN,
+    lockTimes: {
+      min: minDays,
+      max: maxDays,
+    },
     rewardRate: new BigDecimal(rewardRate, 18),
     rewardsToken: {
       ...rewardsToken,

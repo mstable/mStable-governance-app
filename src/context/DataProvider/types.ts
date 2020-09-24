@@ -19,10 +19,16 @@ export interface UserStakingReward {
   poolShare?: BigDecimal;
 }
 
+export interface LockTimes {
+  min: number;
+  max: number;
+}
+
 export interface IncentivisedVotingLockup {
   address: string;
   duration: BigNumber;
   end: BigNumber;
+  lockTimes: LockTimes;
   expired: boolean;
   globalEpoch: BigNumber;
   lastUpdateTime: number;

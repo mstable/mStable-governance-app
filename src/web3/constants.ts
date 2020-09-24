@@ -6,6 +6,7 @@ export const RATIO_SCALE = new BigNumber((1e8).toString());
 export const EXP_SCALE = new BigNumber((1e18).toString());
 
 export const ONE_DAY = new BigNumber(60 * 60 * 24);
+export const ONE_WEEK = new BigNumber(60 * 60 * 24 * 7);
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 

@@ -65,18 +65,18 @@ export const CreateLockInput: FC = () => {
         <H3>
           <Tooltip tip="test">Lock up deposit</Tooltip>
         </H3>
-        {data.incentivisedVotingLockup && (
+        {data.incentivisedVotingLockup && lockupDays > 0 && (
           <RangeInput
-            min={0}
+            min={data.incentivisedVotingLockup.lockTimes.min}
             step={7}
-            max={365}
+            max={data.incentivisedVotingLockup.lockTimes.max}
             value={lockupDays}
             onChange={setLockupDays}
             startLabel="Today"
-            endLabel="One Year"
+            endLabel="End date"
             onSetMax={setMaxLockupDays}
           >
-            <div>{lockupDays} Days</div>
+            <div>{lockupDays / 7} Weeks</div>
             <div>
               {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
             </div>
