@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers/utils';
+import { BigDecimal } from '../../web3/BigDecimal';
 import {
   DataState,
   IncentivisedVotingLockup,
@@ -5,7 +7,6 @@ import {
   UserStakingReward,
   UserLockup,
 } from './types';
-import { BigDecimal } from '../../web3/BigDecimal';
 
 type RawIncentivisedVotingLockup = NonNullable<
   RawData['incentivisedVotingLockups'][0]
@@ -18,8 +19,8 @@ const transformUserLockup = (
     const { value, bias, lockTime, slope, ts } = data;
     return {
       value: new BigDecimal(value, 18),
-      bias: new BigDecimal(bias, 18),
-      slope: new BigDecimal(slope, 18),
+      bias: new BigNumber(bias),
+      slope: new BigNumber(slope),
       ts: parseInt(ts, 10),
       lockTime: parseInt(lockTime, 10),
     };
@@ -96,8 +97,8 @@ export const transformRawData = ({
       name: '',
     },
     rewardPerTokenStored: new BigDecimal(rewardPerTokenStored, 18),
-    duration: new BigDecimal(duration, 18),
-    end: new BigDecimal(end, 18),
+    duration: new BigNumber(duration),
+    end: new BigNumber(end),
     rewardRate: new BigDecimal(rewardRate, 18),
     rewardsToken: {
       ...rewardsToken,
@@ -106,7 +107,7 @@ export const transformRawData = ({
     rewardsDistributor,
     globalEpoch: new BigDecimal(globalEpoch, 18),
     expired,
-    maxTime: new BigDecimal(maxTime, 18),
+    maxTime: new BigNumber(maxTime),
     totalStaticWeight: new BigDecimal(totalStaticWeight, 18),
     totalStakingRewards: new BigDecimal(totalStakingRewards, 18),
     totalValue: new BigDecimal(totalValue, 18),

@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers/utils';
 import { Tokens } from './TokensProvider';
 import { UserLockupsQueryResult, Token } from '../../graphql/mstable';
 import { BigDecimal } from '../../web3/BigDecimal';
@@ -6,8 +7,8 @@ export interface UserLockup {
   value: BigDecimal;
   lockTime: number;
   ts: number;
-  slope: BigDecimal;
-  bias: BigDecimal;
+  slope: BigNumber;
+  bias: BigNumber;
 }
 
 export interface UserStakingReward {
@@ -16,15 +17,14 @@ export interface UserStakingReward {
   rewardsPaid: BigDecimal;
 }
 
-// TODO use BigDecimal
 export interface IncentivisedVotingLockup {
   address: string;
-  duration: BigDecimal;
-  end: BigDecimal;
+  duration: BigNumber;
+  end: BigNumber;
   expired: boolean;
   globalEpoch: BigDecimal;
   lastUpdateTime: number;
-  maxTime: BigDecimal;
+  maxTime: BigNumber;
   periodFinish: number;
   rewardPerTokenStored: BigDecimal;
   rewardRate: BigDecimal;

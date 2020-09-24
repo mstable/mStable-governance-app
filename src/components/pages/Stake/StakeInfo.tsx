@@ -7,6 +7,7 @@ import { FormRow } from '../../core/Form';
 import { useStakeState } from './StakeProvider';
 import { useToken } from '../../../context/DataProvider/TokensProvider';
 import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
+import { BigDecimal } from '../../../web3/BigDecimal';
 
 const Row = styled.div`
   /* display: flex; */
@@ -26,28 +27,41 @@ export const StakeInfo: FC = () => {
   } = useStakeState();
   const vmta = useToken(incentivisedVotingLockup?.address);
   const s = useTotalSupply(incentivisedVotingLockup?.address);
-  const userStatic = incentivisedVotingLockup?.userStakingBalance;
-  const totalStatic = incentivisedVotingLockup?.totalStaticWeight;
+  const userStatic =
+    incentivisedVotingLockup?.userStakingBalance || new BigDecimal(0, 18);
+  const totalStatic =
+    incentivisedVotingLockup?.totalStaticWeight || new BigDecimal(0, 18);
+  // const rewards = useRewardsEarned();
   // useEffect(() => {}, []);
 
   return (
     <FormRow>
+      <H3>Total stake</H3>
+      {metaToken && (
+        <Container>
+          <Row>
+            <Tooltip tip="test">MTA</Tooltip>
+            <p>Yours: {incentivisedVotingLockup?.userLockup?.value.simple}</p>
+            <p>Total: {incentivisedVotingLockup?.totalValue.simple}</p>
+          </Row>
+        </Container>
+      )}
       <H3>Your stake</H3>
       {metaToken && (
         <Container>
           <Row>
             <Tooltip tip="test">vMTA</Tooltip>
-            <p>{vmta?.balance.simple}</p>
-            <p>{s.simple}</p>
+            <p>Yours: {vmta?.balance.simple}</p>
+            <p>Total: {s.simple}</p>
           </Row>
           <Row>
             <Tooltip tip="test">Boosted weight</Tooltip>
-            <p>{userStatic?.simple}</p>
-            <p>{totalStatic?.simple}</p>
+            <p>Yours: {userStatic.simple}</p>
+            <p>Total: {totalStatic.simple}</p>
           </Row>
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>
-            <br />
+            {/* <p>Yours: {rewards.rewards?.simple}</p> */}
           </Row>
         </Container>
       )}

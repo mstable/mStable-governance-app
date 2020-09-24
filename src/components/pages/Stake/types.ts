@@ -2,6 +2,11 @@ import { BigDecimal } from '../../../web3/BigDecimal';
 import { SubscribedToken } from '../../../types';
 import { IncentivisedVotingLockup } from '../../../context/DataProvider/types';
 
+export interface RewardsEarned {
+  rewards?: BigDecimal;
+  rewardsUsd?: BigDecimal;
+}
+
 export enum TransactionType {
   Claim = 'Claim',
   CreateLock = 'CreateLock',
@@ -58,12 +63,13 @@ export enum Actions {
 
 export type Action =
   | {
-    type: Actions.Data;
-    payload: {
-      metaToken?: SubscribedToken;
-      incentivisedVotingLockup?: IncentivisedVotingLockup;
-    };
-  }
+      type: Actions.Data;
+      payload: {
+        metaToken?: SubscribedToken;
+        incentivisedVotingLockup?: IncentivisedVotingLockup;
+        rewards?: RewardsEarned;
+      };
+    }
   | { type: Actions.SetLockupAmount; payload: string }
   | { type: Actions.SetLockupDays; payload: number }
   | { type: Actions.SetMaxLockupAmount }
