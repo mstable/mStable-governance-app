@@ -62,6 +62,9 @@ export const StakeInfo: FC = () => {
           <Row>
             <Tooltip tip="test">Rewards</Tooltip>
             <p>Yours: {rewards.rewards?.simple}</p>
+            <p>
+              APY: {incentivisedVotingLockup?.userStakingReward?.currentAPY} %
+            </p>
           </Row>
         </Container>
       )}

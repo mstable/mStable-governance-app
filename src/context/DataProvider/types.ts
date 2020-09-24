@@ -15,6 +15,7 @@ export interface UserStakingReward {
   amount: BigDecimal;
   amountPerTokenPaid: BigDecimal;
   rewardsPaid: BigDecimal;
+  currentAPY?: number;
 }
 
 export interface IncentivisedVotingLockup {
