@@ -43,7 +43,7 @@ const ImageContainer = styled.div`
   img {
     width: auto;
     height: auto;
-    max-width: 500px;
+    max-width: 350px;
     max-height: 350px;
     border-radius: 6px;
     margin: auto;
