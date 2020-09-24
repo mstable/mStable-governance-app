@@ -21,8 +21,9 @@ const Step = styled.div<{ active?: boolean; completed?: boolean }>`
   pointer-events: ${({ active, completed }) => !active && !completed && 'none'};
   h3 {
     color: ${({ completed, theme }) => completed && theme.color.green};
+    font-weight: bold;
   }
-  padding-bottom: 16px;
+  padding-bottom: ${({ completed }) => (completed ? '2px' : '16px')};
 `;
 
 const Container = styled.div``;
@@ -85,14 +86,14 @@ export const OnboardingWizard: FC = () => {
         )}
       </Step>
       <Step
-        completed={hasMetaBalance}
+        completed={hasMetaBalance || hasStakingBalance}
         active={!hasMetaBalance && !hasStakingBalance && account !== null}
       >
-        <IconsContainer completed={hasMetaBalance}>
+        <IconsContainer completed={hasMetaBalance || hasStakingBalance}>
           <H3>2. Get $MTA</H3>
           <GetIcon />
         </IconsContainer>
-        {!hasMetaBalance && (
+        {!hasMetaBalance && !hasStakingBalance && (
           <ExchangesContainer>
             <a href="https://balancer.exchange/#/swap">
               Balancer <BalancerIcon />

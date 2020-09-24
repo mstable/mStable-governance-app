@@ -26,6 +26,6 @@ export const getShareAndAPY = (
   const apy = dailyReturnRate.simple * 365 * 100;
   return {
     apy,
-    share,
+    share: new BigDecimal(share.exact.mul(100), 18),
   };
 };

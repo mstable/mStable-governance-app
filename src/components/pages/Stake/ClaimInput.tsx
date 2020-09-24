@@ -23,15 +23,15 @@ export const ClaimInput: FC = () => {
           <>
             Claim{' '}
             <CountUp
-              end={rewards?.rewards.simpleRounded}
+              end={rewards?.rewards.simple}
               decimals={6}
               suffix={` ${metaToken.symbol}`}
             />
-              .
-            </>
+            .
+          </>
         ) : (
-            'No rewards to claim.'
-          )}
+          'No rewards to claim.'
+        )}
       </div>
     </Row>
   );

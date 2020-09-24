@@ -8,10 +8,8 @@ import {
 } from '../../forms/TransactionForm/FormProvider';
 import { useStakeContract, useRewardsEarned } from './StakeProvider';
 import { ClaimInput } from './ClaimInput';
-import { ClaimConfirm } from './ClaimConfirm';
 
 const Form: FC<{}> = () => {
-
   const rewards = useRewardsEarned();
   const contract = useStakeContract();
   const setFormManifest = useSetFormManifest();
@@ -35,7 +33,6 @@ const Form: FC<{}> = () => {
     <TransactionForm
       confirmLabel="Claim"
       input={<ClaimInput />}
-      confirm={<ClaimConfirm />}
       transactionsLabel="Claim transactions"
       valid={valid}
     />

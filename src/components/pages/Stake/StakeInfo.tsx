@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import Skeleton from 'react-loading-skeleton';
+import format from 'date-fns/format';
 
 import { H3 } from '../../core/Typography';
 import { Tooltip } from '../../core/ReactTooltip';
 import { FormRow } from '../../core/Form';
+import { CountUp } from '../../core/CountUp';
 import { useStakeState, useRewardsEarned } from './StakeProvider';
 import { useToken } from '../../../context/DataProvider/TokensProvider';
 import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
-import { BigDecimal } from '../../../web3/BigDecimal';
+import { ONE_WEEK } from '../../../web3/constants';
 
 const Row = styled.div`
   /* display: flex; */
@@ -27,73 +30,167 @@ export const StakeInfo: FC = () => {
   const {
     // lockupAmount: { formValue: amountFormValue, amount },
     // lockupPeriod: { formValue: lockupDays, unlockTime },
-    data: { incentivisedVotingLockup, metaToken, simulatedData },
+    data: { incentivisedVotingLockup, simulatedData },
   } = useStakeState();
-  const vmta = useToken(incentivisedVotingLockup?.address);
-  const s = useTotalSupply(incentivisedVotingLockup?.address);
-  const userStatic =
-    incentivisedVotingLockup?.userStakingBalance || new BigDecimal(0, 18);
-  const totalStatic =
-    incentivisedVotingLockup?.totalStaticWeight || new BigDecimal(0, 18);
+
+  const {
+    totalValue,
+    userLockup,
+    userStakingBalance,
+    totalStaticWeight,
+    totalStakingRewards,
+    userStakingReward,
+    address,
+  } = incentivisedVotingLockup || {};
+  const vmta = useToken(address);
+  const s = useTotalSupply(address);
   const rewards = useRewardsEarned();
   // useEffect(() => {}, []);
 
   return (
-    <FormRow>
-      <H3>Total stake</H3>
-      {metaToken && (
+    <>
+      <FormRow>
+        <H3>Totals</H3>
         <Container>
           <Row>
-            <Tooltip tip="test">MTA</Tooltip>
-            <p>Yours: {incentivisedVotingLockup?.userLockup?.value.simple}</p>
-            <SimulatedData>
-              Simulated: {simulatedData?.userLockup?.value.simple}
-            </SimulatedData>
-            <p>Total: {incentivisedVotingLockup?.totalValue.simple}</p>
-            <SimulatedData>
-              Simulated Total: {simulatedData?.totalValue.simple}
-            </SimulatedData>
+            <Tooltip tip="This">Total MTA staked: </Tooltip>{' '}
+            {totalValue ? (
+              <CountUp end={totalValue.simple} />
+            ) : (
+              <Skeleton width={100} />
+            )}
+          </Row>
+          <Row>
+            <Tooltip tip="This">Total weekly rewards: </Tooltip>{' '}
+            {totalStakingRewards ? (
+              <CountUp end={totalStakingRewards.simple} suffix=" MTA" />
+            ) : (
+              <Skeleton width={100} />
+            )}
           </Row>
         </Container>
+      </FormRow>
+      {userStakingBalance && userLockup && userStakingBalance.simple > 0 ? (
+        <>
+          <FormRow>
+            <H3>Your Stake</H3>
+            <Container>
+              <Row>
+                You staked{' '}
+                <CountUp end={userLockup.value.simple} suffix=" MTA" /> for{' '}
+                {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks on{' '}
+                {userLockup.ts
+                  ? format(userLockup.ts * 1000, 'dd-MM-yyyy')
+                  : null}
+              </Row>
+              <Row>
+                <Tooltip tip="This">Voting Power: </Tooltip> You have{' '}
+                {vmta && s && s.simple > 0 ? (
+                  <CountUp
+                    end={(vmta.balance.simple / s.simple) * 100}
+                    suffix=" %"
+                  />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                of the voting power (
+                {vmta ? (
+                  <CountUp end={vmta.balance.simple} suffix=" vMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                out of{' '}
+                {s ? (
+                  <CountUp end={s.simple} suffix=" vMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+                )
+              </Row>
+            </Container>
+          </FormRow>
+          <FormRow>
+            <H3>Your Rewards</H3>
+            <Container>
+              <Row>
+                <Tooltip tip="This">Earning Power: </Tooltip> You have{' '}
+                {userStakingBalance.simple > 0 &&
+                totalStaticWeight &&
+                totalStaticWeight?.simple > 0 ? (
+                  <CountUp
+                    end={
+                      (userStakingBalance.simple / totalStaticWeight.simple) *
+                      100
+                    }
+                    suffix=" %"
+                  />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                of the earning power (
+                {userStakingBalance ? (
+                  <CountUp end={userStakingBalance.simple} suffix=" sMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}{' '}
+                out of{' '}
+                {totalStaticWeight ? (
+                  <CountUp end={totalStaticWeight.simple} suffix=" sMTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+                )
+              </Row>
+              <Row>
+                <Tooltip tip="test">Your Rewards APY</Tooltip>{' '}
+                {userStakingReward && userStakingReward.currentAPY ? (
+                  <CountUp end={userStakingReward.currentAPY} suffix=" %" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+              </Row>
+              <Row>
+                <Tooltip tip="test">Unclaimed Rewards</Tooltip>{' '}
+                {rewards.rewards ? (
+                  <CountUp end={rewards.rewards.simple} suffix=" MTA" />
+                ) : (
+                  <Skeleton width={100} />
+                )}
+              </Row>
+            </Container>
+          </FormRow>
+        </>
+      ) : simulatedData ? (
+        <FormRow>
+          <H3>Potential Stake</H3>
+          <Container>
+            <Row>
+              <p> Locking x up for y</p>
+            </Row>
+            <Row>
+              <Tooltip tip="test">Voting Weight</Tooltip>
+              <SimulatedData>
+                Simulated vMTA: {simulatedData.userLockup?.bias}
+              </SimulatedData>
+              <p>Voting weight: %</p>
+            </Row>
+            <Row>
+              <Tooltip tip="test">Earning power</Tooltip>
+              <SimulatedData>
+                Simulated: {simulatedData.userStakingBalance?.simple}
+              </SimulatedData>
+              <SimulatedData>
+                Simulated APY: {simulatedData.userStakingReward?.currentAPY}
+              </SimulatedData>
+              <SimulatedData>
+                Simulated Share: {simulatedData.userStakingReward?.poolShare}
+              </SimulatedData>
+            </Row>
+          </Container>
+        </FormRow>
+      ) : (
+        <Skeleton height={300} />
       )}
-      <H3>Your stake</H3>
-      {metaToken && (
-        <Container>
-          <Row>
-            <Tooltip tip="test">vMTA</Tooltip>
-            <p>Yours: {vmta?.balance.simple}</p>
-            <SimulatedData>
-              Simulated: {simulatedData?.userLockup?.bias}
-            </SimulatedData>
-            <p>Total: {s.simple}</p>
-          </Row>
-          <Row>
-            <Tooltip tip="test">Boosted weight</Tooltip>
-            <p>Yours: {userStatic.simple}</p>
-            <SimulatedData>
-              Simulated: {simulatedData?.userStakingBalance?.simple}
-            </SimulatedData>
-            <p>Total: {totalStatic.simple}</p>
-            <p>
-              Share:{' '}
-              {incentivisedVotingLockup?.userStakingReward?.poolShare?.simple}
-            </p>
-            <SimulatedData>
-              Simulated Share: {simulatedData?.userStakingReward?.poolShare}
-            </SimulatedData>
-          </Row>
-          <Row>
-            <Tooltip tip="test">Rewards</Tooltip>
-            <p>Yours: {rewards.rewards?.simple}</p>
-            <p>
-              APY: {incentivisedVotingLockup?.userStakingReward?.currentAPY} %
-            </p>
-            <SimulatedData>
-              Simulated APY: {simulatedData?.userStakingReward?.currentAPY}
-            </SimulatedData>
-          </Row>
-        </Container>
-      )}
-    </FormRow>
+    </>
   );
 };

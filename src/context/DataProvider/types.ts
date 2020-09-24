@@ -9,6 +9,7 @@ export interface UserLockup {
   ts: number;
   slope: BigNumber;
   bias: BigNumber;
+  length: number;
 }
 
 export interface UserStakingReward {
@@ -30,7 +31,7 @@ export interface IncentivisedVotingLockup {
   end: BigNumber;
   lockTimes: LockTimes;
   expired: boolean;
-  globalEpoch: BigDecimal;
+  globalEpoch: BigNumber;
   lastUpdateTime: number;
   maxTime: BigNumber;
   periodFinish: number;
@@ -51,8 +52,8 @@ export interface RawData {
   tokens: Tokens;
   incentivisedVotingLockups: [
     | NonNullable<
-      UserLockupsQueryResult['data']
-    >['incentivisedVotingLockups'][0]
+        UserLockupsQueryResult['data']
+      >['incentivisedVotingLockups'][0]
     | undefined,
   ];
 }

@@ -1,5 +1,7 @@
 import React, { FC, useEffect } from 'react';
+import format from 'date-fns/format';
 
+import Skeleton from 'react-loading-skeleton';
 import { TransactionForm } from '../../forms/TransactionForm';
 import {
   FormProvider,
@@ -9,12 +11,10 @@ import { Interfaces } from '../../../types';
 import { BigDecimal } from '../../../web3/BigDecimal';
 
 import { CreateLockInput } from './CreateLockInput';
-import {
-  useStakeContract,
-  useStakeState,
-} from './StakeProvider';
+import { useStakeContract, useStakeState } from './StakeProvider';
 import { TransactionType } from './types';
 import { CreateLockConfirm } from './CreateLockConfirm';
+import { Protip } from '../../core/Protip';
 
 // const TX_TYPES = {
 //   [TransactionType.CreateLock]: {
@@ -50,9 +50,11 @@ const StakeForm: FC = () => {
     lockupPeriod: { unlockTime },
     transactionType,
     valid,
+    data,
   } = useStakeState();
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
+  const { incentivisedVotingLockup } = data;
 
   useEffect(() => {
     if (valid && contract) {
@@ -87,26 +89,6 @@ const StakeForm: FC = () => {
             contract,
           });
 
-        case TransactionType.Withdraw:
-          return setFormManifest<
-            Interfaces.IncentivisedVotingLockup,
-            'withdraw'
-          >({
-            fn: 'withdraw',
-            args: [],
-            contract,
-          });
-
-        case TransactionType.Claim:
-          return setFormManifest<
-            Interfaces.IncentivisedVotingLockup,
-            'claimReward'
-          >({
-            fn: 'claimReward',
-            args: [],
-            contract,
-          });
-
         default:
           break;
       }
@@ -115,13 +97,37 @@ const StakeForm: FC = () => {
     return setFormManifest(null);
   }, [amount, transactionType, unlockTime, valid, setFormManifest, contract]);
 
-  return (
-    <TransactionForm
-      confirmLabel='Lock up and stake MTA'
-      confirm={<CreateLockConfirm />}
-      input={<CreateLockInput />}
-      valid={valid}
-    />
+  return incentivisedVotingLockup ? (
+    !incentivisedVotingLockup.userStakingBalance ||
+    incentivisedVotingLockup.userStakingBalance?.simple === 0 ? (
+      <TransactionForm
+        confirmLabel="Lock up and stake MTA"
+        confirm={<CreateLockConfirm />}
+        input={<CreateLockInput />}
+        valid={valid}
+      />
+    ) : (
+      <>
+        <Protip emoji="😊" title="You have already staked!">
+          <br />
+          Whilst it's possible to both extend your lockup time and increase
+          lockup amount, this hasn't been added to the UI yet - hold tight!
+        </Protip>
+        <br />
+        <p>
+          Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
+          will unlock on{' '}
+          {incentivisedVotingLockup.userLockup?.lockTime
+            ? format(
+                incentivisedVotingLockup.userLockup?.lockTime * 1000,
+                'dd-MM-yyyy',
+              )
+            : null}
+        </p>
+      </>
+    )
+  ) : (
+    <Skeleton />
   );
 };
 
