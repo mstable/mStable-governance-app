@@ -19,12 +19,14 @@ const transformUserLockup = (
 ): UserLockup | undefined => {
   if (data) {
     const { value, bias, lockTime, slope, ts } = data;
+
     return {
       value: new BigDecimal(value, 18),
       bias: new BigNumber(bias),
       slope: new BigNumber(slope),
       ts: parseInt(ts, 10),
       lockTime: parseInt(lockTime, 10),
+      length: parseInt(lockTime, 10) - parseInt(ts, 10),
     };
   }
   return undefined;
@@ -125,7 +127,7 @@ export const transformRawData = ({
       name: '',
     },
     rewardsDistributor,
-    globalEpoch: new BigDecimal(globalEpoch, 18),
+    globalEpoch: new BigNumber(globalEpoch),
     expired,
     maxTime: new BigNumber(maxTime),
     totalStaticWeight: new BigDecimal(totalStaticWeight, 18),

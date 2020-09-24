@@ -17,9 +17,9 @@ const ImageContainer = styled.div`
     border-bottom: none;
   }
   img {
-    width: auto;
+    width: 90%;
     height: auto;
-    max-width: 350px;
+    max-width: 500px;
     max-height: 350px;
     border-radius: 6px;
     margin: auto;
@@ -43,9 +43,24 @@ export const GovernContent: FC<{}> = () => {
     <>
       <FormRow>
         <H3>mStable Governance</H3>
-        <P>mStable is governed by MTA holders who have staked their tokens to participate in our community-based proposal system.</P>
-        <P>Stake your MTA and come have your say on how mStable is governed.</P>
-        <P>For more info, <ExternalLink href="https://docs.mstable.org/mstable-assets/functions/governance">click here</ExternalLink>.</P>
+        <P>
+          mStable is governed by MTA holders who have staked their tokens to
+          participate in our community-based proposal system.
+        </P>
+        <P>
+          mStable's governance goes through a process where consensus is reached
+          in progressively concrete stages. Proposals and ideas are surfaced on
+          the discord or our public forum, and are finalised by on chain
+          signalling by MTA holders. The progression of increasingly binding
+          consensus can be seen below.{' '}
+        </P>
+        <P>
+          For more info,{' '}
+          <ExternalLink href="https://docs.mstable.org/mstable-assets/functions/governance">
+            click here
+          </ExternalLink>
+          .
+        </P>
         <ImageContainer>
           <img src={flow} alt="twitter" />
         </ImageContainer>

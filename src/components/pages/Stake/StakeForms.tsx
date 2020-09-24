@@ -4,17 +4,14 @@ import styled from 'styled-components';
 import { TabsContainer, TabBtn } from '../../core/Tabs';
 import { Color } from '../../../theme';
 import { TransactionType } from './types';
-import {
-  useStakeState,
-  useStakeDispatch,
-} from './StakeProvider';
+import { useStakeState, useStakeDispatch } from './StakeProvider';
 import { CreateLock } from './CreateLock';
 import { Claim } from './Claim';
 import { Exit } from './Exit';
 
 const TX_TYPES = {
   [TransactionType.CreateLock]: {
-    label: 'Deposit Stake',
+    label: 'Stake',
   },
   [TransactionType.Claim]: {
     label: 'Claim',
@@ -70,8 +67,8 @@ export const StakeForms: FC = () => {
         ) : transactionType === TransactionType.Withdraw ? (
           <Exit />
         ) : (
-                <div>TODO</div>
-              )}
+          <div>TODO</div>
+        )}
       </div>
     </Container>
   );
