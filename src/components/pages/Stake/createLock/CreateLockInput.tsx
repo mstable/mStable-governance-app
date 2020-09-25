@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import format from 'date-fns/format';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
-import { FormRow } from '../../core/Form';
-import { H3 } from '../../core/Typography';
-import { RangeInput } from '../../forms/RangeInput';
-import { Tooltip } from '../../core/ReactTooltip';
-import { Protip } from '../../core/Protip';
-import { ExternalLink } from '../../core/ExternalLink';
-import { TokenAmountInput } from '../../forms/TokenAmountInput';
-import { useStakeDispatch, useStakeState } from './StakeProvider';
+import { FormRow } from '../../../core/Form';
+import { H3 } from '../../../core/Typography';
+import { RangeInput } from '../../../forms/RangeInput';
+import { Tooltip } from '../../../core/ReactTooltip';
+import { Protip } from '../../../core/Protip';
+import { ExternalLink } from '../../../core/ExternalLink';
+import { TokenAmountInput } from '../../../forms/TokenAmountInput';
+import { useStakeDispatch, useStakeState } from '../StakeProvider';
 
 const StyledTransactionForm = styled(FormRow)`
   border-top: 0;
@@ -22,7 +22,6 @@ export const CreateLockInput: FC = () => {
     error,
     data,
   } = useStakeState();
-  // const { end } = data.incentivisedVotingLockup;
   const {
     setLockupAmount,
     setLockupDays,
@@ -62,8 +61,8 @@ export const CreateLockInput: FC = () => {
             ) : null}
           </>
         ) : (
-          <Skeleton />
-        )}
+            <Skeleton />
+          )}
       </StyledTransactionForm>
       <FormRow>
         <H3>
@@ -86,8 +85,8 @@ export const CreateLockInput: FC = () => {
             </div>
           </RangeInput>
         ) : (
-          <Skeleton />
-        )}
+            <Skeleton />
+          )}
       </FormRow>
     </>
   );

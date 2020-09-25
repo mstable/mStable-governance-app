@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { H3 } from '../../core/Typography';
-import { useStakeState } from './StakeProvider';
-import { CountUp } from '../../core/CountUp';
+import { H3 } from '../../../core/Typography';
+import { useStakeState } from '../StakeProvider';
+import { CountUp } from '../../../core/CountUp';
 
 const Row = styled.div`
   width: 100%;
