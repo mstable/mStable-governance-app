@@ -1,3 +1,6 @@
+// Hotfix
+/* eslint-disable import/extensions,import/no-unresolved */
+
 import { useMemo } from 'react';
 
 import { Erc20Detailed } from '../typechain/Erc20Detailed';
