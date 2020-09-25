@@ -70,6 +70,14 @@ const getPendingTxDescription = (
         <> You {tx.status ? 'exited' : 'are exiting'} the staking contract </>
       );
     }
+    case 'approve': {
+      return (
+        <>
+          You {tx.status ? 'approved' : 'are approving'} Staking Contract to
+          transfer your MTA
+        </>
+      );
+    }
     default:
       return <> Unsupported transaction </>;
   }
