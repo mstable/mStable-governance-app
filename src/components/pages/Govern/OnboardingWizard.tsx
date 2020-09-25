@@ -49,7 +49,7 @@ const IconsContainer = styled.div<{ completed?: boolean }>`
   svg {
     width: 20px;
     height: auto;
-    fill: ${({ completed }) => (completed ? 'green' : 'black')};
+    fill: ${({ completed, theme }) => (completed ? theme.color.green : theme.color.black)};
     padding-bottom: 10px;
   }
   h3 {
