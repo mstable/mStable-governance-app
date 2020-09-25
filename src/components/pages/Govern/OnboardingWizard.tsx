@@ -120,7 +120,7 @@ export const OnboardingWizard: FC = () => {
           <H3>4. Vote with $vMTA</H3>
           <VoteIcon />
         </IconsContainer>
-        <A href="/vote">Vote</A>
+        <ExternalLink href="https://snapshot.page/#/mstable">Vote</ExternalLink>
       </Step>
     </Container>
   );
