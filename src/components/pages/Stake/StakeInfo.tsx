@@ -50,13 +50,13 @@ export const StakeInfo: FC = () => {
     userStakingBalance: simUserStakingBalance,
     userStakingReward: simUserStakingReward,
   } = simulatedData || {};
-  console.log(
-    'data',
-    simTotalStaticWeight,
-    simulatedData,
-    simUserLockup,
-    simUserStakingBalance,
-  );
+  // console.log(
+  //   'data',
+  //   simTotalStaticWeight,
+  //   simulatedData,
+  //   simUserLockup,
+  //   simUserStakingBalance,
+  // );
   return (
     <>
       <FormRow>
