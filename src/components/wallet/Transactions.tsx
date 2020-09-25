@@ -57,7 +57,7 @@ const getPendingTxDescription = (
         <>
           {' '}
           You {tx.status ? 'staked' : 'are staking'}{' '}
-          {stakingData?.lockupAmount.amount} MTA for{' '}
+          {stakingData?.lockupAmount.amount?.simple} MTA for{' '}
           {stakingData
             ? (stakingData.lockupPeriod.formValue / 7).toFixed(1)
             : null}{' '}
@@ -68,6 +68,14 @@ const getPendingTxDescription = (
     case 'withdraw': {
       return (
         <> You {tx.status ? 'exited' : 'are exiting'} the staking contract </>
+      );
+    }
+    case 'approve': {
+      return (
+        <>
+          You {tx.status ? 'approved' : 'are approving'} Staking Contract to
+          transfer your MTA
+        </>
       );
     }
     default:
