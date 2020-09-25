@@ -22,13 +22,13 @@ const PendingTxContainer = styled.div<{ inverted?: boolean }>`
 
   a {
     color: ${({ theme, inverted }) =>
-    inverted ? theme.color.white : theme.color.black};
+      inverted ? theme.color.white : theme.color.black};
     border-bottom: none;
 
     span {
       border-bottom: 1px
         ${({ theme, inverted }) =>
-    inverted ? theme.color.white : theme.color.black}
+          inverted ? theme.color.white : theme.color.black}
         solid;
     }
   }
@@ -43,8 +43,8 @@ const getStatusLabel = (status: TransactionStatus): string =>
   status === TransactionStatus.Success
     ? 'Confirmed'
     : status === TransactionStatus.Error
-      ? 'Error'
-      : 'Pending';
+    ? 'Error'
+    : 'Pending';
 
 const getPendingTxDescription = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -52,23 +52,34 @@ const getPendingTxDescription = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dataState?: DataState,
   stakingData?: State,
-  rewards?: RewardsEarned
+  rewards?: RewardsEarned,
 ): JSX.Element => {
   switch (tx.fn) {
-    case "claimReward": {
-      return <> You are claiming {rewards?.rewards?.simpleRounded} of MTA </>
+    case 'claimReward': {
+      return <> You {tx.status ? 'claimed' : 'are claiming'} MTA reward</>;
     }
-    case "createLock": {
-      return <> You are staking {stakingData?.lockupAmount.amount} MTA for {stakingData ? stakingData.lockupPeriod.formValue / 7 : null}  weeks </>
+    case 'createLock': {
+      return (
+        <>
+          {' '}
+          You {tx.status ? 'staked' : 'are staking'}{' '}
+          {stakingData?.lockupAmount.amount} MTA for{' '}
+          {stakingData
+            ? (stakingData.lockupPeriod.formValue / 7).toFixed(1)
+            : null}{' '}
+          weeks{' '}
+        </>
+      );
     }
-    case "withdraw": {
-      return <> You are exiting the staking contract </>
+    case 'withdraw': {
+      return (
+        <> You {tx.status ? 'exited' : 'are exiting'} the staking contract </>
+      );
     }
     default:
-      return <> Unsupported transaction </>
+      return <> Unsupported transaction </>;
   }
 };
-
 
 const TxStatusIndicator: FC<{ tx: Transaction }> = ({ tx }) => {
   const status = getTransactionStatus(tx);
@@ -80,8 +91,8 @@ const TxStatusIndicator: FC<{ tx: Transaction }> = ({ tx }) => {
       ) : status === TransactionStatus.Error ? (
         <span>{EMOJIS.error}</span>
       ) : (
-            <span>{EMOJIS[tx.fn as keyof typeof EMOJIS]}</span>
-          )}
+        <span>{EMOJIS[tx.fn as keyof typeof EMOJIS]}</span>
+      )}
     </TxStatusContainer>
   );
 };
@@ -94,12 +105,10 @@ const PendingTx: FC<{
   const stakingData = useStakeState();
   const rewards = useRewardsEarned();
 
-  const description = useMemo(() => getPendingTxDescription(tx, dataState, stakingData, rewards), [
-    tx,
-    dataState,
-    stakingData,
-    rewards
-  ]);
+  const description = useMemo(
+    () => getPendingTxDescription(tx, dataState, stakingData, rewards),
+    [tx, dataState, stakingData, rewards],
+  );
 
   return (
     <PendingTxContainer inverted={inverted}>
@@ -123,14 +132,14 @@ export const Transactions: FC<{ formId?: string }> = ({ formId }) => {
       {pending.length === 0 ? (
         <P size={2}>No transactions sent in the current session.</P>
       ) : (
-          <List>
-            {pending.map(tx => (
-              <ListItem key={tx.hash}>
-                <PendingTx tx={tx} inverted={!formId} />
-              </ListItem>
-            ))}
-          </List>
-        )}
+        <List>
+          {pending.map(tx => (
+            <ListItem key={tx.hash}>
+              <PendingTx tx={tx} inverted={!formId} />
+            </ListItem>
+          ))}
+        </List>
+      )}
     </div>
   );
 };

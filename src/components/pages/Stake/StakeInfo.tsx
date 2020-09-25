@@ -22,8 +22,12 @@ const Container = styled.div`
   padding-top: 16px;
 `;
 
+const ChangingCountUp = styled(CountUp)`
+  color: ${({ theme }) => theme.color.blue};
+`;
+
 const SimulatedCountUp = styled(CountUp)`
-  color: green;
+  color: ${({ theme }) => theme.color.green};
 `;
 
 export const StakeInfo: FC = () => {
@@ -91,8 +95,9 @@ export const StakeInfo: FC = () => {
             <Container>
               <Row>
                 You staked{' '}
-                <CountUp end={userLockup.value.simple} suffix=" MTA" /> for{' '}
-                {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks on{' '}
+                <ChangingCountUp end={userLockup.value.simple} suffix=" MTA" />{' '}
+                for {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks
+                on{' '}
                 {userLockup.ts
                   ? format(userLockup.ts * 1000, 'dd-MM-yyyy')
                   : null}
@@ -103,7 +108,7 @@ export const StakeInfo: FC = () => {
                 </Tooltip>{' '}
                 You have{' '}
                 {vmta && s && s.simple > 0 ? (
-                  <CountUp
+                  <ChangingCountUp
                     end={(vmta.balance.simple / s.simple) * 100}
                     suffix=" %"
                     decimals={6}
@@ -113,7 +118,7 @@ export const StakeInfo: FC = () => {
                 )}{' '}
                 of the voting power (
                 {vmta ? (
-                  <CountUp
+                  <ChangingCountUp
                     end={vmta.balance.simple}
                     decimals={4}
                     suffix=" vMTA"
@@ -123,7 +128,7 @@ export const StakeInfo: FC = () => {
                 )}{' '}
                 out of{' '}
                 {s ? (
-                  <CountUp end={s.simple} decimals={4} suffix=" vMTA" />
+                  <ChangingCountUp end={s.simple} decimals={4} suffix=" vMTA" />
                 ) : (
                   <Skeleton width={100} />
                 )}
@@ -142,7 +147,7 @@ export const StakeInfo: FC = () => {
                 {userStakingBalance.simple > 0 &&
                 totalStaticWeight &&
                 totalStaticWeight?.simple > 0 ? (
-                  <CountUp
+                  <ChangingCountUp
                     end={
                       (userStakingBalance.simple / totalStaticWeight.simple) *
                       100
@@ -155,7 +160,7 @@ export const StakeInfo: FC = () => {
                 )}{' '}
                 of the earning power (
                 {userStakingBalance ? (
-                  <CountUp
+                  <ChangingCountUp
                     end={userStakingBalance.simple}
                     decimals={4}
                     suffix=" pMTA"
@@ -165,7 +170,7 @@ export const StakeInfo: FC = () => {
                 )}{' '}
                 out of{' '}
                 {totalStaticWeight ? (
-                  <CountUp
+                  <ChangingCountUp
                     end={totalStaticWeight.simple}
                     decimals={4}
                     suffix=" pMTA"
@@ -180,7 +185,10 @@ export const StakeInfo: FC = () => {
                   Your Rewards APY
                 </Tooltip>{' '}
                 {userStakingReward && userStakingReward.currentAPY ? (
-                  <CountUp end={userStakingReward.currentAPY} suffix=" %" />
+                  <ChangingCountUp
+                    end={userStakingReward.currentAPY}
+                    suffix=" %"
+                  />
                 ) : (
                   <Skeleton width={100} />
                 )}
@@ -190,7 +198,7 @@ export const StakeInfo: FC = () => {
                   Unclaimed Rewards
                 </Tooltip>{' '}
                 {rewards.rewards ? (
-                  <CountUp
+                  <ChangingCountUp
                     end={rewards.rewards.simple}
                     decimals={8}
                     suffix=" MTA"
