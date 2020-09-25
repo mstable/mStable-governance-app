@@ -3,6 +3,7 @@
 
 import { useMemo } from 'react';
 
+import formatDuration from 'date-fns/formatDuration';
 import { Erc20Detailed } from '../typechain/Erc20Detailed';
 import { Erc20DetailedFactory } from '../typechain/Erc20DetailedFactory';
 import { useSignerContext } from '../context/SignerProvider';
@@ -20,4 +21,15 @@ export const useErc20Contract = (
       signer && address ? Erc20DetailedFactory.connect(address, signer) : null,
     [address, signer],
   );
+};
+
+export const useFormatDays = (days: number): string => {
+  return useMemo<string>(() => {
+    const weeks = Math.floor(days / 7);
+    const remainderDays = Math.floor(days - weeks * 7);
+    return formatDuration(
+      { weeks, days: remainderDays },
+      { format: ['weeks', 'days'], zero: false },
+    );
+  }, [days]);
 };

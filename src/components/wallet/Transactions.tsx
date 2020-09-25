@@ -9,8 +9,6 @@ import { ActivitySpinner } from '../core/ActivitySpinner';
 import { EtherscanLink } from '../core/EtherscanLink';
 import { List, ListItem } from '../core/List';
 import { P } from '../core/Typography';
-import { State } from '../pages/Stake/types';
-import { useStakeState } from '../pages/Stake/StakeProvider';
 
 const PendingTxContainer = styled.div<{ inverted?: boolean }>`
   display: flex;
@@ -44,26 +42,13 @@ const getStatusLabel = (status: TransactionStatus): string =>
     ? 'Error'
     : 'Pending';
 
-const getPendingTxDescription = (
-  tx: Transaction,
-  stakingData?: State,
-): JSX.Element => {
+const getPendingTxDescription = (tx: Transaction): JSX.Element => {
   switch (tx.fn) {
     case 'claimReward': {
       return <> You {tx.status ? 'claimed' : 'are claiming'} MTA rewards</>;
     }
     case 'createLock': {
-      return (
-        <>
-          {' '}
-          You {tx.status ? 'staked' : 'are staking'}{' '}
-          {stakingData?.lockupAmount.amount?.simple} MTA for{' '}
-          {stakingData
-            ? (stakingData.lockupPeriod.formValue / 7).toFixed(1)
-            : null}{' '}
-          weeks{' '}
-        </>
-      );
+      return <> You {tx.status ? 'staked' : 'are staking'} MTA</>;
     }
     case 'withdraw': {
       return (
@@ -103,12 +88,7 @@ const PendingTx: FC<{
   tx: Transaction;
   inverted: boolean;
 }> = ({ tx, inverted }) => {
-  const stakingData = useStakeState();
-
-  const description = useMemo(() => getPendingTxDescription(tx, stakingData), [
-    tx,
-    stakingData,
-  ]);
+  const description = useMemo(() => getPendingTxDescription(tx), [tx]);
 
   return (
     <PendingTxContainer inverted={inverted}>

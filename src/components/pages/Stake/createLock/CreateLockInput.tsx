@@ -1,20 +1,27 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import format from 'date-fns/format';
-import formatDuration from 'date-fns/formatDuration';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
 
 import { FormRow } from '../../../core/Form';
-import { H3 } from '../../../core/Typography';
+import { H3, H4 } from '../../../core/Typography';
 import { RangeInput } from '../../../forms/RangeInput';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { Protip } from '../../../core/Protip';
 import { ExternalLink } from '../../../core/ExternalLink';
-import { TokenAmountInput } from '../../../forms/TokenAmountInput';
+import { useFormatDays } from '../../../../utils/hooks';
+import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 
-const StyledTransactionForm = styled(FormRow)`
-  border-top: 0;
+const AmountContainer = styled.div`
+  > :first-child {
+    text-align: right;
+    padding: 4px 8px;
+  }
+
+  > :last-child {
+    margin-bottom: 32px;
+  }
 `;
 
 export const CreateLockInput: FC = () => {
@@ -31,37 +38,35 @@ export const CreateLockInput: FC = () => {
     setMaxLockupDays,
   } = useStakeDispatch();
 
-  const duration = useMemo<string>(() => {
-    const weeks = Math.floor(lockupDays / 7);
-    const days = Math.floor(lockupDays - weeks * 7);
-    return formatDuration(
-      { weeks, days },
-      { format: ['weeks', 'days'], zero: false },
-    );
-  }, [lockupDays]);
+  const duration = useFormatDays(lockupDays);
 
   return (
     <>
-      <StyledTransactionForm>
+      <div>
         <H3>
-          <Tooltip tip="Units of MTA to lock up">Stake Amount</Tooltip>
+          <Tooltip tip="Units of MTA to lock up">Stake amount</Tooltip>
         </H3>
 
         {data.metaToken && data.incentivisedVotingLockup ? (
-          <>
-            <TokenAmountInput
-              needsUnlock
-              amountValue={amountFormValue}
+          <AmountContainer>
+            <div>
+              <H4>MTA Balance</H4>
+            </div>
+            <InlineTokenAmountInput
+              amount={{
+                value: amount,
+                formValue: amountFormValue,
+                handleChange: setLockupAmount,
+                handleSetMax: setMaxLockupAmount,
+              }}
+              token={{
+                address: data.metaToken.address as string,
+              }}
+              approval={{
+                spender: data.incentivisedVotingLockup.address,
+              }}
               error={error}
-              exactDecimals={false}
-              name="stake"
-              spender={data.incentivisedVotingLockup.address}
-              onChangeAmount={setLockupAmount}
-              onSetMax={setMaxLockupAmount}
-              tokenAddresses={[data.metaToken.address as string]}
-              tokenDisabled
-              tokenValue={data.metaToken.address || null}
-              approveAmount={amount}
+              valid={!!(amountFormValue && !error)}
             />
             {data.metaToken && data.metaToken?.balance.simple < 1000 ? (
               <Protip title="Need tokens to stake?">
@@ -75,23 +80,23 @@ export const CreateLockInput: FC = () => {
                 </ExternalLink>
               </Protip>
             ) : null}
-          </>
+          </AmountContainer>
         ) : (
           <Skeleton />
         )}
-      </StyledTransactionForm>
+      </div>
       <FormRow>
         <H3>
-          <Tooltip tip="Length of time to stake for (rounded to the nearest week)">
-            Stake lockup length
+          <Tooltip tip="Period of time to stake for (rounded to the nearest week)">
+            Stake lockup period
           </Tooltip>
         </H3>
-        {data.incentivisedVotingLockup && lockupDays > 0 ? (
+        {data.incentivisedVotingLockup ? (
           <RangeInput
             min={data.incentivisedVotingLockup.lockTimes.min}
             step={7}
             max={data.incentivisedVotingLockup.lockTimes.max}
-            value={lockupDays}
+            value={lockupDays || data.incentivisedVotingLockup.lockTimes.min}
             onChange={setLockupDays}
             startLabel="Today"
             endLabel="End date"

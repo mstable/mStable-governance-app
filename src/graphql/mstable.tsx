@@ -1667,6 +1667,7 @@ export type TokenQuery = { token?: Maybe<TokenDetailsFragment> };
 
 export type UserLockupsQueryVariables = {
   account?: Maybe<Scalars['Bytes']>;
+  hasAccount: Scalars['Boolean'];
 };
 
 
@@ -1784,7 +1785,7 @@ export type TokenQueryHookResult = ReturnType<typeof useTokenQuery>;
 export type TokenLazyQueryHookResult = ReturnType<typeof useTokenLazyQuery>;
 export type TokenQueryResult = ApolloReactCommon.QueryResult<TokenQuery, TokenQueryVariables>;
 export const UserLockupsDocument = gql`
-    query UserLockups($account: Bytes) @api(name: mstable) {
+    query UserLockups($account: Bytes, $hasAccount: Boolean!) @api(name: mstable) {
   incentivisedVotingLockups {
     address: id
     periodFinish
@@ -1809,15 +1810,15 @@ export const UserLockupsDocument = gql`
       id
       fundManagers
     }
-    stakingRewards(where: {account: $account}, first: 1) {
+    stakingRewards(where: {account: $account}, first: 1) @include(if: $hasAccount) {
       amount
       amountPerTokenPaid
       rewardsPaid
     }
-    stakingBalances(where: {account: $account}, first: 1) {
+    stakingBalances(where: {account: $account}, first: 1) @include(if: $hasAccount) {
       amount
     }
-    userLockups(where: {account: $account}, first: 1) {
+    userLockups(where: {account: $account}, first: 1) @include(if: $hasAccount) {
       value
       lockTime
       ts
@@ -1841,6 +1842,7 @@ export const UserLockupsDocument = gql`
  * const { data, loading, error } = useUserLockupsQuery({
  *   variables: {
  *      account: // value for 'account'
+ *      hasAccount: // value for 'hasAccount'
  *   },
  * });
  */

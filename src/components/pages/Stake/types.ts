@@ -51,8 +51,8 @@ export enum Reasons {
   FetchingData = 'Failed to fetch data',
   AmountMustBeGreaterThanZero = 'Amount must be greater than zero',
   AmountMustBeSet = 'Amount must be set',
-  PeriodMustBeSet = 'Lock up period must be set',
-  PeriodMustBeLongerThanOneWeek = 'Lock up period must be longer than one week',
+  PeriodMustBeSet = 'Lockup period must be set',
+  PeriodMustBeAtLeastSixDays = 'Lockup period must be at least six days',
   AmountMustNotExceedBalance = 'Amount must not exceed balance',
   AmountExceedsApprovedAmount = 'Amount exceeds approved amount',
 }

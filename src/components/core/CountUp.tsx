@@ -6,10 +6,11 @@ import { useFirstMountState } from 'react-use/lib/useFirstMountState';
 import { useIsIdle } from '../../context/UserProvider';
 import { Color } from '../../theme';
 
-interface Props extends CountUpProps {
+interface Props extends Omit<CountUpProps, 'end'> {
   container?: FC;
   highlight?: boolean;
   highlightColor?: Color;
+  end?: number;
 }
 
 const DEFAULT_DECIMALS = 2;
@@ -41,7 +42,7 @@ export const CountUp: FC<Props> = ({
   separator = ',',
   duration = DEFAULT_DURATION,
 }) => {
-    // eslint-disable-next-line no-restricted-globals
+  // eslint-disable-next-line no-restricted-globals
   const isValid = typeof end === 'number' && !isNaN(end);
   const prevEnd = useRef(isValid ? end : 0);
   const isIdle = useIsIdle();
@@ -50,7 +51,7 @@ export const CountUp: FC<Props> = ({
   const { countUp, update, pauseResume, start } = useCountUp({
     decimals,
     duration,
-    end: isValid ? end : 0,
+    end: isValid ? (end as number) : 0,
     separator,
     start: prevEnd.current,
     // ...(prefix ? { prefix } : null),
