@@ -8,11 +8,8 @@ import forum from './forum.png';
 import twitter from './twitter.png';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  @media (min-width: ${ViewportWidth.m}) {
+  @media (min-width: ${ViewportWidth.s}) {
     display: flex;
-    flex-direction: row;
     > :first-child {
       margin-right: 48px;
     }
@@ -21,48 +18,42 @@ const Container = styled.div`
 
 const IFrameContainer = styled.div`
   padding-top: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
-  @media (min-width: ${ViewportWidth.m}) {
+  iframe {
+    max-width: 100%;
+  }
+
+  @media (min-width: ${ViewportWidth.s}) {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
   }
 `;
 
-const ImageContainer = styled.div`
+const Image = styled.div`
   padding-top: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+
   a {
     border-bottom: none;
   }
+
   img {
-    width: auto;
-    height: auto;
-    max-width: 350px;
-    max-height: 350px;
     border-radius: 6px;
-    margin: auto;
+    max-width: 100%;
+    height: auto;
   }
 
-  @media (min-width: ${ViewportWidth.m}) {
+  @media (min-width: ${ViewportWidth.s}) {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    img {
-      width: auto;
-      height: auto;
-      max-width: 500px;
-      max-height: 350px;
-    }
   }
 `;
 
-export const DiscussContent: FC<{}> = () => {
+export const DiscussContent: FC = () => {
   return (
     <>
       <Container>
@@ -85,14 +76,14 @@ export const DiscussContent: FC<{}> = () => {
             <H3>Forum</H3>
           </a>
           <P>
-            Join our Forum to indicate rough consensus for ideas and contribute
+            Join our forum to indicate rough consensus for ideas and contribute
             your ideas
           </P>
-          <ImageContainer>
+          <Image>
             <a href="https://forum.mstable.org/">
               <img src={forum} alt="forum" />
             </a>
-          </ImageContainer>
+          </Image>
         </FormRow>
       </Container>
       <Container>
@@ -101,22 +92,22 @@ export const DiscussContent: FC<{}> = () => {
             <H3>MIPs</H3>
             <P>Explore implemented and upcoming proposals</P>
           </a>
-          <ImageContainer>
+          <Image>
             <a href="https://mips.mstable.org/all-mip">
               <img src={mip} alt="MIPs" />
             </a>
-          </ImageContainer>
+          </Image>
         </FormRow>
         <FormRow>
           <a href="https://twitter.com/mstable_">
             <H3>Twitter</H3>
           </a>
-          <P>Follow all the latest news regarding mStable protocol</P>
-          <ImageContainer>
+          <P>Follow all the latest news about the mStable protocol</P>
+          <Image>
             <a href="https://twitter.com/mstable_">
               <img src={twitter} alt="twitter" />
             </a>
-          </ImageContainer>
+          </Image>
         </FormRow>
       </Container>
     </>
