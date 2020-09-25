@@ -44,15 +44,16 @@ const ExchangesContainer = styled.div`
   }
 `;
 
+// width: 20px;
+// height: auto;
+// fill: ${({ completed, theme }) =>
+//   completed ? theme.color.green : theme.color.black};
+// padding-bottom: 10px;
 const IconsContainer = styled.div<{ completed?: boolean }>`
   display: flex;
   padding-bottom: 8px;
   svg {
-    width: 20px;
-    height: auto;
-    fill: ${({ completed, theme }) =>
-      completed ? theme.color.green : theme.color.black};
-    padding-bottom: 10px;
+    display: none;
   }
   h3 {
     padding-right: 10px;

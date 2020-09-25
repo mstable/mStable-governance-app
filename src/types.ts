@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import { TransactionResponse, Log } from 'ethers/providers';
-import { BigNumber, LogDescription } from 'ethers/utils';
+import { TransactionResponse } from 'ethers/providers';
 import { Connectors } from 'use-wallet';
 import { Ierc20 } from './typechain/Ierc20.d';
-import { BigDecimal } from './web3/BigDecimal';
+import { BigDecimal } from './utils/BigDecimal';
 import { RewardsDistributor as IRewardsDistributor } from './typechain/RewardsDistributor.d';
 import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d';
 
@@ -23,17 +22,6 @@ export interface Transaction {
 export interface Purpose {
   present: string | null;
   past: string | null;
-}
-
-export type LogWithTransactionHash = Omit<Log, 'transactionHash'> &
-  Required<Pick<Log, 'transactionHash'>>;
-
-export interface HistoricTransaction {
-  hash: string;
-  contractAddress: string;
-  blockNumber: number;
-  status: number;
-  logs: LogDescription[];
 }
 
 export enum TransactionStatus {
@@ -95,21 +83,6 @@ export interface SubscribedToken extends Token {
   allowances: Allowances;
 }
 
-export interface Amount {
-  simple: number | null;
-  exact: BigNumber | null;
-}
-
-export interface TokenQuantity {
-  formValue: string | null;
-  amount: Amount;
-  token: {
-    address: string | null;
-    decimals: number | null;
-    symbol: string | null;
-  };
-}
-
 export interface InjectedEthereum {
   enable(): Promise<string[]>;
   on(event: 'chainChanged', listener: (chainId: number) => void): void;
@@ -126,16 +99,6 @@ export interface Connector {
   subType?: string;
   label: string;
   icon?: FC;
-}
-
-export enum Platforms {
-  Balancer = 'Balancer',
-  Uniswap = 'Uniswap',
-}
-
-export interface BlockTimestamp {
-  blockNumber: number;
-  timestamp: number;
 }
 
 export interface AccentColors {

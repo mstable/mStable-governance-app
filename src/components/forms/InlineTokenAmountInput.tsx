@@ -5,7 +5,7 @@ import {
   useToken,
   useTokenAllowance,
 } from '../../context/DataProvider/TokensProvider';
-import { BigDecimal } from '../../web3/BigDecimal';
+import { BigDecimal } from '../../utils/BigDecimal';
 import { ToggleInput } from './ToggleInput';
 import { AmountInput } from './AmountInput';
 import { ApproveButton } from './ApproveButton';

@@ -22,7 +22,7 @@ import { ReactComponent as LogoSvg } from '../icons/mstable.svg';
 import { UnstyledButton } from '../core/Button';
 import { centredLayout } from './css';
 import { InjectedEthereum, TransactionStatus } from '../../types';
-import { useTruncatedAddress } from '../../web3/hooks';
+import { useTruncatedAddress } from '../../utils/hooks';
 import { usePendingTxState } from '../../context/TransactionsProvider';
 import {
   NotificationType,

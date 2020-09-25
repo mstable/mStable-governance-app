@@ -9,7 +9,7 @@ import {
   useWalletState,
   useWalletConnector,
 } from '../../context/AppProvider';
-import { AVAILABLE_CONNECTORS, CONNECTORS } from '../../web3/connectors';
+import { AVAILABLE_CONNECTORS, CONNECTORS } from '../../utils/connectors';
 import { Button } from '../core/Button';
 import { H3 } from '../core/Typography';
 import { Address } from '../core/Address';

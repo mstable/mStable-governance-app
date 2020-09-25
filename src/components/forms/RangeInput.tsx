@@ -17,7 +17,7 @@ interface Props {
   endLabel?: string;
   onChange(value: number): void;
   onSetMax(max: number): void;
-  step?: number;
+  step: number;
 }
 
 const ThumbCircle = styled.div`
@@ -149,7 +149,7 @@ export const RangeInput: FC<Props> = ({
     <Container>
       {startLabel && <Label>{startLabel}</Label>}
       <Range
-        step={step || 1}
+        step={step}
         min={min}
         max={max}
         values={[value]}

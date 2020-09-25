@@ -1,74 +1,73 @@
 import React, { FC } from 'react';
 
 import styled from 'styled-components';
-import { FormRow } from '../../core/Form';
 import { H2, P } from '../../core/Typography';
 import { OnboardingWizard } from './OnboardingWizard';
 import { ExternalLink } from '../../core/ExternalLink';
-import { ViewportWidth } from '../../../theme';
 import flow from './flow.png';
+import { Color } from '../../../theme';
 
-const ImageContainer = styled.div`
+const Image = styled.img`
   padding-top: 40px;
+  max-width: 100%;
+  height: auto;
+`;
+
+const Content = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
-  a {
-    border-bottom: none;
-  }
-  img {
-    width: 97%;
-    height: auto;
+  margin: 16px 0;
+
+  p {
     max-width: 500px;
-    max-height: 350px;
-    border-radius: 6px;
-    margin: auto;
   }
 
-  @media (min-width: ${ViewportWidth.m}) {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    img {
-      width: 97%;
-      height: auto;
-      max-width: 1000px;
-      max-height: 500px;
-    }
+  h2 {
+    text-align: center;
+  }
+
+  > div {
+    padding: 16px;
+    border: 1px ${Color.blackTransparent} solid;
+    border-radius: 4px;
   }
 `;
 
-export const GovernContent: FC<{}> = () => {
+const OnboardingContent = styled(Content)``;
+
+const Container = styled.div``;
+
+export const GovernContent: FC = () => {
   return (
-    <>
-      <FormRow>
-        <H2>mStable Governance</H2>
-        <P>
-          mStable is governed by MTA holders who have staked their tokens to
-          participate in our community-based proposal system.
-        </P>
-        <P>
-          mStable's governance goes through a process where consensus is reached
-          in progressively concrete stages. Proposals and ideas are surfaced on
-          the discord or our public forum, and are finalised by on chain
-          signalling by MTA holders. The progression of increasingly binding
-          consensus can be seen below.{' '}
-        </P>
-        <P>
-          For more info,{' '}
-          <ExternalLink href="https://docs.mstable.org/mstable-assets/functions/governance">
-            click here
-          </ExternalLink>
-          .
-        </P>
-        <ImageContainer>
-          <img src={flow} alt="twitter" />
-        </ImageContainer>
-      </FormRow>
-      <FormRow>
-        <H2>Get Started</H2>
-        <OnboardingWizard />
-      </FormRow>
-    </>
+    <Container>
+      <Content>
+        <div>
+          <H2>About mStable Governance</H2>
+          <P>
+            mStable is governed by MTA holders who have staked their tokens to
+            participate in our community-based proposal system.
+          </P>
+          <P>
+            mStable's governance goes through a process where consensus is
+            reached in progressively concrete stages. Proposals and ideas are
+            surfaced on the discord or our public forum, and are finalised by on
+            chain signalling by MTA holders. The progression of increasingly
+            binding consensus can be seen below.
+          </P>
+          <P>
+            <ExternalLink href="https://docs.mstable.org/mstable-assets/functions/governance">
+              Learn more
+            </ExternalLink>
+          </P>
+        </div>
+      </Content>
+      <Image src={flow} alt="mStable governance process" />
+      <OnboardingContent>
+        <div>
+          <H2>Get Started</H2>
+          <OnboardingWizard />
+        </div>
+      </OnboardingContent>
+    </Container>
   );
 };

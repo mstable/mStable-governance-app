@@ -13,7 +13,7 @@ export const TransactionsUpdater = (): null => {
   const account = useAccount();
   const provider = useWeb3Provider();
   const blockNumber = useBlockNumber();
-  const accountRef = useRef<string | null>(account);
+  const accountRef = useRef(account);
 
   const [{ current }, { check, finalize, reset }] = useTransactionsContext();
 

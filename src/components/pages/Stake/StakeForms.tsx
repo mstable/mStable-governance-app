@@ -67,8 +67,8 @@ export const StakeForms: FC = () => {
         ) : transactionType === TransactionType.Withdraw ? (
           <Exit />
         ) : (
-                <div>TODO</div>
-              )}
+          <div>TODO</div>
+        )}
       </div>
     </Container>
   );

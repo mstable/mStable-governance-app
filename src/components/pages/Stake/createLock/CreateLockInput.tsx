@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import format from 'date-fns/format';
+import formatDuration from 'date-fns/formatDuration';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
+
 import { FormRow } from '../../../core/Form';
 import { H3 } from '../../../core/Typography';
 import { RangeInput } from '../../../forms/RangeInput';
@@ -29,11 +31,20 @@ export const CreateLockInput: FC = () => {
     setMaxLockupDays,
   } = useStakeDispatch();
 
+  const duration = useMemo<string>(() => {
+    const weeks = Math.floor(lockupDays / 7);
+    const days = Math.floor(lockupDays - weeks * 7);
+    return formatDuration(
+      { weeks, days },
+      { format: ['weeks', 'days'], zero: false },
+    );
+  }, [lockupDays]);
+
   return (
     <>
       <StyledTransactionForm>
         <H3>
-          <Tooltip tip="Units of MTA to lockup">Stake Amount</Tooltip>
+          <Tooltip tip="Units of MTA to lock up">Stake Amount</Tooltip>
         </H3>
 
         {data.metaToken && data.incentivisedVotingLockup ? (
@@ -54,8 +65,13 @@ export const CreateLockInput: FC = () => {
             />
             {data.metaToken && data.metaToken?.balance.simple < 1000 ? (
               <Protip title="Need tokens to stake?">
+                Get MTA tokens on{' '}
                 <ExternalLink href="https://balancer.exchange/#/swap">
-                  Get MTA tokens on Balancer
+                  Balancer
+                </ExternalLink>{' '}
+                or{' '}
+                <ExternalLink href="https://app.uniswap.org">
+                  Uniswap
                 </ExternalLink>
               </Protip>
             ) : null}
@@ -81,7 +97,7 @@ export const CreateLockInput: FC = () => {
             endLabel="End date"
             onSetMax={setMaxLockupDays}
           >
-            <div>{(lockupDays / 7).toFixed(1)} Weeks</div>
+            <div>{duration}</div>
             <div>
               {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
             </div>

@@ -12,7 +12,7 @@ import React, {
 
 import { Erc20TokensQueryResult } from '../../graphql/mstable';
 import { Allowances, SubscribedToken } from '../../types';
-import { BigDecimal } from '../../web3/BigDecimal';
+import { BigDecimal } from '../../utils/BigDecimal';
 import { useAccount } from '../UserProvider';
 
 interface State {

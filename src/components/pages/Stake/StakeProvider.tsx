@@ -19,8 +19,8 @@ import {
   TransactionType,
   RewardsEarned,
 } from './types';
-import { SCALE } from '../../../web3/constants';
-import { BigDecimal } from '../../../web3/BigDecimal';
+import { SCALE } from '../../../utils/constants';
+import { BigDecimal } from '../../../utils/BigDecimal';
 import { reducer } from './reducer';
 import { IIncentivisedVotingLockupFactory } from '../../../typechain/IIncentivisedVotingLockupFactory';
 import { useSignerContext } from '../../../context/SignerProvider';
@@ -49,6 +49,11 @@ const contractCtx = createContext<IIncentivisedVotingLockup | undefined>(
 const rewardsEarnedCtx = createContext<RewardsEarned>({});
 
 export const useStakeState = (): State => useContext(stateCtx);
+
+export const useStakeData = (): State['data'] => {
+  const { data } = useStakeState();
+  return data;
+};
 
 export const useStakeDispatch = (): Dispatch => useContext(dispatchCtx);
 

@@ -22,8 +22,8 @@ import { navigate } from 'hookrouter';
 import { configureScope } from '@sentry/react';
 
 import { InjectedEthereum, Connector } from '../types';
-import { CHAIN_ID, NETWORK_NAMES } from '../web3/constants';
-import { CONNECTORS } from '../web3/connectors';
+import { CHAIN_ID, NETWORK_NAMES } from '../utils/constants';
+import { CONNECTORS } from '../utils/connectors';
 import {
   useAddInfoNotification,
   useAddErrorNotification,

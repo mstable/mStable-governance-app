@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import { useOrderedCurrentTransactions } from '../../context/TransactionsProvider';
 import { Transaction, TransactionStatus } from '../../types';
-import { getTransactionStatus } from '../../web3/transactions';
-import { EMOJIS } from '../../web3/constants';
+import { getTransactionStatus } from '../../utils/transactions';
+import { EMOJIS } from '../../utils/constants';
 import { ActivitySpinner } from '../core/ActivitySpinner';
 import { EtherscanLink } from '../core/EtherscanLink';
 import { List, ListItem } from '../core/List';
@@ -50,7 +50,7 @@ const getPendingTxDescription = (
 ): JSX.Element => {
   switch (tx.fn) {
     case 'claimReward': {
-      return <> You {tx.status ? 'claimed' : 'are claiming'} MTA reward</>;
+      return <> You {tx.status ? 'claimed' : 'are claiming'} MTA rewards</>;
     }
     case 'createLock': {
       return (
@@ -73,7 +73,7 @@ const getPendingTxDescription = (
     case 'approve': {
       return (
         <>
-          You {tx.status ? 'approved' : 'are approving'} Staking Contract to
+          You {tx.status ? 'approved' : 'are approving'} the staking contract to
           transfer your MTA
         </>
       );

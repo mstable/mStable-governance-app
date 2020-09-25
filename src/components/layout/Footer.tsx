@@ -6,7 +6,7 @@ import { isAddress } from 'web3-utils';
 
 import { useCloseAccount } from '../../context/AppProvider';
 import { useIsMasquerading, useMasquerade } from '../../context/UserProvider';
-import { DAPP_VERSION } from '../../web3/constants';
+import { DAPP_VERSION } from '../../utils/constants';
 import { ViewportWidth } from '../../theme';
 import Medium from '../icons/social/medium.svg';
 import Github from '../icons/social/github.svg';

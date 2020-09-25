@@ -2,12 +2,12 @@ import React, { createContext, FC, useContext, useMemo, useState } from 'react';
 import { useWallet, UseWalletProvider } from 'use-wallet';
 import useIdle from 'react-use/lib/useIdle';
 
-import { CHAIN_ID } from '../web3/constants';
-import { AVAILABLE_CONNECTORS } from '../web3/connectors';
+import { CHAIN_ID } from '../utils/constants';
+import { AVAILABLE_CONNECTORS } from '../utils/connectors';
 
 interface State {
-  account: string | null;
-  masqueradedAccount: string | null;
+  account?: string;
+  masqueradedAccount?: string;
   idle: boolean;
 }
 
@@ -18,8 +18,6 @@ interface Dispatch {
 const dispatchCtx = createContext<Dispatch>({} as never);
 const stateCtx = createContext<State>({
   idle: false,
-  account: null,
-  masqueradedAccount: null,
 });
 
 export const useMasquerade = (): Dispatch['masquerade'] =>
@@ -42,16 +40,18 @@ export const useIsMasquerading = (): boolean =>
   Boolean(useUserState().masqueradedAccount);
 
 const AccountProvider: FC<{}> = ({ children }) => {
-  const { account } = useWallet();
+  const wallet = useWallet();
+  const account = wallet.account || undefined;
   const idle = useIdle();
   const [masqueradedAccount, masquerade] = useState<
     State['masqueradedAccount']
   >();
 
-  const state = useMemo<State>(
-    () => ({ account, idle, masqueradedAccount: masqueradedAccount ?? null }),
-    [account, idle, masqueradedAccount],
-  );
+  const state = useMemo<State>(() => ({ account, idle, masqueradedAccount }), [
+    account,
+    idle,
+    masqueradedAccount,
+  ]);
 
   return (
     <dispatchCtx.Provider value={useMemo(() => ({ masquerade }), [masquerade])}>
@@ -61,7 +61,7 @@ const AccountProvider: FC<{}> = ({ children }) => {
 };
 
 export const UserProvider: FC<{}> = ({ children }) => (
-    <UseWalletProvider chainId={CHAIN_ID} connectors={AVAILABLE_CONNECTORS}>
-      <AccountProvider>{children}</AccountProvider>
-    </UseWalletProvider>
-  );
+  <UseWalletProvider chainId={CHAIN_ID} connectors={AVAILABLE_CONNECTORS}>
+    <AccountProvider>{children}</AccountProvider>
+  </UseWalletProvider>
+);

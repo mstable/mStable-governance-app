@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers/utils';
 import { Tokens } from './TokensProvider';
 import { UserLockupsQueryResult, Token } from '../../graphql/mstable';
-import { BigDecimal } from '../../web3/BigDecimal';
+import { BigDecimal } from '../../utils/BigDecimal';
 
 export interface UserLockup {
   value: BigDecimal;

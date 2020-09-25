@@ -20,17 +20,6 @@ const CACHE_KEY = `apollo-cache-persist.CHAIN_ID_${CHAIN_ID}`;
 
 const cache = new InMemoryCache({
   resultCaching: true,
-  typePolicies: {
-    Pair: {
-      keyFields: false,
-    },
-    Pool: {
-      keyFields: false,
-    },
-    StakingRewardsContract: {
-      keyFields: false,
-    },
-  },
 });
 
 /**

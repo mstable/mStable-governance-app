@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { A, getWorkingPath } from 'hookrouter';
 import { useCloseAccount } from '../../context/AppProvider';
 import { FontSize, ViewportWidth } from '../../theme';
+import { ExternalLink } from '../core/ExternalLink';
 
 interface NavItem {
   title: string;
@@ -49,10 +50,6 @@ const Item = styled.li<{
     border-bottom: none;
   }
 
-  span {
-    cursor: not-allowed;
-  }
-
   &:hover > div {
     visibility: visible;
   }
@@ -90,11 +87,9 @@ export const Navigation: FC<{}> = () => {
           <Item key={title} active={active} onClick={collapseWallet}>
             {path ? (
               external ? (
-                <a href={path}>{title}</a>
+                <ExternalLink href={path}>{title}</ExternalLink>
               ) : (
-                <A href={path} target="_blank">
-                  {title}
-                </A>
+                <A href={path}>{title}</A>
               )
             ) : (
               <span>{title}</span>

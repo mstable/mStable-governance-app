@@ -5,7 +5,7 @@ import {
   TokenDetailsFragment,
   useErc20TokensQuery,
 } from '../../graphql/mstable';
-import { BigDecimal } from '../../web3/BigDecimal';
+import { BigDecimal } from '../../utils/BigDecimal';
 import { Button } from '../core/Button';
 import { AmountInput } from './AmountInput';
 import { TokenInput } from './TokenInput';

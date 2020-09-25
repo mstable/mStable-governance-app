@@ -5,12 +5,6 @@ import { PageHeader } from '../PageHeader';
 import { StakeInfo } from './StakeInfo';
 import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
 
-// const Container = styled.div`
-//   display: inline-flex;
-//   flex-direction: column;
-//   padding-bottom: 20px;
-// `;
-
 export const StakeTabs: FC = () => {
   return (
     <StakeProvider>

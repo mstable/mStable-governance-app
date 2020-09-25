@@ -1,4 +1,4 @@
-import { BigDecimal } from '../../../web3/BigDecimal';
+import { BigDecimal } from '../../../utils/BigDecimal';
 import { SubscribedToken } from '../../../types';
 import {
   IncentivisedVotingLockup,
