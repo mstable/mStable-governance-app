@@ -42,7 +42,7 @@ export const CreateLockInput: FC = () => {
               needsUnlock
               amountValue={amountFormValue}
               error={error}
-              exactDecimals
+              exactDecimals={false}
               name="stake"
               spender={data.incentivisedVotingLockup.address}
               onChangeAmount={setLockupAmount}
