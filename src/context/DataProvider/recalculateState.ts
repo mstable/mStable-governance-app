@@ -1,4 +1,8 @@
 import { DataState } from './types';
 
-// TODO
-export const recalculateState = (dataState: DataState): DataState => dataState
+export const recalculateState = ({
+  tokens,
+  incentivisedVotingLockup,
+}: DataState): DataState => {
+  return { tokens, incentivisedVotingLockup };
+};

@@ -6,9 +6,9 @@ import { useToggleWallet } from '../../../context/AppProvider';
 import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataProvider';
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
 import { Button } from '../../core/Button';
+import { ExternalLink } from '../../core/ExternalLink';
 import { useAccount } from '../../../context/UserProvider';
-import { H2 } from '../../core/Typography';
-import { EtherscanLink } from '../../core/EtherscanLink';
+import { H3 } from '../../core/Typography';
 import { ReactComponent as LinkIcon } from '../../icons/wizard/link.svg';
 import { ReactComponent as GetIcon } from '../../icons/wizard/get.svg';
 import { ReactComponent as StakeIcon } from '../../icons/wizard/stake.svg';
@@ -20,10 +20,11 @@ import { ReactComponent as UniswapIcon } from '../../icons/wizard/uniswap.svg';
 const Step = styled.div<{ active?: boolean; completed?: boolean }>`
   opacity: ${({ active, completed }) => (completed || active ? 1 : 0.4)};
   pointer-events: ${({ active, completed }) => !active && !completed && 'none'};
-  h2 {
+  h3 {
     color: ${({ completed, theme }) => completed && theme.color.green};
+    font-weight: bold;
   }
-  padding-bottom: 16px;
+  padding-bottom: ${({ completed }) => (completed ? '2px' : '16px')};
 `;
 
 const Container = styled.div``;
@@ -49,10 +50,11 @@ const IconsContainer = styled.div<{ completed?: boolean }>`
   svg {
     width: 20px;
     height: auto;
-    fill: ${({ completed }) => (completed ? 'green' : 'black')};
+    fill: ${({ completed, theme }) =>
+      completed ? theme.color.green : theme.color.black};
     padding-bottom: 10px;
   }
-  h2 {
+  h3 {
     padding-right: 10px;
   }
 `;
@@ -63,25 +65,20 @@ export const OnboardingWizard: FC = () => {
   const account = useAccount();
 
   const incentivisedVotingLockup = useIncentivisedVotingLockup();
-  const hasStakingBalance = incentivisedVotingLockup?.userStakingBalance?.gt(0);
+  const hasStakingBalance = incentivisedVotingLockup?.userStakingBalance?.exact.gt(
+    0,
+  );
   const metaToken = useMetaToken();
   const hasMetaBalance = metaToken?.balance.exact.gt(0);
 
-  // TODO maybe do this in a smarter way with a manifest of steps that
-  // get activated in order as the pre-requisites are provided
   return (
     <Container>
       <Step completed={account !== null} active={!account}>
         <IconsContainer completed={account !== null}>
-          <H2>1. Connect account</H2>
+          <H3>1. Connect account</H3>
           <LinkIcon />
         </IconsContainer>
-        {account ? (
-          <>
-            Connected as{' '}
-            <EtherscanLink data={account} type="account" showData truncate />
-          </>
-        ) : (
+        {!account && (
           <>
             <div>Connect your wallet to get started</div>
             <Button onClick={toggleWallet}>Connect Wallet</Button>
@@ -89,36 +86,38 @@ export const OnboardingWizard: FC = () => {
         )}
       </Step>
       <Step
-        completed={hasMetaBalance}
+        completed={hasMetaBalance || hasStakingBalance}
         active={!hasMetaBalance && !hasStakingBalance && account !== null}
       >
-        <IconsContainer completed={hasMetaBalance}>
-          <H2>2. Get MTA</H2>
+        <IconsContainer completed={hasMetaBalance || hasStakingBalance}>
+          <H3>2. Get $MTA</H3>
           <GetIcon />
         </IconsContainer>
-        <ExchangesContainer>
-          <a href="https://balancer.exchange/#/swap">
-            Balancer <BalancerIcon />
-          </a>
-          <br />
-          <a href="https://app.uniswap.org/#/swap">
-            Uniswap <UniswapIcon />
-          </a>
-        </ExchangesContainer>
+        {!hasMetaBalance && !hasStakingBalance && (
+          <ExchangesContainer>
+            <ExternalLink href="https://balancer.exchange/#/swap">
+              <BalancerIcon /> Balancer
+            </ExternalLink>
+            <br />
+            <ExternalLink href="https://app.uniswap.org/#/swap">
+              <UniswapIcon /> Uniswap
+            </ExternalLink>
+          </ExchangesContainer>
+        )}
       </Step>
       <Step
         completed={hasStakingBalance}
         active={hasMetaBalance && !hasStakingBalance}
       >
         <IconsContainer completed={hasStakingBalance}>
-          <H2>3. Stake your MTA</H2>
+          <H3>3. Stake $MTA to get $vMTA</H3>
           <StakeIcon />
         </IconsContainer>
-        <A href="/stake">Stake MTA</A>
+        {!hasStakingBalance && <A href="/stake">Stake</A>}
       </Step>
       <Step active={hasStakingBalance}>
         <IconsContainer>
-          <H2>4. Vote with your MTA</H2>
+          <H3>4. Vote with $vMTA</H3>
           <VoteIcon />
         </IconsContainer>
         <A href="/vote">Vote</A>

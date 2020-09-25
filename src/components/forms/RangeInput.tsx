@@ -17,6 +17,7 @@ interface Props {
   endLabel?: string;
   onChange(value: number): void;
   onSetMax(max: number): void;
+  step?: number;
 }
 
 const ThumbCircle = styled.div`
@@ -32,7 +33,7 @@ const ThumbLabel = styled.div`
   text-align: center;
   text-transform: uppercase;
   background: ${Color.offWhite};
-  padding: 4px;
+  /* padding: 4px; */
   border-radius: 4px;
 
   > :first-child {
@@ -92,24 +93,24 @@ const Track = styled.div<Pick<Props, 'value' | 'min' | 'max'>>`
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
     background: ${({ value, min }) =>
-    getTrackBackground({
-      values: [value],
-      colors: [Color.blue, '#ccc'],
-      min,
-      max: 8,
-    })};
+      getTrackBackground({
+        values: [value],
+        colors: [Color.blue, '#ccc'],
+        min,
+        max: 8,
+      })};
   }
   &:after {
     margin-right: -8px;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
     background: ${({ value, max }) =>
-    getTrackBackground({
-      values: [value],
-      colors: [Color.blue, '#ccc'],
-      min: max - 2,
-      max,
-    })};
+      getTrackBackground({
+        values: [value],
+        colors: [Color.blue, '#ccc'],
+        min: max - 2,
+        max,
+      })};
   }
 `;
 
@@ -130,11 +131,12 @@ export const RangeInput: FC<Props> = ({
   min,
   max,
   value,
+  step,
   onChange,
   startLabel,
   endLabel,
   children,
-  onSetMax
+  onSetMax,
 }) => {
   const handleChange = useCallback(
     ([inputValue]: number[]) => {
@@ -143,12 +145,11 @@ export const RangeInput: FC<Props> = ({
     [onChange],
   );
 
-
   return (
     <Container>
       {startLabel && <Label>{startLabel}</Label>}
       <Range
-        step={1}
+        step={step || 1}
         min={min}
         max={max}
         values={[value]}
@@ -164,7 +165,11 @@ export const RangeInput: FC<Props> = ({
       />
       {endLabel && <Label>{endLabel}</Label>}
       {onSetMax ? (
-        <Button style={{ marginLeft: '20px' }} type="button" onClick={() => onSetMax(max)}>
+        <Button
+          style={{ marginLeft: '20px' }}
+          type="button"
+          onClick={() => onSetMax(max)}
+        >
           Max
         </Button>
       ) : null}

@@ -310,6 +310,7 @@ export type IncentivisedVotingLockup = {
   userLockups: Array<UserLockup>;
   stakingRewards: Array<StakingReward>;
   stakingBalances: Array<StakingBalance>;
+  votingToken: Token;
   end: Scalars['BigInt'];
   periodFinish: Scalars['Int'];
   lastUpdateTime: Scalars['Int'];
@@ -363,6 +364,20 @@ export type IncentivisedVotingLockup_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
+  votingToken?: Maybe<Scalars['String']>;
+  votingToken_not?: Maybe<Scalars['String']>;
+  votingToken_gt?: Maybe<Scalars['String']>;
+  votingToken_lt?: Maybe<Scalars['String']>;
+  votingToken_gte?: Maybe<Scalars['String']>;
+  votingToken_lte?: Maybe<Scalars['String']>;
+  votingToken_in?: Maybe<Array<Scalars['String']>>;
+  votingToken_not_in?: Maybe<Array<Scalars['String']>>;
+  votingToken_contains?: Maybe<Scalars['String']>;
+  votingToken_not_contains?: Maybe<Scalars['String']>;
+  votingToken_starts_with?: Maybe<Scalars['String']>;
+  votingToken_not_starts_with?: Maybe<Scalars['String']>;
+  votingToken_ends_with?: Maybe<Scalars['String']>;
+  votingToken_not_ends_with?: Maybe<Scalars['String']>;
   end?: Maybe<Scalars['BigInt']>;
   end_not?: Maybe<Scalars['BigInt']>;
   end_gt?: Maybe<Scalars['BigInt']>;
@@ -504,6 +519,7 @@ export enum IncentivisedVotingLockup_OrderBy {
   UserLockups = 'userLockups',
   StakingRewards = 'stakingRewards',
   StakingBalances = 'stakingBalances',
+  VotingToken = 'votingToken',
   End = 'end',
   PeriodFinish = 'periodFinish',
   LastUpdateTime = 'lastUpdateTime',
@@ -689,6 +705,8 @@ export enum OrderDirection {
 export type Query = {
   userLockup?: Maybe<UserLockup>;
   userLockups: Array<UserLockup>;
+  token?: Maybe<Token>;
+  tokens: Array<Token>;
   incentivisedVotingLockup?: Maybe<IncentivisedVotingLockup>;
   incentivisedVotingLockups: Array<IncentivisedVotingLockup>;
   rewardsDistributor?: Maybe<RewardsDistributor>;
@@ -697,8 +715,6 @@ export type Query = {
   stakingRewards: Array<StakingReward>;
   stakingBalance?: Maybe<StakingBalance>;
   stakingBalances: Array<StakingBalance>;
-  token?: Maybe<Token>;
-  tokens: Array<Token>;
   withdrawTransaction?: Maybe<WithdrawTransaction>;
   withdrawTransactions: Array<WithdrawTransaction>;
   ejectTransaction?: Maybe<EjectTransaction>;
@@ -728,6 +744,22 @@ export type QueryUserLockupsArgs = {
   orderBy?: Maybe<UserLockup_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<UserLockup_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
+
+export type QueryTokenArgs = {
+  id: Scalars['ID'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type QueryTokensArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Token_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Token_Filter>;
   block?: Maybe<Block_Height>;
 };
 
@@ -792,22 +824,6 @@ export type QueryStakingBalancesArgs = {
   orderBy?: Maybe<StakingBalance_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<StakingBalance_Filter>;
-  block?: Maybe<Block_Height>;
-};
-
-
-export type QueryTokenArgs = {
-  id: Scalars['ID'];
-  block?: Maybe<Block_Height>;
-};
-
-
-export type QueryTokensArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Token_OrderBy>;
-  orderDirection?: Maybe<OrderDirection>;
-  where?: Maybe<Token_Filter>;
   block?: Maybe<Block_Height>;
 };
 
@@ -1077,6 +1093,8 @@ export enum StakingReward_OrderBy {
 export type Subscription = {
   userLockup?: Maybe<UserLockup>;
   userLockups: Array<UserLockup>;
+  token?: Maybe<Token>;
+  tokens: Array<Token>;
   incentivisedVotingLockup?: Maybe<IncentivisedVotingLockup>;
   incentivisedVotingLockups: Array<IncentivisedVotingLockup>;
   rewardsDistributor?: Maybe<RewardsDistributor>;
@@ -1085,8 +1103,6 @@ export type Subscription = {
   stakingRewards: Array<StakingReward>;
   stakingBalance?: Maybe<StakingBalance>;
   stakingBalances: Array<StakingBalance>;
-  token?: Maybe<Token>;
-  tokens: Array<Token>;
   withdrawTransaction?: Maybe<WithdrawTransaction>;
   withdrawTransactions: Array<WithdrawTransaction>;
   ejectTransaction?: Maybe<EjectTransaction>;
@@ -1116,6 +1132,22 @@ export type SubscriptionUserLockupsArgs = {
   orderBy?: Maybe<UserLockup_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<UserLockup_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
+
+export type SubscriptionTokenArgs = {
+  id: Scalars['ID'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type SubscriptionTokensArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Token_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Token_Filter>;
   block?: Maybe<Block_Height>;
 };
 
@@ -1180,22 +1212,6 @@ export type SubscriptionStakingBalancesArgs = {
   orderBy?: Maybe<StakingBalance_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<StakingBalance_Filter>;
-  block?: Maybe<Block_Height>;
-};
-
-
-export type SubscriptionTokenArgs = {
-  id: Scalars['ID'];
-  block?: Maybe<Block_Height>;
-};
-
-
-export type SubscriptionTokensArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<Token_OrderBy>;
-  orderDirection?: Maybe<OrderDirection>;
-  where?: Maybe<Token_Filter>;
   block?: Maybe<Block_Height>;
 };
 

@@ -1,6 +1,23 @@
 import { BigDecimal } from '../../../web3/BigDecimal';
 import { SubscribedToken } from '../../../types';
-import { IncentivisedVotingLockup } from '../../../context/DataProvider/types';
+import {
+  IncentivisedVotingLockup,
+  UserLockup,
+  UserStakingReward,
+} from '../../../context/DataProvider/types';
+
+export interface RewardsEarned {
+  rewards?: BigDecimal;
+  rewardsUsd?: BigDecimal;
+}
+
+export interface SimulatedData {
+  totalStaticWeight: BigDecimal;
+  totalValue: BigDecimal;
+  userLockup?: UserLockup;
+  userStakingBalance?: BigDecimal;
+  userStakingReward?: UserStakingReward;
+}
 
 export enum TransactionType {
   Claim = 'Claim',
@@ -14,6 +31,7 @@ export interface State {
   data: {
     metaToken?: SubscribedToken;
     incentivisedVotingLockup?: IncentivisedVotingLockup;
+    simulatedData?: SimulatedData;
   };
   error?: string;
   lockupAmount: {
@@ -58,12 +76,13 @@ export enum Actions {
 
 export type Action =
   | {
-    type: Actions.Data;
-    payload: {
-      metaToken?: SubscribedToken;
-      incentivisedVotingLockup?: IncentivisedVotingLockup;
-    };
-  }
+      type: Actions.Data;
+      payload: {
+        metaToken?: SubscribedToken;
+        incentivisedVotingLockup?: IncentivisedVotingLockup;
+        rewards?: RewardsEarned;
+      };
+    }
   | { type: Actions.SetLockupAmount; payload: string }
   | { type: Actions.SetLockupDays; payload: number }
   | { type: Actions.SetMaxLockupAmount }

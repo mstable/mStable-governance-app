@@ -1,15 +1,19 @@
 import React, { FC } from 'react';
 import format from 'date-fns/format';
 import Skeleton from 'react-loading-skeleton';
+import styled from 'styled-components';
+import { FormRow } from '../../../core/Form';
+import { H3 } from '../../../core/Typography';
+import { RangeInput } from '../../../forms/RangeInput';
+import { Tooltip } from '../../../core/ReactTooltip';
+import { Protip } from '../../../core/Protip';
+import { ExternalLink } from '../../../core/ExternalLink';
+import { TokenAmountInput } from '../../../forms/TokenAmountInput';
+import { useStakeDispatch, useStakeState } from '../StakeProvider';
 
-import { FormRow } from '../../core/Form';
-import { H3 } from '../../core/Typography';
-import { RangeInput } from '../../forms/RangeInput';
-import { Tooltip } from '../../core/ReactTooltip';
-import { Protip } from '../../core/Protip';
-import { ExternalLink } from '../../core/ExternalLink';
-import { TokenAmountInput } from '../../forms/TokenAmountInput';
-import { useStakeDispatch, useStakeState } from './StakeProvider';
+const StyledTransactionForm = styled(FormRow)`
+  border-top: 0;
+`;
 
 export const CreateLockInput: FC = () => {
   const {
@@ -18,7 +22,6 @@ export const CreateLockInput: FC = () => {
     error,
     data,
   } = useStakeState();
-  // const { end } = data.incentivisedVotingLockup;
   const {
     setLockupAmount,
     setLockupDays,
@@ -28,11 +31,11 @@ export const CreateLockInput: FC = () => {
 
   return (
     <>
-      <FormRow>
+      <StyledTransactionForm>
         <H3>
-          <Tooltip tip="test">Deposit Amount</Tooltip>
+          <Tooltip tip="Units of MTA to lockup">Stake Amount</Tooltip>
         </H3>
-        {/* TODO: add balances label */}
+
         {data.metaToken && data.incentivisedVotingLockup ? (
           <>
             <TokenAmountInput
@@ -60,25 +63,32 @@ export const CreateLockInput: FC = () => {
         ) : (
           <Skeleton />
         )}
-      </FormRow>
+      </StyledTransactionForm>
       <FormRow>
         <H3>
-          <Tooltip tip="test">Lock up deposit</Tooltip>
+          <Tooltip tip="Length of time to stake for (rounded to the nearest week)">
+            Stake lockup length
+          </Tooltip>
         </H3>
-        <RangeInput
-          min={0}
-          max={365}
-          value={lockupDays}
-          onChange={setLockupDays}
-          startLabel="Today"
-          endLabel="One Year"
-          onSetMax={setMaxLockupDays}
-        >
-          <div>{lockupDays} Days</div>
-          <div>
-            {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
-          </div>
-        </RangeInput>
+        {data.incentivisedVotingLockup && lockupDays > 0 ? (
+          <RangeInput
+            min={data.incentivisedVotingLockup.lockTimes.min}
+            step={7}
+            max={data.incentivisedVotingLockup.lockTimes.max}
+            value={lockupDays}
+            onChange={setLockupDays}
+            startLabel="Today"
+            endLabel="End date"
+            onSetMax={setMaxLockupDays}
+          >
+            <div>{(lockupDays / 7).toFixed(1)} Weeks</div>
+            <div>
+              {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
+            </div>
+          </RangeInput>
+        ) : (
+          <Skeleton />
+        )}
       </FormRow>
     </>
   );

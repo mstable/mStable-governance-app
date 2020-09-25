@@ -1,13 +1,14 @@
-import React, { FC, useContext, useLayoutEffect, useState } from 'react';
+import React, { FC, useContext, useLayoutEffect, useState, useMemo } from 'react';
 import styled, { ThemeContext, DefaultTheme } from 'styled-components';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
-import { useMetaToken } from '../../context/DataProvider/TokensProvider';
+import { useMetaToken, useToken } from '../../context/DataProvider/TokensProvider';
 import { EtherscanLink } from '../core/EtherscanLink';
 import { CountUp } from '../core/CountUp';
 import { mapSizeToFontSize, Size } from '../../theme';
 import { TokenIcon as TokenIconBase } from '../icons/TokenIcon';
 import { List, ListItem } from '../core/List';
+import { useDataState } from '../../context/DataProvider/DataProvider';
 
 const Symbol = styled.div`
   display: flex;
@@ -19,12 +20,12 @@ const Symbol = styled.div`
   }
 `;
 
-const Balance = styled(CountUp)<{ size?: Size }>`
+const Balance = styled(CountUp) <{ size?: Size }>`
   font-weight: bold;
   font-size: ${({ size = Size.m }) => mapSizeToFontSize(size)};
 `;
 
-const TokenIcon = styled(TokenIconBase)<{ outline?: boolean }>`
+const TokenIcon = styled(TokenIconBase) <{ outline?: boolean }>`
   ${({ outline }) =>
     outline ? `border: 1px white solid; border-radius: 100%` : ''}
 `;
@@ -32,13 +33,13 @@ const TokenIcon = styled(TokenIconBase)<{ outline?: boolean }>`
 const BalanceSkeleton: FC<{ themeContext: DefaultTheme }> = ({
   themeContext: theme,
 }) => (
-  <SkeletonTheme
-    color={theme.color.blueTransparent}
-    highlightColor={theme.color.blue}
-  >
-    <Skeleton width={200} height={30} />
-  </SkeletonTheme>
-);
+    <SkeletonTheme
+      color={theme.color.blueTransparent}
+      highlightColor={theme.color.blue}
+    >
+      <Skeleton width={200} height={30} />
+    </SkeletonTheme>
+  );
 
 /**
  * Component to track and display the balances of tokens for the currently
@@ -47,9 +48,11 @@ const BalanceSkeleton: FC<{ themeContext: DefaultTheme }> = ({
 export const Balances: FC<{}> = () => {
   const [loading, setLoading] = useState(true);
 
-  // const dataState = useDataState() || {};
-  // TODO
-  const otherTokens: never[] = [];
+  const dataState = useDataState() || {};
+  const vmta = useToken(dataState.incentivisedVotingLockup?.address);
+  const otherTokens = useMemo(() => (vmta ? [vmta] : []), [
+    vmta,
+  ]);
   const metaToken = useMetaToken();
 
   const themeContext = useContext(ThemeContext);
@@ -78,24 +81,23 @@ export const Balances: FC<{}> = () => {
             {!metaToken.balance ? (
               <BalanceSkeleton themeContext={themeContext} />
             ) : (
-              <Balance size={Size.l} end={metaToken.balance.simple} />
-            )}
+                <Balance size={Size.l} end={metaToken.balance.simple} />
+              )}
           </>
         ) : null}
       </ListItem>
-
       {otherTokens.map(({ address, symbol, balance }) => (
         <ListItem key={address}>
           <Symbol>
-            <TokenIcon symbol={symbol} />
+            <TokenIcon symbol={symbol} outline={symbol === 'vMTA'} />
             <span>{symbol}</span>
             <EtherscanLink data={address} />
           </Symbol>
           {balance ? (
-            <Balance end={(balance as { simple: number }).simple} />
+            <Balance end={balance.simple} />
           ) : (
-            <BalanceSkeleton themeContext={themeContext} />
-          )}
+              <BalanceSkeleton themeContext={themeContext} />
+            )}
         </ListItem>
       ))}
     </List>
