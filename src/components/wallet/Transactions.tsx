@@ -57,7 +57,7 @@ const getPendingTxDescription = (
         <>
           {' '}
           You {tx.status ? 'staked' : 'are staking'}{' '}
-          {stakingData?.lockupAmount.amount} MTA for{' '}
+          {stakingData?.lockupAmount.amount?.simple} MTA for{' '}
           {stakingData
             ? (stakingData.lockupPeriod.formValue / 7).toFixed(1)
             : null}{' '}
