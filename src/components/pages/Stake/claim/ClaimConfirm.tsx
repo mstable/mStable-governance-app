@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useStakeState, useRewardsEarned } from './StakeProvider';
-import { TransactionType } from './types';
-import { CountUp } from '../../core/CountUp';
+import { useStakeState, useRewardsEarned } from '../StakeProvider';
+import { TransactionType } from '../types';
+import { CountUp } from '../../../core/CountUp';
 
 export const ClaimConfirm: FC<{}> = () => {
   const {

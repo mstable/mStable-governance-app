@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { useStakeState } from './StakeProvider';
-import { TransactionType } from './types';
-import { CountUp } from '../../core/CountUp';
+import { useStakeState } from '../StakeProvider';
+import { TransactionType } from '../types';
+import { CountUp } from '../../../core/CountUp';
 
 export const CreateLockConfirm: FC<{}> = () => {
   const {

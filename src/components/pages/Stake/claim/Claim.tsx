@@ -1,12 +1,12 @@
 import React, { FC, useEffect } from 'react';
 
-import { Interfaces } from '../../../types';
-import { TransactionForm } from '../../forms/TransactionForm';
+import { Interfaces } from '../../../../types';
+import { TransactionForm } from '../../../forms/TransactionForm';
 import {
   FormProvider,
   useSetFormManifest,
-} from '../../forms/TransactionForm/FormProvider';
-import { useStakeContract, useRewardsEarned } from './StakeProvider';
+} from '../../../forms/TransactionForm/FormProvider';
+import { useStakeContract, useRewardsEarned } from '../StakeProvider';
 import { ClaimInput } from './ClaimInput';
 
 const Form: FC<{}> = () => {

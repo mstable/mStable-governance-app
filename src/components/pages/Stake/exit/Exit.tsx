@@ -2,16 +2,16 @@ import React, { FC, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
 import format from 'date-fns/format';
-import { Interfaces } from '../../../types';
-import { TransactionForm } from '../../forms/TransactionForm';
+import { Interfaces } from '../../../../types';
+import { TransactionForm } from '../../../forms/TransactionForm';
 import {
   FormProvider,
   useSetFormManifest,
-} from '../../forms/TransactionForm/FormProvider';
-import { useStakeState, useStakeContract } from './StakeProvider';
+} from '../../../forms/TransactionForm/FormProvider';
+import { useStakeState, useStakeContract } from '../StakeProvider';
 import { ExitInput } from './ExitInput';
 import { ExitConfirm } from './ExitConfirm';
-import { Protip } from '../../core/Protip';
+import { Protip } from '../../../core/Protip';
 
 const StyledTransactionForm = styled(TransactionForm)`
   h3 {

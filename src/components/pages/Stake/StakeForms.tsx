@@ -5,9 +5,9 @@ import { TabsContainer, TabBtn } from '../../core/Tabs';
 import { Color } from '../../../theme';
 import { TransactionType } from './types';
 import { useStakeState, useStakeDispatch } from './StakeProvider';
-import { CreateLock } from './CreateLock';
-import { Claim } from './Claim';
-import { Exit } from './Exit';
+import { CreateLock } from './createLock/CreateLock';
+import { Claim } from './claim/Claim';
+import { Exit } from './exit/Exit';
 
 const TX_TYPES = {
   [TransactionType.CreateLock]: {
@@ -67,8 +67,8 @@ export const StakeForms: FC = () => {
         ) : transactionType === TransactionType.Withdraw ? (
           <Exit />
         ) : (
-          <div>TODO</div>
-        )}
+                <div>TODO</div>
+              )}
       </div>
     </Container>
   );
