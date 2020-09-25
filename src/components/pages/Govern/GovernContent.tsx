@@ -17,7 +17,7 @@ const ImageContainer = styled.div`
     border-bottom: none;
   }
   img {
-    width: 90%;
+    width: 97%;
     height: auto;
     max-width: 500px;
     max-height: 350px;
@@ -30,7 +30,7 @@ const ImageContainer = styled.div`
     justify-content: flex-start;
     align-items: center;
     img {
-      width: 90%;
+      width: 97%;
       height: auto;
       max-width: 1000px;
       max-height: 500px;
