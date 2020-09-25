@@ -47,12 +47,8 @@ const getStatusLabel = (status: TransactionStatus): string =>
     : 'Pending';
 
 const getPendingTxDescription = (
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   tx: Transaction,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  dataState?: DataState,
   stakingData?: State,
-  rewards?: RewardsEarned,
 ): JSX.Element => {
   switch (tx.fn) {
     case 'claimReward': {
