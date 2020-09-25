@@ -16,13 +16,17 @@ export const CHAIN_ID = parseInt(process.env.REACT_APP_CHAIN_ID as string, 10);
 export const NETWORK_NAMES = {
   1: 'Main Ethereum network',
   3: 'Ropsten (Test network)',
+  42: 'Kovan (Test network)',
   1337: 'Local network',
 };
 
 export const EMOJIS = {
   error: '❌',
   approve: '✔️',
-  deposit: '🏦',
+  createLock: '🔒',
+  increaseLockAmount: '🔒',
+  increaseLockLength: '🔒',
+  withdraw: '🚪',
   claimReward: '🏆',
 };
 

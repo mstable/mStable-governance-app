@@ -33,7 +33,7 @@ export class BigDecimal {
    * @param amountStr
    * @param decimals
    */
-  static parse(amountStr: string, decimals: number): BigDecimal {
+  static parse(amountStr: string, decimals = 18): BigDecimal {
     // Sanitize the input and limit it to the given decimals
     const [int, fraction = '0'] = amountStr.split('.');
     const sanitizedAmount = `${int}.${fraction.slice(0, decimals)}`;
@@ -58,7 +58,7 @@ export class BigDecimal {
    */
   static maybeParse(
     amountStr: string | null | undefined,
-    decimals: number,
+    decimals = 18,
   ): BigDecimal | undefined {
     if (!amountStr || !decimals) {
       return undefined;
@@ -70,7 +70,7 @@ export class BigDecimal {
 
   exact: BigNumber;
 
-  constructor(num: BigNumberish, decimals: number) {
+  constructor(num: BigNumberish, decimals = 18) {
     this.exact = bigNumberify(num);
     this.decimals = decimals;
   }

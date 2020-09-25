@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers/utils';
-import { BigDecimal } from '../../web3/BigDecimal';
-import { ONE_DAY, ONE_WEEK } from '../../web3/constants';
-import { nowSimple } from '../../web3/amounts';
+import { BigDecimal } from '../../utils/BigDecimal';
+import { ONE_DAY, ONE_WEEK } from '../../utils/constants';
+import { nowUnix } from '../../utils/time';
 import {
   DataState,
   IncentivisedVotingLockup,
@@ -21,8 +21,8 @@ const transformUserLockup = (
     const { value, bias, lockTime, slope, ts } = data;
 
     return {
-      value: new BigDecimal(value, 18),
-      bias: new BigDecimal(bias, 18),
+      value: new BigDecimal(value),
+      bias: new BigDecimal(bias),
       slope: new BigNumber(slope),
       ts: parseInt(ts, 10),
       lockTime: parseInt(lockTime, 10),
@@ -38,9 +38,9 @@ const transformUserStakingReward = (
   if (data) {
     const { amount, amountPerTokenPaid, rewardsPaid } = data;
     return {
-      amount: new BigDecimal(amount, 18),
-      amountPerTokenPaid: new BigDecimal(amountPerTokenPaid, 18),
-      rewardsPaid: new BigDecimal(rewardsPaid, 18),
+      amount: new BigDecimal(amount),
+      amountPerTokenPaid: new BigDecimal(amountPerTokenPaid),
+      rewardsPaid: new BigDecimal(rewardsPaid),
     };
   }
   return undefined;
@@ -50,7 +50,7 @@ const transformUserStakingBalance = (
   data: RawIncentivisedVotingLockup['stakingBalances'][0] | undefined,
 ): BigDecimal | undefined => {
   if (data) {
-    return new BigDecimal(data.amount, 18);
+    return new BigDecimal(data.amount);
   }
   return undefined;
 };
@@ -90,7 +90,7 @@ export const transformRawData = ({
   const userStakingBalance = transformUserStakingBalance(rawUserStakingBalance);
 
   // Get current unix
-  const now = nowSimple();
+  const now = nowUnix();
   const unixWeekCount = Math.floor(now / ONE_WEEK.toNumber());
   const nextUnixWeek = (unixWeekCount + 1) * ONE_WEEK.toNumber();
   const minDays = Math.ceil((nextUnixWeek - now) / ONE_DAY.toNumber());
@@ -114,14 +114,14 @@ export const transformRawData = ({
       ...stakingToken,
       name: '',
     },
-    rewardPerTokenStored: new BigDecimal(rewardPerTokenStored, 18),
+    rewardPerTokenStored: new BigDecimal(rewardPerTokenStored),
     duration: new BigNumber(duration),
     end: endBN,
     lockTimes: {
       min: minDays,
       max: maxDays,
     },
-    rewardRate: new BigDecimal(rewardRate, 18),
+    rewardRate: new BigDecimal(rewardRate),
     rewardsToken: {
       ...rewardsToken,
       name: '',
@@ -130,9 +130,9 @@ export const transformRawData = ({
     globalEpoch: new BigNumber(globalEpoch),
     expired,
     maxTime: new BigNumber(maxTime),
-    totalStaticWeight: new BigDecimal(totalStaticWeight, 18),
-    totalStakingRewards: new BigDecimal(totalStakingRewards, 18),
-    totalValue: new BigDecimal(totalValue, 18),
+    totalStaticWeight: new BigDecimal(totalStaticWeight),
+    totalStakingRewards: new BigDecimal(totalStakingRewards),
+    totalValue: new BigDecimal(totalValue),
   };
 
   return {

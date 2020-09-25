@@ -22,10 +22,10 @@ import {
   useAddSuccessNotification,
 } from './NotificationsProvider';
 import { TransactionOverrides } from '../typechain/index.d';
-import { getTransactionStatus } from '../web3/transactions';
+import { getTransactionStatus } from '../utils/transactions';
 import { DataState } from './DataProvider/types';
 import { useDataState } from './DataProvider/DataProvider';
-import { getEtherscanLink } from '../web3/strings';
+import { getEtherscanLink } from '../utils/strings';
 
 enum Actions {
   AddPending,

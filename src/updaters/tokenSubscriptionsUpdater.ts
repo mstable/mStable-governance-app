@@ -10,7 +10,7 @@ import {
 } from '../context/DataProvider/TokensProvider';
 import { Erc20DetailedFactory } from '../typechain/Erc20DetailedFactory';
 import { Erc20Detailed } from '../typechain/Erc20Detailed.d';
-import { BigDecimal } from '../web3/BigDecimal';
+import { BigDecimal } from '../utils/BigDecimal';
 
 interface State {
   [tokenAddress: string]: Erc20Detailed;
@@ -52,7 +52,7 @@ export const TokenSubscriptionsUpdater = (): null => {
   const [contracts, dispatch] = useReducer(reducer, initialState);
 
   const account = useAccount();
-  const accountRef = useRef<string | null>(account);
+  const accountRef = useRef(account);
   const blockNumber = useBlockNumber();
 
   const tokenSubscriptionsSerialized = useTokenSubscriptionsSerialized();

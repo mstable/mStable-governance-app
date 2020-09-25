@@ -1,5 +1,5 @@
-import { ONE_DAY } from '../../../web3/constants';
-import { BigDecimal } from '../../../web3/BigDecimal';
+import { ONE_DAY } from '../../../utils/constants';
+import { BigDecimal } from '../../../utils/BigDecimal';
 
 export interface PoolShare {
   apy: number;
@@ -20,11 +20,11 @@ export const getShareAndAPY = (
   if (v.simple === 0) {
     return {
       apy: 0,
-      share: new BigDecimal(0, 18),
+      share: new BigDecimal(0),
     };
   }
 
-  const dailyRewards = new BigDecimal(ONE_DAY.mul(r.exact), 18); // e.g. 100
+  const dailyRewards = new BigDecimal(ONE_DAY.mul(r.exact)); // e.g. 100
   const share = b.divPrecisely(t); // e.g. 0.2
   // apy = (daily return) * 365
   // daily return = daily rewards / share
@@ -33,6 +33,6 @@ export const getShareAndAPY = (
   const apy = dailyReturnRate.simple * 365 * 100;
   return {
     apy,
-    share: new BigDecimal(share.exact.mul(100), 18),
+    share: new BigDecimal(share.exact.mul(100)),
   };
 };

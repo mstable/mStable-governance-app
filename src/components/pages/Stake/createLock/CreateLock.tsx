@@ -8,7 +8,7 @@ import {
   useSetFormManifest,
 } from '../../../forms/TransactionForm/FormProvider';
 import { Interfaces } from '../../../../types';
-import { BigDecimal } from '../../../../web3/BigDecimal';
+import { BigDecimal } from '../../../../utils/BigDecimal';
 
 import { CreateLockInput } from './CreateLockInput';
 import { useStakeContract, useStakeState } from '../StakeProvider';
@@ -71,36 +71,36 @@ const StakeForm: FC = () => {
 
   return incentivisedVotingLockup ? (
     !incentivisedVotingLockup.userStakingBalance ||
-      incentivisedVotingLockup.userStakingBalance?.simple === 0 ? (
-        <TransactionForm
-          confirmLabel="Lock up and stake MTA"
-          confirm={<CreateLockConfirm />}
-          input={<CreateLockInput />}
-          valid={valid}
-        />
-      ) : (
-        <>
-          <Protip emoji="😊" title="You have already staked!">
-            <br />
+    incentivisedVotingLockup.userStakingBalance?.simple === 0 ? (
+      <TransactionForm
+        confirmLabel="Lock up and stake MTA"
+        confirm={<CreateLockConfirm />}
+        input={<CreateLockInput />}
+        valid={valid}
+      />
+    ) : (
+      <>
+        <Protip emoji="😊" title="You have already staked!">
+          <br />
           Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
-            {incentivisedVotingLockup.userLockup?.lockTime
-              ? format(
+          {incentivisedVotingLockup.userLockup?.lockTime
+            ? format(
                 incentivisedVotingLockup.userLockup?.lockTime * 1000,
                 'dd-MM-yyyy',
               )
-              : null}
-            <br />
-            <br />
+            : null}
+          <br />
+          <br />
           Whilst it's possible to both extend your lockup time and increase
           lockup amount, this hasn't been added to the UI yet - hold tight!
         </Protip>
-          <br />
-        </>
-      )
+        <br />
+      </>
+    )
   ) : (
-      <Skeleton />
-    );
+    <Skeleton />
+  );
 };
 
 export const CreateLock: FC = () => {

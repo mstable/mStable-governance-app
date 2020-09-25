@@ -2,7 +2,7 @@ import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 import { CountUpProps } from 'react-countup';
 
-import { BigDecimal } from '../../web3/BigDecimal';
+import { BigDecimal } from '../../utils/BigDecimal';
 import { CountUp } from './CountUp';
 import { Tooltip } from './ReactTooltip';
 

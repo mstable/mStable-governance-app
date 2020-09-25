@@ -2,10 +2,10 @@ import { Reducer } from 'react';
 import { pipeline } from 'ts-pipe-compose';
 import { addDays } from 'date-fns';
 import { BigNumber } from 'ethers/utils';
-import { nowSimple } from '../../../web3/amounts';
+import { nowUnix } from '../../../utils/time';
 import { Action, Actions, State, SimulatedData } from './types';
 import { validate } from './validation';
-import { BigDecimal } from '../../../web3/BigDecimal';
+import { BigDecimal } from '../../../utils/BigDecimal';
 import {
   UserLockup,
   UserStakingReward,
@@ -50,7 +50,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
       return {
         ...state,
         lockupAmount: {
-          amount: BigDecimal.maybeParse(action.payload, 18),
+          amount: BigDecimal.maybeParse(action.payload),
           formValue: action.payload,
         },
         touched: true,
@@ -106,9 +106,11 @@ const reduce: Reducer<State, Action> = (state, action) => {
 const calculate = (state: State): State => {
   const { data, lockupAmount, lockupPeriod } = state;
   const { incentivisedVotingLockup } = data;
+
   if (!incentivisedVotingLockup) {
     return state;
   }
+
   const {
     userStakingBalance,
     userStakingReward,
@@ -127,6 +129,7 @@ const calculate = (state: State): State => {
     totalStaticWeight,
     totalValue,
   };
+
   // Calculate current APY data
   let newStakingReward = userStakingReward;
   if (userLockup && userStakingReward && userStakingBalance) {
@@ -145,28 +148,34 @@ const calculate = (state: State): State => {
     incentivisedVotingLockup.maxTime &&
     incentivisedVotingLockup.totalStaticWeight &&
     lockupPeriod.unlockTime &&
-    lockupPeriod.unlockTime > nowSimple()
+    lockupPeriod.unlockTime > nowUnix()
   ) {
-    const lockUpAmt =
+    const simulatedLockupAmount =
       lockupAmount && lockupAmount.amount
         ? lockupAmount.amount
-        : new BigDecimal(0, 18);
-    // if (!lockUpAmt.amount) throw 'Error';
-    const now = nowSimple();
+        : new BigDecimal(0);
+
+    const now = nowUnix();
+
     const length = lockupPeriod.unlockTime - now;
-    const slope = lockUpAmt.exact.div(incentivisedVotingLockup.maxTime);
+
+    const slope = simulatedLockupAmount.exact.div(
+      incentivisedVotingLockup.maxTime,
+    );
+
     const simulatedLockup: UserLockup = {
-      value: lockUpAmt,
+      value: simulatedLockupAmount,
       lockTime: lockupPeriod.unlockTime,
       ts: now,
       slope,
-      bias: new BigDecimal(slope.mul(new BigNumber(length)), 18),
+      bias: new BigDecimal(slope.mul(new BigNumber(length))),
       length,
     };
+
     const simulatedStakingBalance: BigDecimal = new BigDecimal(
       slope.mul(10000).mul(Math.floor(Math.sqrt(length))),
-      18,
     );
+
     const simulatedTotalStaticWeight = incentivisedVotingLockup.totalStaticWeight.add(
       simulatedStakingBalance,
     );
@@ -177,13 +186,15 @@ const calculate = (state: State): State => {
       simulatedStakingBalance,
       simulatedLockup.value,
     );
+
     const simulatedStakingReward: UserStakingReward = {
-      amount: new BigDecimal(0, 18),
-      amountPerTokenPaid: new BigDecimal(0, 18),
-      rewardsPaid: new BigDecimal(0, 18),
+      amount: new BigDecimal(0),
+      amountPerTokenPaid: new BigDecimal(0),
+      rewardsPaid: new BigDecimal(0),
       currentAPY: simulatedApy.apy,
       poolShare: simulatedApy.share,
     };
+
     simulatedData = {
       totalStaticWeight: simulatedTotalStaticWeight,
       totalValue: incentivisedVotingLockup.totalValue.add(
@@ -194,6 +205,7 @@ const calculate = (state: State): State => {
       userStakingReward: simulatedStakingReward,
     };
   }
+
   return {
     ...state,
     data: {

@@ -4,12 +4,12 @@ import { MaxUint256 } from 'ethers/constants';
 import styled from 'styled-components';
 
 import { useFormId } from './TransactionForm/FormProvider';
-import { useErc20Contract } from '../../context/DataProvider/ContractsProvider';
+import { useErc20Contract } from '../../utils/hooks';
 import {
   useHasPendingApproval,
   useSendTransaction,
 } from '../../context/TransactionsProvider';
-import { BigDecimal } from '../../web3/BigDecimal';
+import { BigDecimal } from '../../utils/BigDecimal';
 import { Button } from '../core/Button';
 import { Interfaces, SendTxManifest } from '../../types';
 import { Tooltip } from '../core/ReactTooltip';
@@ -40,7 +40,7 @@ const Container = styled.div`
   }
 `;
 
-const INFINITE = new BigDecimal(MaxUint256, 18);
+const INFINITE = new BigDecimal(MaxUint256);
 
 enum ApproveMode {
   Exact,

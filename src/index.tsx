@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/react';
 
 import * as serviceWorker from './serviceWorker';
 import { checkRequiredEnvVars } from './checkRequiredEnvVars';
-import { DAPP_VERSION } from './web3/constants';
+import { DAPP_VERSION } from './utils/constants';
 import { Providers } from './context';
 import { Updaters } from './updaters';
 import { Layout } from './components/layout/Layout';
