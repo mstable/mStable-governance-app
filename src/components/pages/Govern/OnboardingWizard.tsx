@@ -6,6 +6,7 @@ import { useToggleWallet } from '../../../context/AppProvider';
 import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataProvider';
 import { useMetaToken } from '../../../context/DataProvider/TokensProvider';
 import { Button } from '../../core/Button';
+import { ExternalLink } from '../../core/ExternalLink';
 import { useAccount } from '../../../context/UserProvider';
 import { H3 } from '../../core/Typography';
 import { ReactComponent as LinkIcon } from '../../icons/wizard/link.svg';
@@ -49,7 +50,8 @@ const IconsContainer = styled.div<{ completed?: boolean }>`
   svg {
     width: 20px;
     height: auto;
-    fill: ${({ completed, theme }) => (completed ? theme.color.green : theme.color.black)};
+    fill: ${({ completed, theme }) =>
+      completed ? theme.color.green : theme.color.black};
     padding-bottom: 10px;
   }
   h3 {
@@ -69,8 +71,6 @@ export const OnboardingWizard: FC = () => {
   const metaToken = useMetaToken();
   const hasMetaBalance = metaToken?.balance.exact.gt(0);
 
-  // TODO maybe do this in a smarter way with a manifest of steps that
-  // get activated in order as the pre-requisites are provided
   return (
     <Container>
       <Step completed={account !== null} active={!account}>
@@ -95,13 +95,13 @@ export const OnboardingWizard: FC = () => {
         </IconsContainer>
         {!hasMetaBalance && !hasStakingBalance && (
           <ExchangesContainer>
-            <a href="https://balancer.exchange/#/swap">
-              Balancer <BalancerIcon />
-            </a>
+            <ExternalLink href="https://balancer.exchange/#/swap">
+              <BalancerIcon /> Balancer
+            </ExternalLink>
             <br />
-            <a href="https://app.uniswap.org/#/swap">
-              Uniswap <UniswapIcon />
-            </a>
+            <ExternalLink href="https://app.uniswap.org/#/swap">
+              <UniswapIcon /> Uniswap
+            </ExternalLink>
           </ExchangesContainer>
         )}
       </Step>

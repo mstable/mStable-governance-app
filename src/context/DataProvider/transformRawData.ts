@@ -22,7 +22,7 @@ const transformUserLockup = (
 
     return {
       value: new BigDecimal(value, 18),
-      bias: new BigNumber(bias),
+      bias: new BigDecimal(bias, 18),
       slope: new BigNumber(slope),
       ts: parseInt(ts, 10),
       lockTime: parseInt(lockTime, 10),

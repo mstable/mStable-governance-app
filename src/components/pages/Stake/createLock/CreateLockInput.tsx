@@ -33,7 +33,7 @@ export const CreateLockInput: FC = () => {
     <>
       <StyledTransactionForm>
         <H3>
-          <Tooltip tip="test">Stake Amount</Tooltip>
+          <Tooltip tip="Units of MTA to lockup">Stake Amount</Tooltip>
         </H3>
 
         {data.metaToken && data.incentivisedVotingLockup ? (
@@ -61,12 +61,14 @@ export const CreateLockInput: FC = () => {
             ) : null}
           </>
         ) : (
-            <Skeleton />
-          )}
+          <Skeleton />
+        )}
       </StyledTransactionForm>
       <FormRow>
         <H3>
-          <Tooltip tip="test">Stake lockup length</Tooltip>
+          <Tooltip tip="Length of time to stake for (rounded to the nearest week)">
+            Stake lockup length
+          </Tooltip>
         </H3>
         {data.incentivisedVotingLockup && lockupDays > 0 ? (
           <RangeInput
@@ -79,14 +81,14 @@ export const CreateLockInput: FC = () => {
             endLabel="End date"
             onSetMax={setMaxLockupDays}
           >
-            <div>{lockupDays / 7} Weeks</div>
+            <div>{(lockupDays / 7).toFixed(1)} Weeks</div>
             <div>
               {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
             </div>
           </RangeInput>
         ) : (
-            <Skeleton />
-          )}
+          <Skeleton />
+        )}
       </FormRow>
     </>
   );

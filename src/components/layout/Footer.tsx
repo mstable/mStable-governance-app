@@ -136,6 +136,7 @@ const links = [
   { title: 'mStable', href: 'https://mstable.org' },
   { title: 'Docs', href: 'https://docs.mstable.org' },
   { title: 'Code', href: 'https://github.com/mstable' },
+  { title: 'Discuss', href: '/discuss' },
 ];
 
 const socialIcons = [

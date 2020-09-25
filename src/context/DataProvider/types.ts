@@ -8,7 +8,7 @@ export interface UserLockup {
   lockTime: number;
   ts: number;
   slope: BigNumber;
-  bias: BigNumber;
+  bias: BigDecimal;
   length: number;
 }
 

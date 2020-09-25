@@ -17,6 +17,13 @@ export const getShareAndAPY = (
   const b = userStakingBalance;
   const v = lockup;
 
+  if (v.simple === 0) {
+    return {
+      apy: 0,
+      share: new BigDecimal(0, 18),
+    };
+  }
+
   const dailyRewards = new BigDecimal(ONE_DAY.mul(r.exact), 18); // e.g. 100
   const share = b.divPrecisely(t); // e.g. 0.2
   // apy = (daily return) * 365

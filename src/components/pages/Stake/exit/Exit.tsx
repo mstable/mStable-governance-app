@@ -25,15 +25,13 @@ const ExitForm: FC<{}> = () => {
   } = useStakeState();
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
-  const canUnlock = incentivisedVotingLockup?.userLockup?.lockTime as number > Date.now();
+  const canUnlock =
+    (incentivisedVotingLockup?.userLockup?.lockTime as number) > Date.now();
   const balance = incentivisedVotingLockup?.userStakingBalance;
 
   useEffect(() => {
     if (canUnlock && contract) {
-      return setFormManifest<
-        Interfaces.IncentivisedVotingLockup,
-        'withdraw'
-      >({
+      return setFormManifest<Interfaces.IncentivisedVotingLockup, 'withdraw'>({
         fn: 'withdraw',
         args: [],
         contract,
@@ -43,34 +41,33 @@ const ExitForm: FC<{}> = () => {
   }, [setFormManifest, canUnlock, contract]);
 
   return incentivisedVotingLockup ? (
-    !balance ||
-      balance.simple === 0 ||
-      canUnlock ? (
-        <StyledTransactionForm
-          confirmLabel='Withdraw'
-          confirm={<ExitConfirm />}
-          input={<ExitInput />}
-          transactionsLabel="Transactions"
-          valid={canUnlock}
-        />
-      ) : (
-        <>
-          <Protip emoji="😊" title="Your stake is currently locked!">
-            Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
+    !balance || balance.simple === 0 || canUnlock ? (
+      <StyledTransactionForm
+        confirmLabel="Withdraw"
+        confirm={<ExitConfirm />}
+        input={<ExitInput />}
+        transactionsLabel="Transactions"
+        valid={canUnlock}
+      />
+    ) : (
+      <>
+        <Protip emoji="🔒" title="Your stake is currently locked!">
+          <br />
+          Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
-            {incentivisedVotingLockup.userLockup?.lockTime
-              ? format(
+          {incentivisedVotingLockup.userLockup?.lockTime
+            ? format(
                 incentivisedVotingLockup.userLockup?.lockTime * 1000,
                 'dd-MM-yyyy',
               )
-              : null}
-          </Protip>
-          <br />
-        </>
-      )
+            : null}
+        </Protip>
+        <br />
+      </>
+    )
   ) : (
-      <Skeleton />
-    );
+    <Skeleton />
+  );
 };
 
 export const Exit: FC<{}> = () => (
