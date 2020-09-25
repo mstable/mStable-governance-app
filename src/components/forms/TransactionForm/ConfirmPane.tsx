@@ -1,7 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { useSendTransaction } from '../../../context/TransactionsProvider';
 import { SubmitButton } from '../../core/Form';
-import { H3 } from '../../core/Typography';
 import {
   useFormId,
   useFormSubmitting,
@@ -16,12 +15,7 @@ interface Props {
   compact?: boolean;
 }
 
-export const ConfirmPane: FC<Props> = ({
-  children,
-  confirmLabel,
-  valid,
-  compact,
-}) => {
+export const ConfirmPane: FC<Props> = ({ children, confirmLabel, valid }) => {
   const sendTransaction = useSendTransaction();
   const manifest = useManifest();
   const submitting = useFormSubmitting();
@@ -39,7 +33,7 @@ export const ConfirmPane: FC<Props> = ({
   return (
     <div>
       <>
-        {compact ? null : <H3 borderTop>Confirm transaction</H3>}
+        <div>{children}</div>
         <SubmitButton
           type="button"
           onClick={handleSend}
@@ -47,7 +41,6 @@ export const ConfirmPane: FC<Props> = ({
         >
           {confirmLabel}
         </SubmitButton>
-        <div>{children}</div>
       </>
     </div>
   );

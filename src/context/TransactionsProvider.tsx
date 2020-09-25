@@ -23,8 +23,6 @@ import {
 } from './NotificationsProvider';
 import { TransactionOverrides } from '../typechain/index.d';
 import { getTransactionStatus } from '../utils/transactions';
-import { DataState } from './DataProvider/types';
-import { useDataState } from './DataProvider/DataProvider';
 import { getEtherscanLink } from '../utils/strings';
 
 enum Actions {
@@ -172,23 +170,38 @@ const initialState: State = {
   latestStatus: {},
 };
 
-const getTxPurpose = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unused-vars
-  { args, fn, contract }: SendTxManifest<any, any>,
-  dataState?: DataState,
-): Purpose => {
-  if (!dataState) {
-    return {
-      present: null,
-      past: null,
-    };
-  }
+const getTxPurpose = ({ fn }: SendTxManifest<any, any>): Purpose => {
+  switch (fn) {
+    case 'claimReward':
+      return {
+        present: 'You are claiming MTA rewards',
+        past: 'You claimed MTA rewards',
+      };
 
-  // TODO
-  return {
-    present: null,
-    past: null,
-  };
+    case 'createLock':
+      return {
+        present: 'You are staking MTA',
+        past: 'You staked MTA',
+      };
+
+    case 'withdraw':
+      return {
+        present: 'You are exiting the staking contract',
+        past: 'You exited the staking contract',
+      };
+
+    case 'approve':
+      return {
+        present: 'You are approving the staking contract to transfer your MTA',
+        past: 'You approved the staking contract to transfer your MTA',
+      };
+
+    default:
+      return {
+        present: null,
+        past: null,
+      };
+  }
 };
 
 const getEtherscanLinkForHash = (
@@ -201,16 +214,15 @@ const getEtherscanLinkForHash = (
 /**
  * Provider for sending transactions and tracking their progress.
  */
-export const TransactionsProvider: FC<{}> = ({ children }) => {
+export const TransactionsProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(transactionsCtxReducer, initialState);
   const addSuccessNotification = useAddSuccessNotification();
   const addInfoNotification = useAddInfoNotification();
   const addErrorNotification = useAddErrorNotification();
-  const dataState = useDataState();
 
   const addPending = useCallback<Dispatch['addPending']>(
     (manifest, pendingTx) => {
-      const purpose = getTxPurpose(manifest, dataState);
+      const purpose = getTxPurpose(manifest);
       dispatch({
         type: Actions.AddPending,
         payload: {
@@ -231,7 +243,7 @@ export const TransactionsProvider: FC<{}> = ({ children }) => {
         getEtherscanLinkForHash(pendingTx.hash),
       );
     },
-    [dispatch, dataState, addInfoNotification],
+    [dispatch, addInfoNotification],
   );
 
   const check = useCallback<Dispatch['check']>(

@@ -2,7 +2,7 @@ import { Reasons, State } from './types';
 
 const validateLock = ({
   lockupAmount: { amount },
-  lockupPeriod: { unlockTime, formValue },
+  lockupPeriod: { unlockTime },
   data: { metaToken, incentivisedVotingLockup },
 }: State): [false, Reasons] | [true] => {
   if (
@@ -25,11 +25,10 @@ const validateLock = ({
     return [false, Reasons.PeriodMustBeSet];
   }
 
-  // TODO should validate unlockTime vs now
-  //  or vs the lockTime of the existing lockup (for increasing the time)
-  if (formValue < 7) {
-    return [false, Reasons.PeriodMustBeLongerThanOneWeek];
-  }
+  // TODO should validate the existing lockup (for increasing the time)
+  // if (formValue < 6) {
+  //   return [false, Reasons.PeriodMustBeAtLeastSixDays];
+  // }
 
   if (amount.exact.gt(metaToken.balance.exact)) {
     return [false, Reasons.AmountMustNotExceedBalance];

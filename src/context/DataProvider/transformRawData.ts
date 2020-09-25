@@ -57,7 +57,9 @@ const transformUserStakingBalance = (
 
 export const transformRawData = ({
   tokens,
-  incentivisedVotingLockups: [incentivisedVotingLockupData],
+  incentivisedVotingLockups: [
+    incentivisedVotingLockupData,
+  ] = ([] as unknown) as RawData['incentivisedVotingLockups'],
 }: RawData): DataState => {
   if (!incentivisedVotingLockupData) {
     return { tokens };
@@ -76,13 +78,13 @@ export const transformRawData = ({
     rewardRate,
     rewardsDistributor,
     rewardsToken,
-    stakingBalances: [rawUserStakingBalance],
-    stakingRewards: [rawUserStakingReward],
+    stakingBalances: [rawUserStakingBalance] = [],
+    stakingRewards: [rawUserStakingReward] = [],
     stakingToken,
     totalStakingRewards,
     totalStaticWeight,
     totalValue,
-    userLockups: [rawUserLockup],
+    userLockups: [rawUserLockup] = [],
   } = incentivisedVotingLockupData;
 
   const userLockup = transformUserLockup(rawUserLockup);

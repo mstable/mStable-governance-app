@@ -18,7 +18,7 @@ query Token($id: ID!) @api(name: mstable) {
   }
 }
 
-query UserLockups($account: Bytes) @api(name: mstable) {
+query UserLockups($account: Bytes, $hasAccount: Boolean!) @api(name: mstable) {
   incentivisedVotingLockups {
     address: id
     periodFinish
@@ -43,15 +43,18 @@ query UserLockups($account: Bytes) @api(name: mstable) {
       id
       fundManagers
     }
-    stakingRewards(where: { account: $account }, first: 1) {
+    stakingRewards(where: { account: $account }, first: 1)
+      @include(if: $hasAccount) {
       amount
       amountPerTokenPaid
       rewardsPaid
     }
-    stakingBalances(where: { account: $account }, first: 1) {
+    stakingBalances(where: { account: $account }, first: 1)
+      @include(if: $hasAccount) {
       amount
     }
-    userLockups(where: { account: $account }, first: 1) {
+    userLockups(where: { account: $account }, first: 1)
+      @include(if: $hasAccount) {
       value
       lockTime
       ts

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import { H2, H3 } from '../core/Typography';
-import { FontSize } from '../../theme';
+import { FontSize, ViewportWidth } from '../../theme';
 
 interface Props {
   icon: JSX.Element;
@@ -13,7 +13,8 @@ interface Props {
 const Icon = styled.div`
   padding: 0;
 
-  img, svg {
+  img,
+  svg {
     width: 64px;
     height: 64px;
     margin-right: 16px;
@@ -24,11 +25,24 @@ const Icon = styled.div`
   }
 `;
 
+const Content = styled.div`
+  width: 100%;
+
+  @media (min-width: ${ViewportWidth.s}) {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+
 const Container = styled.div`
   margin-bottom: 32px;
   display: flex;
   align-items: flex-start;
-  max-width: 500px;
+
+  h2,
+  h3 {
+    max-width: 500px;
+  }
 
   h2 {
     font-size: ${FontSize.xl};
@@ -38,10 +52,12 @@ const Container = styled.div`
 export const PageHeader: FC<Props> = ({ children, title, subtitle, icon }) => (
   <Container>
     <Icon>{icon}</Icon>
-    <div>
-      <H2>{title}</H2>
-      <H3>{subtitle}</H3>
+    <Content>
+      <div>
+        <H2>{title}</H2>
+        <H3>{subtitle}</H3>
+      </div>
       <div>{children}</div>
-    </div>
+    </Content>
   </Container>
 );
