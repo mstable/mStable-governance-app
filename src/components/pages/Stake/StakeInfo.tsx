@@ -63,7 +63,9 @@ export const StakeInfo: FC = () => {
         <H3>Totals</H3>
         <Container>
           <Row>
-            <Tooltip tip="This">Total MTA staked: </Tooltip>{' '}
+            <Tooltip tip="Total units of MTA locked in Staking">
+              Total MTA staked:{' '}
+            </Tooltip>{' '}
             {totalValue ? (
               <CountUp end={totalValue.simple} />
             ) : (
@@ -71,7 +73,9 @@ export const StakeInfo: FC = () => {
             )}
           </Row>
           <Row>
-            <Tooltip tip="This">Total weekly rewards: </Tooltip>{' '}
+            <Tooltip tip="Units of MTA being emitted to stakers this week">
+              Total weekly rewards:{' '}
+            </Tooltip>{' '}
             {totalStakingRewards ? (
               <CountUp end={totalStakingRewards.simple} suffix=" MTA" />
             ) : (
@@ -94,7 +98,10 @@ export const StakeInfo: FC = () => {
                   : null}
               </Row>
               <Row>
-                <Tooltip tip="This">Voting Power: </Tooltip> You have{' '}
+                <Tooltip tip="Voting power (a.k.a vMTA balance) decays linearly over time - vMTA balance is used as your voting weight in community proposals">
+                  Voting Power:{' '}
+                </Tooltip>{' '}
+                You have{' '}
                 {vmta && s && s.simple > 0 ? (
                   <CountUp
                     end={(vmta.balance.simple / s.simple) * 100}
@@ -128,7 +135,10 @@ export const StakeInfo: FC = () => {
             <H3>Your Rewards</H3>
             <Container>
               <Row>
-                <Tooltip tip="This">Earning Power: </Tooltip> You have{' '}
+                <Tooltip tip="Earning power is a function of amount staked and lockup time. The longer the lockup, the higher the earning power. Specifically, power = stake * sqrt(time).">
+                  Earning Power:{' '}
+                </Tooltip>{' '}
+                You have{' '}
                 {userStakingBalance.simple > 0 &&
                 totalStaticWeight &&
                 totalStaticWeight?.simple > 0 ? (
@@ -148,7 +158,7 @@ export const StakeInfo: FC = () => {
                   <CountUp
                     end={userStakingBalance.simple}
                     decimals={4}
-                    suffix=" sMTA"
+                    suffix=" pMTA"
                   />
                 ) : (
                   <Skeleton width={100} />
@@ -158,7 +168,7 @@ export const StakeInfo: FC = () => {
                   <CountUp
                     end={totalStaticWeight.simple}
                     decimals={4}
-                    suffix=" sMTA"
+                    suffix=" pMTA"
                   />
                 ) : (
                   <Skeleton width={100} />
@@ -166,7 +176,9 @@ export const StakeInfo: FC = () => {
                 )
               </Row>
               <Row>
-                <Tooltip tip="test">Your Rewards APY</Tooltip>{' '}
+                <Tooltip tip="APY is highly volatile because it is based on your earning power with respect to the total earning power. As more MTA is Staked, a users share is likely to go down.">
+                  Your Rewards APY
+                </Tooltip>{' '}
                 {userStakingReward && userStakingReward.currentAPY ? (
                   <CountUp end={userStakingReward.currentAPY} suffix=" %" />
                 ) : (
@@ -174,7 +186,9 @@ export const StakeInfo: FC = () => {
                 )}
               </Row>
               <Row>
-                <Tooltip tip="test">Unclaimed Rewards</Tooltip>{' '}
+                <Tooltip tip="Your unclaimed MTA reward units">
+                  Unclaimed Rewards
+                </Tooltip>{' '}
                 {rewards.rewards ? (
                   <CountUp
                     end={rewards.rewards.simple}
@@ -203,8 +217,10 @@ export const StakeInfo: FC = () => {
                 weeks
               </Row>
               <Row>
-                <Tooltip tip="This">Voting Power: </Tooltip> You <b>would</b>{' '}
-                start with{' '}
+                <Tooltip tip="Voting power (a.k.a vMTA balance) decays linearly over time - vMTA balance is used as your voting weight in community proposals">
+                  Voting Power:{' '}
+                </Tooltip>{' '}
+                You <b>would</b> start with{' '}
                 {s && s.simple > 0 ? (
                   <SimulatedCountUp
                     end={
@@ -212,6 +228,7 @@ export const StakeInfo: FC = () => {
                         (s.simple + simUserLockup.bias.simple)) *
                       100
                     }
+                    decimals={6}
                     suffix=" %"
                   />
                 ) : (
@@ -221,12 +238,14 @@ export const StakeInfo: FC = () => {
                 <SimulatedCountUp
                   end={simUserLockup.bias.simple}
                   suffix=" vMTA"
+                  decimals={4}
                 />{' '}
                 out of{' '}
                 {s ? (
                   <SimulatedCountUp
                     end={s.simple + simUserLockup.bias.simple}
                     suffix=" vMTA"
+                    decimals={4}
                   />
                 ) : (
                   <Skeleton width={100} />
@@ -239,8 +258,10 @@ export const StakeInfo: FC = () => {
             <H3>Your Rewards</H3>
             <Container>
               <Row>
-                <Tooltip tip="This">Earning Power: </Tooltip> You <b>would</b>{' '}
-                start with{' '}
+                <Tooltip tip="Earning power is a function of amount staked and lockup time. The longer the lockup, the higher the earning power. Specifically, power = stake * sqrt(time).">
+                  Earning Power:{' '}
+                </Tooltip>{' '}
+                You <b>would</b> start with{' '}
                 {simTotalStaticWeight && simTotalStaticWeight.simple > 0 ? (
                   <SimulatedCountUp
                     end={
@@ -249,6 +270,7 @@ export const StakeInfo: FC = () => {
                       100
                     }
                     suffix=" %"
+                    decimals={6}
                   />
                 ) : (
                   <Skeleton width={100} />
@@ -256,13 +278,15 @@ export const StakeInfo: FC = () => {
                 of the earning power (
                 <SimulatedCountUp
                   end={simUserStakingBalance.simple}
-                  suffix=" sMTA"
+                  suffix=" pMTA"
+                  decimals={4}
                 />{' '}
                 out of{' '}
                 {simTotalStaticWeight ? (
                   <SimulatedCountUp
                     end={simTotalStaticWeight.simple}
-                    suffix=" sMTA"
+                    suffix=" pMTA"
+                    decimals={4}
                   />
                 ) : (
                   <Skeleton width={100} />
@@ -270,7 +294,9 @@ export const StakeInfo: FC = () => {
                 )
               </Row>
               <Row>
-                <Tooltip tip="test">Your Rewards APY</Tooltip>{' '}
+                <Tooltip tip="APY is highly volatile because it is based on your earning power with respect to the total earning power. As more MTA is Staked, a users share is likely to go down.">
+                  Your Rewards APY
+                </Tooltip>{' '}
                 {simUserStakingReward ? (
                   <SimulatedCountUp
                     end={simUserStakingReward.currentAPY || 0}
