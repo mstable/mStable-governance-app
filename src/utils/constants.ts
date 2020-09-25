@@ -30,4 +30,5 @@ export const EMOJIS = {
   claimReward: '🏆',
 };
 
-export const DAPP_VERSION = process.env.REACT_APP_VERSION;
+// export const DAPP_VERSION = process.env.REACT_APP_VERSION;
+export const DAPP_VERSION = '1.0.0'; // TODO fix me
