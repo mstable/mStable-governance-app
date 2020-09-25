@@ -2,8 +2,6 @@ import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { useOrderedCurrentTransactions } from '../../context/TransactionsProvider';
-import { useDataState } from '../../context/DataProvider/DataProvider';
-import { DataState } from '../../context/DataProvider/types';
 import { Transaction, TransactionStatus } from '../../types';
 import { getTransactionStatus } from '../../web3/transactions';
 import { EMOJIS } from '../../web3/constants';
@@ -11,8 +9,8 @@ import { ActivitySpinner } from '../core/ActivitySpinner';
 import { EtherscanLink } from '../core/EtherscanLink';
 import { List, ListItem } from '../core/List';
 import { P } from '../core/Typography';
-import { State, RewardsEarned } from '../pages/Stake/types';
-import { useStakeState, useRewardsEarned } from '../pages/Stake/StakeProvider';
+import { State } from '../pages/Stake/types';
+import { useStakeState } from '../pages/Stake/StakeProvider';
 
 const PendingTxContainer = styled.div<{ inverted?: boolean }>`
   display: flex;
@@ -97,14 +95,12 @@ const PendingTx: FC<{
   tx: Transaction;
   inverted: boolean;
 }> = ({ tx, inverted }) => {
-  const dataState = useDataState();
   const stakingData = useStakeState();
-  const rewards = useRewardsEarned();
 
-  const description = useMemo(
-    () => getPendingTxDescription(tx, dataState, stakingData, rewards),
-    [tx, dataState, stakingData, rewards],
-  );
+  const description = useMemo(() => getPendingTxDescription(tx, stakingData), [
+    tx,
+    stakingData,
+  ]);
 
   return (
     <PendingTxContainer inverted={inverted}>
