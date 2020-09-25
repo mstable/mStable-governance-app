@@ -13,7 +13,7 @@ export const ExitInput: FC = () => {
   const {
     data: { incentivisedVotingLockup, metaToken },
   } = useStakeState();
-  const balance = incentivisedVotingLockup?.userStakingBalance;
+  const balance = incentivisedVotingLockup?.userLockup?.value;
   return (
     <Row>
       <H3>Withdraw</H3>

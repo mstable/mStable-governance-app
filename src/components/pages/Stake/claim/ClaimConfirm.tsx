@@ -10,8 +10,6 @@ export const ClaimConfirm: FC<{}> = () => {
   } = useStakeState();
   const txCheck = transactionType === TransactionType.Claim;
   const rewards = useRewardsEarned();
-  // eslint-disable-next-line no-console
-  console.log('rewards', rewards);
   return rewards?.rewards?.exact.gt(0) && metaToken && txCheck ? (
     <div>
       You are claiming{' '}

@@ -23,7 +23,7 @@ export const ClaimInput: FC = () => {
           <>
             Claim{' '}
             <CountUp
-              end={rewards?.rewards.simple}
+              end={rewards?.rewards?.simple}
               decimals={6}
               suffix={` ${metaToken.symbol}`}
             />
