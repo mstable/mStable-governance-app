@@ -44,7 +44,7 @@ const InfoGroup = styled.div`
 
 const Container = styled.div<{ valid: boolean }>`
   margin-top: 16px;
-  opacity: ${({ valid }) => (valid ? 1 : 0.5)};
+  /* opacity: ${({ valid }) => (valid ? 1 : 0.5)}; */
 
   > * {
     width: 100%;
