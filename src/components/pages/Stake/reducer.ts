@@ -15,6 +15,22 @@ import { getShareAndAPY } from './helpers';
 const reduce: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
     case Actions.Data:
+      if (state.lockupPeriod.formValue === 0) {
+        const min = state.data.incentivisedVotingLockup?.lockTimes.min;
+        const max = state.data.incentivisedVotingLockup?.lockTimes.max;
+        if (min && max) {
+          const derived = min + 7 * 26;
+          const halfyear = Math.floor(
+            addDays(Date.now(), derived).getTime() / 1000,
+          );
+          const unlockTime = halfyear > max ? max : halfyear;
+          return {
+            ...state,
+            data: action.payload,
+            lockupPeriod: { unlockTime, formValue: derived },
+          };
+        }
+      }
       return {
         ...state,
         data: action.payload,
