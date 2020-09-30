@@ -201,6 +201,12 @@ export const StakeProvider: FC<{}> = ({ children }) => {
     [dispatch],
   );
 
+  const toggleTransactionType = useCallback<
+    Dispatch['toggleTransactionType']
+  >(() => {
+    dispatch({ type: Actions.ToggleTransactionType });
+  }, [dispatch]);
+
   return (
     <dispatchCtx.Provider
       value={useMemo(
@@ -210,6 +216,7 @@ export const StakeProvider: FC<{}> = ({ children }) => {
           setTransactionType,
           setMaxLockupAmount,
           setMaxLockupDays,
+          toggleTransactionType
         }),
         [
           setLockupAmount,
@@ -217,6 +224,7 @@ export const StakeProvider: FC<{}> = ({ children }) => {
           setTransactionType,
           setMaxLockupAmount,
           setMaxLockupDays,
+          toggleTransactionType
         ],
       )}
     >

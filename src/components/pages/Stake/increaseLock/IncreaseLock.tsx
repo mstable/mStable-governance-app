@@ -7,17 +7,16 @@ import {
 import { Interfaces } from '../../../../types';
 import { BigDecimal } from '../../../../utils/BigDecimal';
 
-import { CreateLockInput } from './CreateLockInput';
 import { useStakeContract, useStakeState } from '../StakeProvider';
+import { IncreaseLockInput } from "./IncreaseLockInput";
 import { TransactionType } from '../types';
-import { CreateLockConfirm } from './CreateLockConfirm';
 
-const StakeForm: FC = () => {
+const IncreaseLockForm: FC = () => {
   const {
     lockupAmount: { amount },
     lockupPeriod: { unlockTime },
-    transactionType,
     valid,
+    transactionType
   } = useStakeState();
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
@@ -25,16 +24,6 @@ const StakeForm: FC = () => {
   useEffect(() => {
     if (valid && contract) {
       switch (transactionType) {
-        case TransactionType.CreateLock:
-          return setFormManifest<
-            Interfaces.IncentivisedVotingLockup,
-            'createLock'
-          >({
-            fn: 'createLock',
-            args: [(amount as BigDecimal).exact, unlockTime as number],
-            contract,
-          });
-
         case TransactionType.IncreaseLockAmount:
           return setFormManifest<
             Interfaces.IncentivisedVotingLockup,
@@ -60,23 +49,22 @@ const StakeForm: FC = () => {
       }
     }
     return setFormManifest(null);
-  }, [amount, transactionType, unlockTime, valid, setFormManifest, contract]);
-
+  }, [amount, unlockTime, transactionType, valid, setFormManifest, contract]);
   return (
     <TransactionForm
       confirmLabel="Lock up and stake MTA"
-      confirm={<CreateLockConfirm />}
-      input={<CreateLockInput />}
+      confirm={<div />}
+      input={<IncreaseLockInput />}
       valid={valid}
     />
   );
 };
 
-export const CreateLock: FC = () => {
+export const IncreaseLock: FC = () => {
   return (
     <>
       <FormProvider formId="stake">
-        <StakeForm />
+        <IncreaseLockForm />
       </FormProvider>
     </>
   );

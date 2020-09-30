@@ -63,6 +63,7 @@ export interface Dispatch {
   setTransactionType(type: TransactionType): void;
   setMaxLockupAmount(): void;
   setMaxLockupDays(max: number): void;
+  toggleTransactionType(): void;
 }
 
 export enum Actions {
@@ -72,19 +73,21 @@ export enum Actions {
   SetMaxLockupDays,
   SetLockupDays,
   SetTransactionType,
+  ToggleTransactionType,
 }
 
 export type Action =
   | {
-      type: Actions.Data;
-      payload: {
-        metaToken?: SubscribedToken;
-        incentivisedVotingLockup?: IncentivisedVotingLockup;
-        rewards?: RewardsEarned;
-      };
-    }
+    type: Actions.Data;
+    payload: {
+      metaToken?: SubscribedToken;
+      incentivisedVotingLockup?: IncentivisedVotingLockup;
+      rewards?: RewardsEarned;
+    };
+  }
   | { type: Actions.SetLockupAmount; payload: string }
   | { type: Actions.SetLockupDays; payload: number }
   | { type: Actions.SetMaxLockupAmount }
   | { type: Actions.SetMaxLockupDays; payload: number }
-  | { type: Actions.SetTransactionType; payload: TransactionType };
+  | { type: Actions.SetTransactionType; payload: TransactionType }
+  | { type: Actions.ToggleTransactionType };

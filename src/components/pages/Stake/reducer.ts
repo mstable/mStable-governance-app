@@ -3,7 +3,7 @@ import { pipeline } from 'ts-pipe-compose';
 import { addDays } from 'date-fns';
 import { BigNumber } from 'ethers/utils';
 import { nowUnix } from '../../../utils/time';
-import { Action, Actions, State, SimulatedData } from './types';
+import { Action, Actions, State, SimulatedData, TransactionType } from './types';
 import { validate } from './validation';
 import { BigDecimal } from '../../../utils/BigDecimal';
 import {
@@ -97,6 +97,21 @@ const reduce: Reducer<State, Action> = (state, action) => {
         ...state,
         lockupPeriod: { unlockTime, formValue },
         touched: true,
+      };
+    }
+
+    case Actions.ToggleTransactionType: {
+      return {
+        ...state,
+        transactionType:
+          state.transactionType === TransactionType.IncreaseLockAmount
+            ? TransactionType.IncreaseLockTime
+            : TransactionType.IncreaseLockAmount,
+        // // Reset the amounts when toggling type, and remove `touched`
+        // amount: undefined,
+        // amountInCredits: undefined,
+        // formValue: null,
+        // touched: false,
       };
     }
 
