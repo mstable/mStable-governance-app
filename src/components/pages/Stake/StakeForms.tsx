@@ -21,10 +21,10 @@ const TX_TYPES = {
     label: 'Withdraw stake/exit',
   },
   [TransactionType.IncreaseLockAmount]: {
-    label: 'Increase lock amount',
+    label: 'Add amount',
   },
   [TransactionType.IncreaseLockTime]: {
-    label: 'Increase lockup time',
+    label: 'Extend lock',
   },
 };
 
@@ -55,13 +55,19 @@ const Container = styled.div`
 `;
 
 export const StakeForms: FC = () => {
-  const { transactionType } = useStakeState();
+  const { transactionType, data: { incentivisedVotingLockup } } = useStakeState();
   return (
     <Container>
       <TabsContainer>
-        {
-
-          transactionType === TransactionType.CreateLock ? <TabButton tab={TransactionType.CreateLock} /> : (transactionType === TransactionType.IncreaseLockAmount ? <TabButton tab={TransactionType.IncreaseLockAmount} /> : <TabButton tab={TransactionType.IncreaseLockTime} />)
+        {incentivisedVotingLockup && (!incentivisedVotingLockup?.userStakingBalance
+          || incentivisedVotingLockup?.userStakingBalance?.simple === 0) &&
+          <TabButton tab={TransactionType.CreateLock} />
+        }
+        {incentivisedVotingLockup && incentivisedVotingLockup?.userStakingBalance &&
+          <TabButton tab={TransactionType.IncreaseLockAmount} />
+        }
+        {incentivisedVotingLockup && incentivisedVotingLockup?.userStakingBalance &&
+          <TabButton tab={TransactionType.IncreaseLockTime} />
         }
         <TabButton tab={TransactionType.Claim} />
         <TabButton tab={TransactionType.Withdraw} />

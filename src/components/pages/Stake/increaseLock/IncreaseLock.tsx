@@ -10,6 +10,7 @@ import { BigDecimal } from '../../../../utils/BigDecimal';
 import { useStakeContract, useStakeState } from '../StakeProvider';
 import { IncreaseLockInput } from "./IncreaseLockInput";
 import { TransactionType } from '../types';
+import { CreateLockConfirm } from '../createLock/CreateLockConfirm';
 
 const IncreaseLockForm: FC = () => {
   const {
@@ -53,7 +54,7 @@ const IncreaseLockForm: FC = () => {
   return (
     <TransactionForm
       confirmLabel="Lock up and stake MTA"
-      confirm={<div />}
+      confirm={<CreateLockConfirm />}
       input={<IncreaseLockInput />}
       valid={valid}
     />
