@@ -11,6 +11,7 @@ export interface UserLockup {
   bias: BigDecimal;
   length: number;
   ejected: boolean;
+  ejectedHash?: string | null | undefined;
 }
 
 export interface UserStakingReward {
