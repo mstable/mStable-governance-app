@@ -60,6 +60,8 @@ query UserLockups($account: Bytes, $hasAccount: Boolean!) @api(name: mstable) {
       ts
       slope
       bias
+      ejected
+      ejectedHash
     }
   }
 }
