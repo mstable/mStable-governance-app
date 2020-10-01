@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { TabsContainer, TabBtn } from '../../core/Tabs';
@@ -31,9 +31,11 @@ const TX_TYPES = {
 const TabButton: FC<{ tab: TransactionType }> = ({ tab }) => {
   const { transactionType, data: { incentivisedVotingLockup } } = useStakeState();
   const { setTransactionType } = useStakeDispatch();
-  if (incentivisedVotingLockup?.userStakingBalance && incentivisedVotingLockup.userStakingBalance?.simple >= 0 && transactionType === TransactionType.CreateLock) {
-    setTransactionType(TransactionType.IncreaseLockAmount)
-  }
+  useEffect(() => {
+    if (incentivisedVotingLockup?.userStakingBalance && incentivisedVotingLockup.userStakingBalance?.simple > 0 && transactionType === TransactionType.CreateLock) {
+      setTransactionType(TransactionType.IncreaseLockAmount)
+    }
+  }, [incentivisedVotingLockup, transactionType, setTransactionType])
   return (
     <TabBtn
       type="button"
@@ -63,10 +65,10 @@ export const StakeForms: FC = () => {
           || incentivisedVotingLockup?.userStakingBalance?.simple === 0) &&
           <TabButton tab={TransactionType.CreateLock} />
         }
-        {incentivisedVotingLockup && incentivisedVotingLockup?.userStakingBalance &&
+        {incentivisedVotingLockup && incentivisedVotingLockup?.userStakingBalance && incentivisedVotingLockup.userStakingBalance?.simple > 0 &&
           <TabButton tab={TransactionType.IncreaseLockAmount} />
         }
-        {incentivisedVotingLockup && incentivisedVotingLockup?.userStakingBalance &&
+        {incentivisedVotingLockup && incentivisedVotingLockup?.userStakingBalance && incentivisedVotingLockup.userStakingBalance?.simple > 0 &&
           <TabButton tab={TransactionType.IncreaseLockTime} />
         }
         <TabButton tab={TransactionType.Claim} />
