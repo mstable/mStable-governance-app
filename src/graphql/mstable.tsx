@@ -1483,6 +1483,7 @@ export type UserLockup = {
   ts: Scalars['BigInt'];
   slope: Scalars['BigInt'];
   bias: Scalars['BigInt'];
+  ejected: Scalars['Boolean'];
 };
 
 export type UserLockup_Filter = {
@@ -1554,6 +1555,10 @@ export type UserLockup_Filter = {
   bias_lte?: Maybe<Scalars['BigInt']>;
   bias_in?: Maybe<Array<Scalars['BigInt']>>;
   bias_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  ejected?: Maybe<Scalars['Boolean']>;
+  ejected_not?: Maybe<Scalars['Boolean']>;
+  ejected_in?: Maybe<Array<Scalars['Boolean']>>;
+  ejected_not_in?: Maybe<Array<Scalars['Boolean']>>;
 };
 
 export enum UserLockup_OrderBy {
@@ -1564,7 +1569,8 @@ export enum UserLockup_OrderBy {
   LockTime = 'lockTime',
   Ts = 'ts',
   Slope = 'slope',
-  Bias = 'bias'
+  Bias = 'bias',
+  Ejected = 'ejected'
 }
 
 export type WithdrawTransaction = Transaction & {
@@ -1674,7 +1680,7 @@ export type UserLockupsQueryVariables = {
 export type UserLockupsQuery = { incentivisedVotingLockups: Array<(
     Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'end' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
     & { address: IncentivisedVotingLockup['id'] }
-    & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias'>> }
+    & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias' | 'ejected'>> }
   )> };
 
 export const TokenDetailsFragmentDoc = gql`
@@ -1824,6 +1830,7 @@ export const UserLockupsDocument = gql`
       ts
       slope
       bias
+      ejected
     }
   }
 }

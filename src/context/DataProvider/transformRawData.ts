@@ -18,7 +18,7 @@ const transformUserLockup = (
   data: RawIncentivisedVotingLockup['userLockups'][0] | undefined,
 ): UserLockup | undefined => {
   if (data) {
-    const { value, bias, lockTime, slope, ts } = data;
+    const { value, bias, lockTime, slope, ts, ejected } = data;
 
     return {
       value: new BigDecimal(value),
@@ -27,6 +27,7 @@ const transformUserLockup = (
       ts: parseInt(ts, 10),
       lockTime: parseInt(lockTime, 10),
       length: parseInt(lockTime, 10) - parseInt(ts, 10),
+      ejected,
     };
   }
   return undefined;

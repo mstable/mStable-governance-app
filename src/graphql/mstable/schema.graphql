@@ -304,6 +304,7 @@ type UserLockup {
   ts: BigInt!
   slope: BigInt!
   bias: BigInt!
+  ejected: Boolean!
 }
 type IncentivisedVotingLockup {
   id: ID!
@@ -336,6 +337,7 @@ enum UserLockup_orderBy {
   ts
   slope
   bias
+  ejected
 }
 enum OrderDirection {
   asc
@@ -410,6 +412,10 @@ input UserLockup_filter {
   bias_lte: BigInt
   bias_in: [BigInt!]
   bias_not_in: [BigInt!]
+  ejected: Boolean
+  ejected_not: Boolean
+  ejected_in: [Boolean!]
+  ejected_not_in: [Boolean!]
 }
 scalar BigInt
 enum StakingReward_orderBy {

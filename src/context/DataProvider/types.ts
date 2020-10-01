@@ -10,6 +10,7 @@ export interface UserLockup {
   slope: BigNumber;
   bias: BigDecimal;
   length: number;
+  ejected: boolean;
 }
 
 export interface UserStakingReward {
