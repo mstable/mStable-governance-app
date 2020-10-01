@@ -11,6 +11,8 @@ import { useToken } from '../../../context/DataProvider/TokensProvider';
 import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
 import { ONE_WEEK } from '../../../utils/constants';
 import { ViewportWidth } from '../../../theme';
+import { EtherscanLink } from '../../core/EtherscanLink';
+import { Protip } from '../../core/Protip';
 
 const ChangingCountUp = styled(CountUp)`
   color: ${({ theme }) => theme.color.blue};
@@ -194,6 +196,22 @@ const UserStake: FC = () => {
               below.
             </p>
           </InfoRow>
+          {userLockup &&
+            userLockup.ejected &&
+            userLockup.ejectedHash &&
+            rewards.rewards &&
+            rewards.rewards.simple > 0 && (
+              <>
+                <br />
+                <Protip emoji="⌛" title="Your previous stake has finished">
+                  Your previous stake completed - you were ejected from the pool
+                  and your stake has been returned (see
+                  <EtherscanLink data={userLockup.ejectedHash} />)
+                  <br />
+                  You still have {rewards.rewards.simple} MTA to claim!
+                </Protip>
+              </>
+            )}
         </InfoGroup>
       )}
     </div>
