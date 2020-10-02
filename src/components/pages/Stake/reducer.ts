@@ -172,6 +172,7 @@ const calculate = (state: State): State => {
       slope,
       bias: new BigDecimal(slope.mul(new BigNumber(length))),
       length,
+      ejected: false,
     };
 
     const simulatedStakingBalance: BigDecimal = new BigDecimal(
