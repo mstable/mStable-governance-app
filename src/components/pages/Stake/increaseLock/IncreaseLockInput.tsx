@@ -11,6 +11,9 @@ import { useFormatDays } from '../../../../utils/hooks';
 import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 import { TransactionType } from '../types';
+import { ONE_WEEK, ONE_DAY } from '../../../../utils/constants';
+import { IncentivisedVotingLockup, UserLockup } from '../../../../context/DataProvider/types';
+import { FormRow } from '../../../core/Form';
 
 const AmountContainer = styled.div`
   > :first-child {
@@ -36,15 +39,16 @@ export const IncreaseLockInput: FC = () => {
     data: { incentivisedVotingLockup, metaToken },
     transactionType,
   } = useStakeState();
-
+  const { userLockup } = incentivisedVotingLockup as IncentivisedVotingLockup;
+  const { length } = userLockup as UserLockup;
+  const duration = useFormatDays(lockupDays);
   const {
     setLockupAmount,
-    setLockupDays,
     setMaxLockupAmount,
     setMaxLockupDays,
+    extendLockupDays
   } = useStakeDispatch();
 
-  const duration = useFormatDays(lockupDays);
   return (
     <>
       <div>
@@ -96,7 +100,7 @@ export const IncreaseLockInput: FC = () => {
           )}
       </div>
       {transactionType === TransactionType.IncreaseLockTime &&
-        <div>
+        <FormRow>
           <H3>
             <Tooltip tip="Period of time to stake for (rounded to the nearest week)">
               Stake lockup period
@@ -106,10 +110,10 @@ export const IncreaseLockInput: FC = () => {
             <RangeInput
               min={incentivisedVotingLockup.lockTimes.min}
               step={7}
-              max={incentivisedVotingLockup.lockTimes.max}
+              max={incentivisedVotingLockup?.lockTimes?.max as number - parseFloat((length / ONE_DAY.toNumber()).toFixed(1))}
               value={lockupDays || incentivisedVotingLockup.lockTimes.min}
-              onChange={setLockupDays}
-              startLabel="Today"
+              onChange={extendLockupDays}
+              startLabel="Start"
               endLabel="End date"
               onSetMax={setMaxLockupDays}
             >
@@ -121,7 +125,7 @@ export const IncreaseLockInput: FC = () => {
           ) : (
               <Skeleton />
             )}
-        </div>
+        </FormRow>
       }
     </>
   );

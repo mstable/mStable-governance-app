@@ -2,10 +2,13 @@ import { Reducer } from 'react';
 import { pipeline } from 'ts-pipe-compose';
 import { addDays } from 'date-fns';
 import { BigNumber } from 'ethers/utils';
+
 import {
+  IncentivisedVotingLockup,
   UserLockup,
   UserStakingReward,
 } from "../../../context/DataProvider/types";
+
 import { nowUnix } from '../../../utils/time';
 import { Action, Actions, State, SimulatedData, TransactionType } from './types';
 import { validate } from './validation';
@@ -16,7 +19,7 @@ import { getShareAndAPY } from './helpers';
 const reduce: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
     case Actions.Data:
-      if (state.lockupPeriod.formValue === 0) {
+      if (state.lockupPeriod.formValue === 0 && state.transactionType !== TransactionType.IncreaseLockTime) {
         const min = state.data.incentivisedVotingLockup?.lockTimes.min;
         const max = state.data.incentivisedVotingLockup?.lockTimes.max;
         if (min && max) {
@@ -46,6 +49,28 @@ const reduce: Reducer<State, Action> = (state, action) => {
         ...state,
         lockupPeriod: { unlockTime, formValue },
         touched: true,
+      };
+    }
+
+    case Actions.ExtendLockupDays: {
+      const formValue = action.payload || 6;
+      if (!state.data) return state;
+      if (!state.data.incentivisedVotingLockup) return state;
+      if (!state.data.incentivisedVotingLockup.userLockup) return state;
+
+      const { data } = state;
+      const { incentivisedVotingLockup } = data;
+      const { userLockup } = incentivisedVotingLockup as IncentivisedVotingLockup;
+      if (!userLockup) return state;
+
+      const unlockTime = Math.floor(
+        addDays(userLockup.lockTime * 1000, formValue).getTime() / 1000,
+      );
+      return {
+        ...state,
+        lockupPeriod: { unlockTime, formValue },
+        touched: true,
+
       };
     }
 
@@ -137,7 +162,7 @@ const calculate = (state: State): State => {
     totalStaticWeight,
     totalValue,
   } = incentivisedVotingLockup;
-  if (!rewardRate || !totalStaticWeight || !userLockup) {
+  if (!rewardRate || !totalStaticWeight) {
     return state;
   }
 
@@ -146,6 +171,7 @@ const calculate = (state: State): State => {
     totalStaticWeight,
     totalValue,
   };
+
 
   // Calculate current APY data
   let newStakingReward = userStakingReward;
@@ -165,14 +191,14 @@ const calculate = (state: State): State => {
   if (
     incentivisedVotingLockup.maxTime &&
     incentivisedVotingLockup.totalStaticWeight &&
-    (transactionType === TransactionType.IncreaseLockAmount && userLockup.lockTime) ||
+    (transactionType === TransactionType.IncreaseLockAmount && userLockup?.lockTime) ||
     (transactionType !== TransactionType.IncreaseLockAmount && lockupPeriod.unlockTime &&
       lockupPeriod.unlockTime > nowUnix())
   ) {
     const simulatedLockupAmount =
       transactionType === TransactionType.IncreaseLockAmount ? (
         lockupAmount && lockupAmount.amount
-          ? userLockup.value.add(lockupAmount.amount)
+          ? userLockup?.value.add(lockupAmount.amount)
           : new BigDecimal(0)
       ) : (
           lockupAmount && lockupAmount.amount
@@ -181,14 +207,14 @@ const calculate = (state: State): State => {
         )
     const now = nowUnix();
 
-    const length = transactionType === TransactionType.IncreaseLockAmount ? userLockup.lockTime as number - now : lockupPeriod.unlockTime as number - now;
+    const length = transactionType === TransactionType.IncreaseLockAmount ? userLockup?.lockTime as number - now : lockupPeriod.unlockTime as number - now;
 
-    const slope = simulatedLockupAmount.exact.div(
+    const slope = (simulatedLockupAmount as BigDecimal).exact.div(
       incentivisedVotingLockup.maxTime,
     );
     const simulatedLockup: UserLockup = {
-      value: simulatedLockupAmount,
-      lockTime: transactionType === TransactionType.IncreaseLockAmount ? userLockup.lockTime as number : lockupPeriod.unlockTime as number,
+      value: simulatedLockupAmount as BigDecimal,
+      lockTime: transactionType === TransactionType.IncreaseLockAmount ? userLockup?.lockTime as number : lockupPeriod.unlockTime as number,
       ts: now,
       slope,
       bias: new BigDecimal(slope.mul(new BigNumber(length))),

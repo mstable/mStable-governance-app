@@ -207,6 +207,13 @@ export const StakeProvider: FC<{}> = ({ children }) => {
     dispatch({ type: Actions.ToggleTransactionType });
   }, [dispatch]);
 
+  const extendLockupDays = useCallback<Dispatch['extendLockupDays']>(
+    days => {
+      dispatch({ type: Actions.ExtendLockupDays, payload: days });
+    },
+    [dispatch],
+  );
+
   return (
     <dispatchCtx.Provider
       value={useMemo(
@@ -216,7 +223,8 @@ export const StakeProvider: FC<{}> = ({ children }) => {
           setTransactionType,
           setMaxLockupAmount,
           setMaxLockupDays,
-          toggleTransactionType
+          toggleTransactionType,
+          extendLockupDays
         }),
         [
           setLockupAmount,
@@ -224,7 +232,8 @@ export const StakeProvider: FC<{}> = ({ children }) => {
           setTransactionType,
           setMaxLockupAmount,
           setMaxLockupDays,
-          toggleTransactionType
+          toggleTransactionType,
+          extendLockupDays
         ],
       )}
     >

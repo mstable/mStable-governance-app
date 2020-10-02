@@ -1,8 +1,9 @@
-import { Reasons, State } from './types';
+import { Reasons, State, TransactionType } from './types';
 
 const validateLock = ({
   lockupAmount: { amount },
   lockupPeriod: { unlockTime },
+  transactionType,
   data: { metaToken, incentivisedVotingLockup },
 }: State): [false, Reasons] | [true] => {
   if (
@@ -12,7 +13,9 @@ const validateLock = ({
   ) {
     return [false, Reasons.FetchingData];
   }
-
+  if (transactionType === TransactionType.IncreaseLockTime) {
+    return [true];
+  }
   if (!amount) {
     return [false, Reasons.AmountMustBeSet];
   }

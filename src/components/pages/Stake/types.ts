@@ -64,6 +64,7 @@ export interface Dispatch {
   setMaxLockupAmount(): void;
   setMaxLockupDays(max: number): void;
   toggleTransactionType(): void;
+  extendLockupDays(days: number): void;
 }
 
 export enum Actions {
@@ -74,6 +75,7 @@ export enum Actions {
   SetLockupDays,
   SetTransactionType,
   ToggleTransactionType,
+  ExtendLockupDays,
 }
 
 export type Action =
@@ -90,4 +92,5 @@ export type Action =
   | { type: Actions.SetMaxLockupAmount }
   | { type: Actions.SetMaxLockupDays; payload: number }
   | { type: Actions.SetTransactionType; payload: TransactionType }
-  | { type: Actions.ToggleTransactionType };
+  | { type: Actions.ToggleTransactionType }
+  | { type: Actions.ExtendLockupDays; payload: number }
