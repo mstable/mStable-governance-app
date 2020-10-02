@@ -7,10 +7,16 @@ import {
   IncentivisedVotingLockup,
   UserLockup,
   UserStakingReward,
-} from "../../../context/DataProvider/types";
+} from '../../../context/DataProvider/types';
 
 import { nowUnix } from '../../../utils/time';
-import { Action, Actions, State, SimulatedData, TransactionType } from './types';
+import {
+  Action,
+  Actions,
+  State,
+  SimulatedData,
+  TransactionType,
+} from './types';
 import { validate } from './validation';
 import { BigDecimal } from '../../../utils/BigDecimal';
 
@@ -19,7 +25,10 @@ import { getShareAndAPY } from './helpers';
 const reduce: Reducer<State, Action> = (state, action) => {
   switch (action.type) {
     case Actions.Data:
-      if (state.lockupPeriod.formValue === 0 && state.transactionType !== TransactionType.IncreaseLockTime) {
+      if (
+        state.lockupPeriod.formValue === 0 &&
+        state.transactionType !== TransactionType.IncreaseLockTime
+      ) {
         const min = state.data.incentivisedVotingLockup?.lockTimes.min;
         const max = state.data.incentivisedVotingLockup?.lockTimes.max;
         if (min && max) {
@@ -60,7 +69,9 @@ const reduce: Reducer<State, Action> = (state, action) => {
 
       const { data } = state;
       const { incentivisedVotingLockup } = data;
-      const { userLockup } = incentivisedVotingLockup as IncentivisedVotingLockup;
+      const {
+        userLockup,
+      } = incentivisedVotingLockup as IncentivisedVotingLockup;
       if (!userLockup) return state;
 
       const unlockTime = Math.floor(
@@ -70,7 +81,6 @@ const reduce: Reducer<State, Action> = (state, action) => {
         ...state,
         lockupPeriod: { unlockTime, formValue },
         touched: true,
-
       };
     }
 
@@ -127,7 +137,6 @@ const reduce: Reducer<State, Action> = (state, action) => {
     }
 
     case Actions.ToggleTransactionType: {
-
       return {
         ...state,
         transactionType:
@@ -172,10 +181,14 @@ const calculate = (state: State): State => {
     totalValue,
   };
 
-
   // Calculate current APY data
   let newStakingReward = userStakingReward;
-  if (userLockup && userStakingReward && userStakingBalance && userStakingBalance.simple > 0) {
+  if (
+    userLockup &&
+    userStakingReward &&
+    userStakingBalance &&
+    userStakingBalance.simple > 0
+  ) {
     const apy = getShareAndAPY(
       rewardRate,
       totalStaticWeight,
@@ -191,30 +204,37 @@ const calculate = (state: State): State => {
   if (
     incentivisedVotingLockup.maxTime &&
     incentivisedVotingLockup.totalStaticWeight &&
-    (transactionType === TransactionType.IncreaseLockAmount && userLockup?.lockTime) ||
-    (transactionType !== TransactionType.IncreaseLockAmount && lockupPeriod.unlockTime &&
-      lockupPeriod.unlockTime > nowUnix())
+    ((transactionType === TransactionType.IncreaseLockAmount &&
+      userLockup?.lockTime) ||
+      (transactionType !== TransactionType.IncreaseLockAmount &&
+        lockupPeriod.unlockTime &&
+        lockupPeriod.unlockTime > nowUnix()))
   ) {
+    // if createLock, amount = lockupAmount.amount
+    // if increaseAmount, amount = lockupAmount.amount + userLockup.value
+    // if increaseLength, amount = userLockup.value
     const simulatedLockupAmount =
-      transactionType === TransactionType.IncreaseLockAmount ? (
-        lockupAmount && lockupAmount.amount
+      transactionType === TransactionType.IncreaseLockAmount
+        ? lockupAmount && lockupAmount.amount
           ? userLockup?.value.add(lockupAmount.amount)
           : new BigDecimal(0)
-      ) : (
-          lockupAmount && lockupAmount.amount
-            ? lockupAmount.amount
-            : new BigDecimal(0)
-        )
+        : lockupAmount && lockupAmount.amount
+        ? lockupAmount.amount
+        : new BigDecimal(0);
+
+    const simulatedLockTime = TransactionType.IncreaseLockAmount
+      ? (userLockup?.lockTime as number)
+      : (lockupPeriod.unlockTime as number);
     const now = nowUnix();
 
-    const length = transactionType === TransactionType.IncreaseLockAmount ? userLockup?.lockTime as number - now : lockupPeriod.unlockTime as number - now;
+    const length = simulatedLockTime - now;
 
     const slope = (simulatedLockupAmount as BigDecimal).exact.div(
       incentivisedVotingLockup.maxTime,
     );
     const simulatedLockup: UserLockup = {
       value: simulatedLockupAmount as BigDecimal,
-      lockTime: transactionType === TransactionType.IncreaseLockAmount ? userLockup?.lockTime as number : lockupPeriod.unlockTime as number,
+      lockTime: simulatedLockTime,
       ts: now,
       slope,
       bias: new BigDecimal(slope.mul(new BigNumber(length))),

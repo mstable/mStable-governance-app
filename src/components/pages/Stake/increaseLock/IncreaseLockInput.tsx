@@ -11,8 +11,11 @@ import { useFormatDays } from '../../../../utils/hooks';
 import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 import { TransactionType } from '../types';
-import { ONE_WEEK, ONE_DAY } from '../../../../utils/constants';
-import { IncentivisedVotingLockup, UserLockup } from '../../../../context/DataProvider/types';
+import { ONE_DAY } from '../../../../utils/constants';
+import {
+  IncentivisedVotingLockup,
+  UserLockup,
+} from '../../../../context/DataProvider/types';
 import { FormRow } from '../../../core/Form';
 
 const AmountContainer = styled.div`
@@ -31,7 +34,6 @@ const TooltipContainer = styled.div`
 `;
 
 export const IncreaseLockInput: FC = () => {
-
   const {
     lockupAmount: { formValue: amountFormValue, amount },
     lockupPeriod: { formValue: lockupDays, unlockTime },
@@ -46,7 +48,7 @@ export const IncreaseLockInput: FC = () => {
     setLockupAmount,
     setMaxLockupAmount,
     setMaxLockupDays,
-    extendLockupDays
+    extendLockupDays,
   } = useStakeDispatch();
 
   return (
@@ -54,11 +56,13 @@ export const IncreaseLockInput: FC = () => {
       <div>
         {metaToken && incentivisedVotingLockup ? (
           <AmountContainer>
-            {transactionType === TransactionType.IncreaseLockAmount &&
+            {transactionType === TransactionType.IncreaseLockAmount && (
               <div>
                 <TooltipContainer>
                   <H3>
-                    <Tooltip tip="Units of MTA to lock up">Stake amount</Tooltip>
+                    <Tooltip tip="Units of MTA to lock up">
+                      Stake amount
+                    </Tooltip>
                   </H3>
                 </TooltipContainer>
                 <div>
@@ -81,7 +85,7 @@ export const IncreaseLockInput: FC = () => {
                   valid={!!(amountFormValue && !error)}
                 />
               </div>
-            }
+            )}
             {metaToken && metaToken?.balance.simple < 1000 ? (
               <Protip title="Need tokens to stake?">
                 Get MTA tokens on{' '}
@@ -96,21 +100,24 @@ export const IncreaseLockInput: FC = () => {
             ) : null}
           </AmountContainer>
         ) : (
-            <Skeleton />
-          )}
+          <Skeleton />
+        )}
       </div>
-      {transactionType === TransactionType.IncreaseLockTime &&
+      {transactionType === TransactionType.IncreaseLockTime && (
         <FormRow>
           <H3>
             <Tooltip tip="Period of time to stake for (rounded to the nearest week)">
               Stake lockup period
-          </Tooltip>
+            </Tooltip>
           </H3>
           {incentivisedVotingLockup ? (
             <RangeInput
               min={incentivisedVotingLockup.lockTimes.min}
               step={7}
-              max={incentivisedVotingLockup?.lockTimes?.max as number - parseFloat((length / ONE_DAY.toNumber()).toFixed(1))}
+              max={
+                (incentivisedVotingLockup?.lockTimes?.max as number) -
+                parseFloat((length / ONE_DAY.toNumber()).toFixed(1))
+              }
               value={lockupDays || incentivisedVotingLockup.lockTimes.min}
               onChange={extendLockupDays}
               startLabel="Start"
@@ -123,10 +130,10 @@ export const IncreaseLockInput: FC = () => {
               </div>
             </RangeInput>
           ) : (
-              <Skeleton />
-            )}
+            <Skeleton />
+          )}
         </FormRow>
-      }
+      )}
     </>
   );
 };
