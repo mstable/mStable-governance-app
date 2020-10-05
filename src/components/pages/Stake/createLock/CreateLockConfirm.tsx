@@ -8,7 +8,7 @@ import { CountUp } from '../../../core/CountUp';
 import { H3, H4 } from '../../../core/Typography';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { useStakeState } from '../StakeProvider';
-import { ViewportWidth } from '../../../../theme';
+import { ViewportWidth, Color } from '../../../../theme';
 import { TransactionType } from '../types';
 
 const SimulatedCountUp = styled(CountUp)`
@@ -94,6 +94,29 @@ export const CreateLockConfirm: FC = () => {
           ONE_WEEK.toNumber()
         ).toFixed(1)
       : '-';
+
+  const userLockupColorCheck = (): Color | undefined => {
+    return simUserLockup &&
+      simUserLockup.bias.simple <
+        (incentivisedVotingLockup?.userLockup?.bias.simple as number)
+      ? Color.red
+      : Color.green;
+  };
+  const userBalanceColorCheck = (): Color | undefined => {
+    return simUserStakingBalance &&
+      simUserStakingBalance.simple <
+        (incentivisedVotingLockup?.userStakingBalance?.simple as number)
+      ? Color.red
+      : Color.green;
+  };
+  const userRewardsColorCheck = (): Color | undefined => {
+    return (simUserStakingReward &&
+      (simUserStakingReward.currentAPY as number) <
+        (incentivisedVotingLockup?.userStakingReward?.currentAPY as number)) ||
+      0
+      ? Color.red
+      : Color.green;
+  };
   return (
     <Container valid={valid}>
       <div>
@@ -123,7 +146,7 @@ export const CreateLockConfirm: FC = () => {
             simUserLockup.bias.simple > 0 &&
             totalSupply &&
             totalSupply.simple > 0 ? (
-              <SimulatedCountUp
+              <CountUp
                 end={
                   (simUserLockup.bias.simple /
                     (totalSupply.simple + simUserLockup.bias.simple)) *
@@ -131,19 +154,21 @@ export const CreateLockConfirm: FC = () => {
                 }
                 decimals={6}
                 suffix=" %"
+                highlightColor={userLockupColorCheck()}
               />
             ) : (
               '-'
             )}{' '}
             of the voting power (
-            <SimulatedCountUp
+            <CountUp
               end={simUserLockup?.bias.simple}
               suffix=" vMTA"
               decimals={4}
+              highlightColor={userLockupColorCheck()}
             />{' '}
             out of{' '}
             {totalSupply ? (
-              <SimulatedCountUp
+              <CountUp
                 end={
                   simUserLockup?.bias
                     ? totalSupply.simple + simUserLockup.bias.simple
@@ -151,6 +176,7 @@ export const CreateLockConfirm: FC = () => {
                 }
                 suffix=" vMTA"
                 decimals={4}
+                highlightColor={userLockupColorCheck()}
               />
             ) : (
               <Skeleton width={100} />
@@ -171,13 +197,14 @@ export const CreateLockConfirm: FC = () => {
             simUserStakingBalance &&
             simTotalStaticWeight.simple > 0 &&
             simUserStakingBalance.simple > 0 ? (
-              <SimulatedCountUp
+              <CountUp
                 end={
                   (simUserStakingBalance.simple / simTotalStaticWeight.simple) *
                   100
                 }
                 suffix=" %"
                 decimals={6}
+                highlightColor={userBalanceColorCheck()}
               />
             ) : (
               '-'
@@ -190,10 +217,11 @@ export const CreateLockConfirm: FC = () => {
             />{' '}
             out of{' '}
             {simTotalStaticWeight ? (
-              <SimulatedCountUp
+              <CountUp
                 end={simTotalStaticWeight.simple}
                 suffix=" pMTA"
                 decimals={4}
+                highlightColor={userBalanceColorCheck()}
               />
             ) : (
               <Skeleton width={100} />
@@ -208,6 +236,7 @@ export const CreateLockConfirm: FC = () => {
               <SimulatedCountUp
                 end={simUserStakingReward.currentAPY || 0}
                 suffix=" %"
+                highlightColor={userRewardsColorCheck()}
               />
             ) : (
               '-'
