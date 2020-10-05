@@ -32,8 +32,8 @@ const InfoRow: FC<{ tip?: string; title: string }> = ({
           <H4>{title}</H4>
         </Tooltip>
       ) : (
-          <H4>{title}</H4>
-        )}
+        <H4>{title}</H4>
+      )}
       <div>{children}</div>
     </Row>
   );
@@ -70,7 +70,7 @@ export const CreateLockConfirm: FC = () => {
   const {
     data: { incentivisedVotingLockup, simulatedData },
     valid,
-    transactionType
+    transactionType,
   } = useStakeState();
 
   const { address } = incentivisedVotingLockup || {};
@@ -83,6 +83,17 @@ export const CreateLockConfirm: FC = () => {
     userStakingBalance: simUserStakingBalance,
     userStakingReward: simUserStakingReward,
   } = simulatedData || {};
+  const txValueCheck =
+    transactionType === TransactionType.IncreaseLockTime
+      ? incentivisedVotingLockup?.userLockup?.value.simple
+      : undefined;
+  const txCalcCheck =
+    transactionType === TransactionType.IncreaseLockTime
+      ? (
+          (incentivisedVotingLockup?.userLockup?.length as number) /
+          ONE_WEEK.toNumber()
+        ).toFixed(1)
+      : '-';
   return (
     <Container valid={valid}>
       <div>
@@ -93,14 +104,14 @@ export const CreateLockConfirm: FC = () => {
               end={
                 simUserLockup && simUserLockup.value.simple > 0
                   ? simUserLockup.value.simple
-                  : transactionType === TransactionType.IncreaseLockTime ? incentivisedVotingLockup?.userLockup?.value.simple : undefined
+                  : txValueCheck
               }
               suffix=" MTA"
             />{' '}
             for{' '}
             {simUserLockup
               ? (simUserLockup.length / ONE_WEEK.toNumber()).toFixed(1)
-              : transactionType === TransactionType.IncreaseLockTime ? (incentivisedVotingLockup?.userLockup?.length as number / ONE_WEEK.toNumber()).toFixed(1) : '-'}{' '}
+              : txCalcCheck}{' '}
             weeks
           </InfoRow>
           <InfoRow
@@ -109,21 +120,21 @@ export const CreateLockConfirm: FC = () => {
           >
             You would start with{' '}
             {simUserLockup?.bias.simple &&
-              simUserLockup.bias.simple > 0 &&
-              totalSupply &&
-              totalSupply.simple > 0 ? (
-                <SimulatedCountUp
-                  end={
-                    (simUserLockup.bias.simple /
-                      (totalSupply.simple + simUserLockup.bias.simple)) *
-                    100
-                  }
-                  decimals={6}
-                  suffix=" %"
-                />
-              ) : (
-                '-'
-              )}{' '}
+            simUserLockup.bias.simple > 0 &&
+            totalSupply &&
+            totalSupply.simple > 0 ? (
+              <SimulatedCountUp
+                end={
+                  (simUserLockup.bias.simple /
+                    (totalSupply.simple + simUserLockup.bias.simple)) *
+                  100
+                }
+                decimals={6}
+                suffix=" %"
+              />
+            ) : (
+              '-'
+            )}{' '}
             of the voting power (
             <SimulatedCountUp
               end={simUserLockup?.bias.simple}
@@ -142,8 +153,8 @@ export const CreateLockConfirm: FC = () => {
                 decimals={4}
               />
             ) : (
-                <Skeleton width={100} />
-              )}
+              <Skeleton width={100} />
+            )}
             )
           </InfoRow>
         </InfoGroup>
@@ -157,20 +168,20 @@ export const CreateLockConfirm: FC = () => {
           >
             You would start with{' '}
             {simTotalStaticWeight &&
-              simUserStakingBalance &&
-              simTotalStaticWeight.simple > 0 &&
-              simUserStakingBalance.simple > 0 ? (
-                <SimulatedCountUp
-                  end={
-                    (simUserStakingBalance.simple / simTotalStaticWeight.simple) *
-                    100
-                  }
-                  suffix=" %"
-                  decimals={6}
-                />
-              ) : (
-                '-'
-              )}{' '}
+            simUserStakingBalance &&
+            simTotalStaticWeight.simple > 0 &&
+            simUserStakingBalance.simple > 0 ? (
+              <SimulatedCountUp
+                end={
+                  (simUserStakingBalance.simple / simTotalStaticWeight.simple) *
+                  100
+                }
+                suffix=" %"
+                decimals={6}
+              />
+            ) : (
+              '-'
+            )}{' '}
             of the earning power (
             <SimulatedCountUp
               end={simUserStakingBalance?.simple}
@@ -185,8 +196,8 @@ export const CreateLockConfirm: FC = () => {
                 decimals={4}
               />
             ) : (
-                <Skeleton width={100} />
-              )}
+              <Skeleton width={100} />
+            )}
             )
           </InfoRow>
           <InfoRow
@@ -199,8 +210,8 @@ export const CreateLockConfirm: FC = () => {
                 suffix=" %"
               />
             ) : (
-                '-'
-              )}
+              '-'
+            )}
           </InfoRow>
         </InfoGroup>
       </div>

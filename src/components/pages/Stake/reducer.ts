@@ -136,21 +136,6 @@ const reduce: Reducer<State, Action> = (state, action) => {
       };
     }
 
-    case Actions.ToggleTransactionType: {
-      return {
-        ...state,
-        transactionType:
-          state.transactionType === TransactionType.IncreaseLockAmount
-            ? TransactionType.IncreaseLockTime
-            : TransactionType.IncreaseLockAmount,
-        // // Reset the amounts when toggling type, and remove `touched`
-        // amount: undefined,
-        // amountInCredits: undefined,
-        // formValue: null,
-        // touched: false,
-      };
-    }
-
     default:
       throw new Error('Unhandled action type');
   }
@@ -219,8 +204,8 @@ const calculate = (state: State): State => {
           ? userLockup?.value.add(lockupAmount.amount)
           : new BigDecimal(0)
         : lockupAmount && lockupAmount.amount
-        ? lockupAmount.amount
-        : new BigDecimal(0);
+          ? lockupAmount.amount
+          : new BigDecimal(0);
 
     const simulatedLockTime = TransactionType.IncreaseLockAmount
       ? (userLockup?.lockTime as number)
