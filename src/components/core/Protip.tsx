@@ -13,6 +13,7 @@ const ProtipLabel = styled.div`
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
+  padding-bottom: 16px;
 `;
 
 const Container = styled.div`

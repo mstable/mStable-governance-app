@@ -52,7 +52,6 @@ const ExitForm: FC<{}> = () => {
     ) : (
       <>
         <Protip emoji="🔒" title="Your stake is currently locked!">
-          <br />
           Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
           {incentivisedVotingLockup.userLockup?.lockTime
@@ -61,6 +60,7 @@ const ExitForm: FC<{}> = () => {
                 'dd-MM-yyyy',
               )
             : null}
+          .
         </Protip>
         <br />
       </>
