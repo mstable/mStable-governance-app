@@ -102,9 +102,9 @@ export const transformRawData = ({
 
   // Max days = END - now
   // let maxDays = 365;
-  const endBN = new BigNumber(end);
+  const endBN = new BigNumber(end).sub(ONE_WEEK);
   const maxDays = Math.floor(
-    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber(),
+    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber() + minDays,
   );
 
   const incentivisedVotingLockup: IncentivisedVotingLockup = {
