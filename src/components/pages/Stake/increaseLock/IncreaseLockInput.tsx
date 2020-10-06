@@ -2,20 +2,17 @@ import React, { FC } from 'react';
 import format from 'date-fns/format';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
+
 import { H3, H4 } from '../../../core/Typography';
 import { RangeInput } from '../../../forms/RangeInput';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { Protip } from '../../../core/Protip';
 import { ExternalLink } from '../../../core/ExternalLink';
 import { useFormatDays } from '../../../../utils/hooks';
+import { fromUnix } from '../../../../utils/time';
 import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 import { TransactionType } from '../types';
-import { ONE_DAY } from '../../../../utils/constants';
-import {
-  IncentivisedVotingLockup,
-  UserLockup,
-} from '../../../../context/DataProvider/types';
 import { FormRow } from '../../../core/Form';
 
 const AmountContainer = styled.div`
@@ -41,14 +38,12 @@ export const IncreaseLockInput: FC = () => {
     data: { incentivisedVotingLockup, metaToken },
     transactionType,
   } = useStakeState();
-  const { userLockup } = incentivisedVotingLockup as IncentivisedVotingLockup;
-  const { length } = userLockup as UserLockup;
   const duration = useFormatDays(lockupDays);
   const {
     setLockupAmount,
     setMaxLockupAmount,
     setMaxLockupDays,
-    extendLockupDays,
+    setLockupDays,
   } = useStakeDispatch();
 
   return (
@@ -114,19 +109,19 @@ export const IncreaseLockInput: FC = () => {
             <RangeInput
               min={incentivisedVotingLockup.lockTimes.min}
               step={7}
-              max={
-                (incentivisedVotingLockup?.lockTimes?.max as number) -
-                parseFloat((length / ONE_DAY.toNumber()).toFixed(1))
-              }
-              value={lockupDays || incentivisedVotingLockup.lockTimes.min}
-              onChange={extendLockupDays}
+              max={incentivisedVotingLockup.lockTimes.max}
+              value={Math.max(
+                lockupDays,
+                incentivisedVotingLockup.lockTimes.min,
+              )}
+              onChange={setLockupDays}
               startLabel="Start"
               endLabel="End date"
               onSetMax={setMaxLockupDays}
             >
               <div>{duration}</div>
               <div>
-                {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
+                {unlockTime ? format(fromUnix(unlockTime), 'dd-MM-yyyy') : '-'}
               </div>
             </RangeInput>
           ) : (

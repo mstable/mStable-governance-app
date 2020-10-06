@@ -53,6 +53,9 @@ export enum Reasons {
   AmountMustBeSet = 'Amount must be set',
   PeriodMustBeSet = 'Lockup period must be set',
   PeriodMustBeAtLeastSixDays = 'Lockup period must be at least six days',
+  MustHaveAStakeToIncreaseLockTime = 'Must have astake to increase lock time',
+  MustHaveAStakeToIncreaseLockAmount = 'Must have a stake to increase lock amount',
+  NewLockupTimeMustBeAfterCurrentLockupTime = 'New lockup time must be after current lock up time',
   AmountMustNotExceedBalance = 'Amount must not exceed balance',
   AmountExceedsApprovedAmount = 'Amount exceeds approved amount',
 }
@@ -62,8 +65,7 @@ export interface Dispatch {
   setLockupDays(days: number): void;
   setTransactionType(type: TransactionType): void;
   setMaxLockupAmount(): void;
-  setMaxLockupDays(max: number): void;
-  extendLockupDays(days: number): void;
+  setMaxLockupDays(): void;
 }
 
 export enum Actions {
@@ -78,16 +80,16 @@ export enum Actions {
 
 export type Action =
   | {
-    type: Actions.Data;
-    payload: {
-      metaToken?: SubscribedToken;
-      incentivisedVotingLockup?: IncentivisedVotingLockup;
-      rewards?: RewardsEarned;
-    };
-  }
+      type: Actions.Data;
+      payload: {
+        metaToken?: SubscribedToken;
+        incentivisedVotingLockup?: IncentivisedVotingLockup;
+        rewards?: RewardsEarned;
+      };
+    }
   | { type: Actions.SetLockupAmount; payload: string }
   | { type: Actions.SetLockupDays; payload: number }
   | { type: Actions.SetMaxLockupAmount }
-  | { type: Actions.SetMaxLockupDays; payload: number }
+  | { type: Actions.SetMaxLockupDays }
   | { type: Actions.SetTransactionType; payload: TransactionType }
-  | { type: Actions.ExtendLockupDays; payload: number }
+  | { type: Actions.ExtendLockupDays; payload: number };

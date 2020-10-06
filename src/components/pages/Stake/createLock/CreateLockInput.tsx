@@ -12,6 +12,7 @@ import { ExternalLink } from '../../../core/ExternalLink';
 import { useFormatDays } from '../../../../utils/hooks';
 import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
+import { fromUnix } from '../../../../utils/time';
 
 const AmountContainer = styled.div`
   > :first-child {
@@ -96,7 +97,10 @@ export const CreateLockInput: FC = () => {
             min={data.incentivisedVotingLockup.lockTimes.min}
             step={7}
             max={data.incentivisedVotingLockup.lockTimes.max}
-            value={lockupDays || data.incentivisedVotingLockup.lockTimes.min}
+            value={Math.max(
+              lockupDays,
+              data.incentivisedVotingLockup.lockTimes.min,
+            )}
             onChange={setLockupDays}
             startLabel="Today"
             endLabel="End date"
@@ -104,7 +108,7 @@ export const CreateLockInput: FC = () => {
           >
             <div>{duration}</div>
             <div>
-              {unlockTime ? format(unlockTime * 1000, 'dd-MM-yyyy') : '-'}
+              {unlockTime ? format(fromUnix(unlockTime), 'dd-MM-yyyy') : '-'}
             </div>
           </RangeInput>
         ) : (

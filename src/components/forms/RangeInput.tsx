@@ -16,7 +16,7 @@ interface Props {
   startLabel?: string;
   endLabel?: string;
   onChange(value: number): void;
-  onSetMax(max: number): void;
+  onSetMax(): void;
   step: number;
 }
 
@@ -165,11 +165,7 @@ export const RangeInput: FC<Props> = ({
       />
       {endLabel && <Label>{endLabel}</Label>}
       {onSetMax ? (
-        <Button
-          style={{ marginLeft: '20px' }}
-          type="button"
-          onClick={() => onSetMax(max)}
-        >
+        <Button style={{ marginLeft: '20px' }} type="button" onClick={onSetMax}>
           Max
         </Button>
       ) : null}
