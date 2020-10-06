@@ -18,7 +18,6 @@ import {
 } from './types';
 import { validate } from './validation';
 import { BigDecimal } from '../../../utils/BigDecimal';
-
 import { getShareAndAPY } from './helpers';
 
 const reduce: Reducer<State, Action> = (state, action) => {
@@ -67,10 +66,27 @@ const reduce: Reducer<State, Action> = (state, action) => {
       };
 
     case Actions.SetTransactionType: {
+      const transactionType = action.payload;
+      const userLockup = state.data.incentivisedVotingLockup?.userLockup;
+
+      let lockupAmount: State['lockupAmount'] = {
+        formValue: null,
+        amount: undefined,
+      };
+
+      if (transactionType === TransactionType.IncreaseLockTime) {
+        if (!userLockup) return state;
+
+        lockupAmount = {
+          formValue: userLockup.value.format(2, false),
+          amount: userLockup.value,
+        };
+      }
+
       return {
         ...state,
-        transactionType: action.payload,
-        lockupAmount: { formValue: null, amount: undefined },
+        transactionType,
+        lockupAmount,
         lockupPeriod: { formValue: 0, unlockTime: undefined },
         touched: false,
       };
@@ -161,21 +177,25 @@ const calculate = (state: State): State => {
     };
   }
 
-  const simulatedLockTime = TransactionType.IncreaseLockAmount
-    ? userLockup?.lockTime
-    : lockupPeriod.unlockTime;
+  const simulatedLockTime =
+    transactionType === TransactionType.IncreaseLockAmount
+      ? userLockup?.lockTime
+      : lockupPeriod.unlockTime;
 
   if (
     incentivisedVotingLockup.maxTime &&
     incentivisedVotingLockup.totalStaticWeight &&
-    simulatedLockTime
+    simulatedLockTime &&
+    simulatedLockTime > 60 * 60 * 24 // Sanity check because of division
   ) {
+    const lockupAmountBase = lockupAmount?.amount ?? new BigDecimal(0);
+
+    // The simulated amount should be in addition to the base amount when
+    // increasing the lock amount
     const simulatedLockupAmount =
-      (transactionType === TransactionType.IncreaseLockAmount
-        ? lockupAmount &&
-          lockupAmount.amount &&
-          userLockup?.value.add(lockupAmount.amount)
-        : lockupAmount?.amount) ?? new BigDecimal(0);
+      transactionType === TransactionType.IncreaseLockAmount
+        ? lockupAmountBase.add(userLockup?.value ?? new BigDecimal(0))
+        : lockupAmountBase;
 
     const now = nowUnix();
 
@@ -195,7 +215,7 @@ const calculate = (state: State): State => {
       ejected: false,
     };
 
-    const simulatedStakingBalance: BigDecimal = new BigDecimal(
+    const simulatedStakingBalance = new BigDecimal(
       slope.mul(10000).mul(Math.floor(Math.sqrt(length))),
     );
 
