@@ -2,6 +2,9 @@
 
 ## v.NEXT
 
+Features
+
+- Add support for increasing lock time and increasing lock amount of an existing stake position
 
 ## v1.0.0
 
