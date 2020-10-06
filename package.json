@@ -54,10 +54,9 @@
     "build": "react-scripts --max_old_space_size=4096 build",
     "codegen": "yarn codegen:typechain && yarn codegen:graphql",
     "codegen:graphql": "graphql-codegen --config ./codegen.yml -r dotenv/config",
-    "codegen:typechain": "yarn typechain --target ethers-v4 --outDir src/typechain './lib/mStable-governance-subgraph/lib/mStable-contracts/build/contracts/*.json'",
+    "codegen:typechain": "yarn typechain --target ethers-v4 --outDir src/typechain './node_modules/@mstable/protocol/build/contracts/*.json'",
     "eject": "react-scripts eject",
     "lint": "yarn eslint './src/**/*.{ts,tsx}' --fix",
-    "provision": "sh ./scripts/provision.sh",
     "start": "react-scripts start",
     "test:ropsten": "env-cmd -f .env.example.ropsten react-scripts test",
     "test": "react-scripts test",
@@ -89,6 +88,7 @@
     ]
   },
   "devDependencies": {
+    "@mstable/protocol": "^1.2.1",
     "@graphql-codegen/cli": "^1.13.5",
     "@graphql-codegen/fragment-matcher": "^1.13.5",
     "@graphql-codegen/schema-ast": "^1.17.3",
