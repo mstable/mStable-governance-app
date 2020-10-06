@@ -91,28 +91,28 @@ export const CreateLockConfirm: FC = () => {
         ).toFixed(1)
       : '-';
 
-  const userLockupColorCheck = (): Color | undefined => {
-    return simUserLockup &&
-      simUserLockup.bias.simple <
-        (incentivisedVotingLockup?.userLockup?.bias.simple as number)
+  const userLockupColorCheck =
+    simUserLockup &&
+    simUserLockup.bias.simple <
+      (incentivisedVotingLockup?.userLockup?.bias.simple as number)
       ? Color.red
       : Color.green;
-  };
-  const userBalanceColorCheck = (): Color | undefined => {
-    return simUserStakingBalance &&
-      simUserStakingBalance.simple <
-        (incentivisedVotingLockup?.userStakingBalance?.simple as number)
+
+  const userBalanceColorCheck =
+    simUserStakingBalance &&
+    simUserStakingBalance.simple <
+      (incentivisedVotingLockup?.userStakingBalance?.simple as number)
       ? Color.red
       : Color.green;
-  };
-  const userRewardsColorCheck = (): Color | undefined => {
-    return (simUserStakingReward &&
+
+  const userRewardsColorCheck =
+    (simUserStakingReward &&
       (simUserStakingReward.currentAPY as number) <
         (incentivisedVotingLockup?.userStakingReward?.currentAPY as number)) ||
-      0
+    0
       ? Color.red
       : Color.green;
-  };
+
   return (
     <Container valid={valid}>
       <div>
@@ -150,7 +150,8 @@ export const CreateLockConfirm: FC = () => {
                 }
                 decimals={6}
                 suffix=" %"
-                highlightColor={userLockupColorCheck()}
+                highlight
+                highlightColor={userLockupColorCheck}
               />
             ) : (
               '-'
@@ -160,7 +161,8 @@ export const CreateLockConfirm: FC = () => {
               end={simUserLockup?.bias.simple}
               suffix=" vMTA"
               decimals={4}
-              highlightColor={userLockupColorCheck()}
+              highlight
+              highlightColor={userLockupColorCheck}
             />{' '}
             out of{' '}
             {totalSupply ? (
@@ -172,7 +174,7 @@ export const CreateLockConfirm: FC = () => {
                 }
                 suffix=" vMTA"
                 decimals={4}
-                highlightColor={userLockupColorCheck()}
+                highlightColor={Color.green}
               />
             ) : (
               <Skeleton width={100} />
@@ -200,7 +202,8 @@ export const CreateLockConfirm: FC = () => {
                 }
                 suffix=" %"
                 decimals={6}
-                highlightColor={userBalanceColorCheck()}
+                highlight
+                highlightColor={userBalanceColorCheck}
               />
             ) : (
               '-'
@@ -217,7 +220,8 @@ export const CreateLockConfirm: FC = () => {
                 end={simTotalStaticWeight.simple}
                 suffix=" pMTA"
                 decimals={4}
-                highlightColor={userBalanceColorCheck()}
+                highlight
+                highlightColor={userBalanceColorCheck}
               />
             ) : (
               <Skeleton width={100} />
@@ -232,7 +236,8 @@ export const CreateLockConfirm: FC = () => {
               <CountUp
                 end={simUserStakingReward.currentAPY || 0}
                 suffix=" %"
-                highlightColor={userRewardsColorCheck()}
+                highlight
+                highlightColor={userRewardsColorCheck}
               />
             ) : (
               '-'
