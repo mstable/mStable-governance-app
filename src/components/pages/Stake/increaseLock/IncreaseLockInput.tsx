@@ -14,6 +14,8 @@ import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 import { TransactionType } from '../types';
 import { FormRow } from '../../../core/Form';
+import { ONE_DAY } from '../../../../utils/constants';
+import { UserLockup } from '../../../../context/DataProvider/types';
 
 const AmountContainer = styled.div`
   > :first-child {
@@ -38,7 +40,13 @@ export const IncreaseLockInput: FC = () => {
     data: { incentivisedVotingLockup, metaToken },
     transactionType,
   } = useStakeState();
-  const duration = useFormatDays(lockupDays);
+  const { length } = incentivisedVotingLockup?.userLockup as UserLockup;
+  const calc = parseFloat((length / ONE_DAY.toNumber()).toFixed(1));
+
+  const duration = useFormatDays(
+    incentivisedVotingLockup?.userLockup ? calc : lockupDays,
+  );
+
   const {
     setLockupAmount,
     setMaxLockupAmount,
@@ -110,18 +118,27 @@ export const IncreaseLockInput: FC = () => {
               min={incentivisedVotingLockup.lockTimes.min}
               step={7}
               max={incentivisedVotingLockup.lockTimes.max}
-              value={Math.max(
-                lockupDays,
-                incentivisedVotingLockup.lockTimes.min,
-              )}
+              value={
+                incentivisedVotingLockup.userLockup
+                  ? calc
+                  : Math.max(lockupDays, incentivisedVotingLockup.lockTimes.min)
+              }
               onChange={setLockupDays}
               startLabel="Start"
               endLabel="End date"
               onSetMax={setMaxLockupDays}
+              error={error}
             >
               <div>{duration}</div>
               <div>
-                {unlockTime ? format(fromUnix(unlockTime), 'dd-MM-yyyy') : '-'}
+                {incentivisedVotingLockup.userLockup
+                  ? format(
+                      fromUnix(incentivisedVotingLockup.userLockup.lockTime),
+                      'dd-MM-yyyy',
+                    )
+                  : unlockTime
+                  ? format(fromUnix(unlockTime), 'dd-MM-yyyy')
+                  : '-'}
               </div>
             </RangeInput>
           ) : (

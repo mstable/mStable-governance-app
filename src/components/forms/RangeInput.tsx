@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Range, getTrackBackground } from 'react-range';
 import { IThumbProps } from 'react-range/lib/types';
 
-import { Color, ViewportWidth } from '../../theme';
+import { Color, ViewportWidth, FontSize } from '../../theme';
 import { Button } from '../core/Button';
 
 interface Props {
@@ -18,7 +18,14 @@ interface Props {
   onChange(value: number): void;
   onSetMax(): void;
   step: number;
+  error?: string;
 }
+
+const Error = styled.div`
+  padding-top: 8px;
+  font-size: ${FontSize.s};
+  color: ${({ theme }) => theme.color.red};
+`;
 
 const ThumbCircle = styled.div`
   outline: none;
@@ -137,6 +144,7 @@ export const RangeInput: FC<Props> = ({
   endLabel,
   children,
   onSetMax,
+  error,
 }) => {
   const handleChange = useCallback(
     ([inputValue]: number[]) => {
@@ -146,29 +154,36 @@ export const RangeInput: FC<Props> = ({
   );
 
   return (
-    <Container>
-      {startLabel && <Label>{startLabel}</Label>}
-      <Range
-        step={step}
-        min={min}
-        max={max}
-        values={[value]}
-        onChange={handleChange}
-        renderTrack={({ props, children }) => (
-          <Track {...props} value={value} min={min} max={max}>
-            {children}
-          </Track>
-        )}
-        renderThumb={({ props: { ref: _, ...props } }) => (
-          <Thumb {...props}>{children}</Thumb>
-        )}
-      />
-      {endLabel && <Label>{endLabel}</Label>}
-      {onSetMax ? (
-        <Button style={{ marginLeft: '20px' }} type="button" onClick={onSetMax}>
-          Max
-        </Button>
-      ) : null}
-    </Container>
+    <>
+      <Container>
+        {startLabel && <Label>{startLabel}</Label>}
+        <Range
+          step={step}
+          min={min}
+          max={max}
+          values={[value]}
+          onChange={handleChange}
+          renderTrack={({ props, children }) => (
+            <Track {...props} value={value} min={min} max={max}>
+              {children}
+            </Track>
+          )}
+          renderThumb={({ props: { ref: _, ...props } }) => (
+            <Thumb {...props}>{children}</Thumb>
+          )}
+        />
+        {endLabel && <Label>{endLabel}</Label>}
+        {onSetMax ? (
+          <Button
+            style={{ marginLeft: '20px' }}
+            type="button"
+            onClick={onSetMax}
+          >
+            Max
+          </Button>
+        ) : null}
+      </Container>
+      {error ? <Error>{error}</Error> : null}
+    </>
   );
 };
