@@ -194,12 +194,9 @@ export const StakeProvider: FC<{}> = ({ children }) => {
     dispatch({ type: Actions.SetMaxLockupAmount });
   }, [dispatch]);
 
-  const setMaxLockupDays = useCallback<Dispatch['setMaxLockupDays']>(
-    days => {
-      dispatch({ type: Actions.SetMaxLockupDays, payload: days });
-    },
-    [dispatch],
-  );
+  const setMaxLockupDays = useCallback<Dispatch['setMaxLockupDays']>(() => {
+    dispatch({ type: Actions.SetMaxLockupDays });
+  }, [dispatch]);
 
   return (
     <dispatchCtx.Provider

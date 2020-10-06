@@ -1,8 +1,9 @@
-import { Reasons, State } from './types';
+import { Reasons, State, TransactionType } from './types';
 
 const validateLock = ({
   lockupAmount: { amount },
-  lockupPeriod: { unlockTime },
+  lockupPeriod: { unlockTime, formValue: lockupPeriodFormValue },
+  transactionType,
   data: { metaToken, incentivisedVotingLockup },
 }: State): [false, Reasons] | [true] => {
   if (
@@ -13,6 +14,27 @@ const validateLock = ({
     return [false, Reasons.FetchingData];
   }
 
+  if (!unlockTime || unlockTime <= 0) {
+    return [false, Reasons.PeriodMustBeSet];
+  }
+
+  if (transactionType === TransactionType.IncreaseLockTime) {
+    if (!incentivisedVotingLockup?.userLockup) {
+      return [false, Reasons.MustHaveAStakeToIncreaseLockTime];
+    }
+
+    if (lockupPeriodFormValue < 6) {
+      return [false, Reasons.PeriodMustBeAtLeastSixDays];
+    }
+
+    // FIXME doesn't get triggered
+    if (unlockTime <= incentivisedVotingLockup.userLockup.lockTime) {
+      return [false, Reasons.NewLockupTimeMustBeAfterCurrentLockupTime];
+    }
+
+    return [true];
+  }
+
   if (!amount) {
     return [false, Reasons.AmountMustBeSet];
   }
@@ -20,15 +42,6 @@ const validateLock = ({
   if (amount.exact.lte(0)) {
     return [false, Reasons.AmountMustBeGreaterThanZero];
   }
-
-  if (!unlockTime || unlockTime <= 0) {
-    return [false, Reasons.PeriodMustBeSet];
-  }
-
-  // TODO should validate the existing lockup (for increasing the time)
-  // if (formValue < 6) {
-  //   return [false, Reasons.PeriodMustBeAtLeastSixDays];
-  // }
 
   if (amount.exact.gt(metaToken.balance.exact)) {
     return [false, Reasons.AmountMustNotExceedBalance];
@@ -42,13 +55,18 @@ const validateLock = ({
     return [false, Reasons.AmountExceedsApprovedAmount];
   }
 
+  if (transactionType === TransactionType.IncreaseLockAmount) {
+    if (!incentivisedVotingLockup?.userLockup) {
+      return [false, Reasons.MustHaveAStakeToIncreaseLockAmount];
+    }
+  }
+
   return [true];
 };
 
 export const validate = (state: State): State => {
   const { touched } = state;
 
-  // TODO different validation for different types
   const [valid, error] = touched ? validateLock(state) : [false];
 
   return {
