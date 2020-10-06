@@ -2,6 +2,7 @@ import { Reducer } from 'react';
 import { pipeline } from 'ts-pipe-compose';
 import { addDays } from 'date-fns';
 import { BigNumber } from 'ethers/utils';
+import { ONE_DAY } from '../../../utils/constants';
 
 import {
   UserLockup,
@@ -74,6 +75,8 @@ const reduce: Reducer<State, Action> = (state, action) => {
         amount: undefined,
       };
 
+      const userLockupPeriod = parseFloat((state.data.incentivisedVotingLockup?.userLockup?.length as number / ONE_DAY.toNumber()).toFixed(1))
+
       if (transactionType === TransactionType.IncreaseLockTime) {
         if (!userLockup) return state;
 
@@ -87,7 +90,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
         ...state,
         transactionType,
         lockupAmount,
-        lockupPeriod: { formValue: 0, unlockTime: undefined },
+        lockupPeriod: { formValue: userLockupPeriod, unlockTime: state.data.incentivisedVotingLockup?.userLockup?.lockTime },
         touched: false,
       };
     }
