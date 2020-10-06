@@ -11,10 +11,6 @@ import { useStakeState } from '../StakeProvider';
 import { ViewportWidth, Color } from '../../../../theme';
 import { TransactionType } from '../types';
 
-const SimulatedCountUp = styled(CountUp)`
-  color: ${({ theme }) => theme.color.green};
-`;
-
 const Row = styled.div`
   align-items: center;
   padding-bottom: 8px;
@@ -123,7 +119,7 @@ export const CreateLockConfirm: FC = () => {
         <H3 borderTop>Your stake</H3>
         <InfoGroup>
           <InfoRow title="You will stake">
-            <SimulatedCountUp
+            <CountUp
               end={
                 simUserLockup && simUserLockup.value.simple > 0
                   ? simUserLockup.value.simple
@@ -210,7 +206,7 @@ export const CreateLockConfirm: FC = () => {
               '-'
             )}{' '}
             of the earning power (
-            <SimulatedCountUp
+            <CountUp
               end={simUserStakingBalance?.simple}
               suffix=" pMTA"
               decimals={4}
@@ -233,7 +229,7 @@ export const CreateLockConfirm: FC = () => {
             tip="APY is highly volatile because it is based on your earning power with respect to the total earning power. As more MTA is staked, a users share is likely to go down."
           >
             {simUserStakingReward ? (
-              <SimulatedCountUp
+              <CountUp
                 end={simUserStakingReward.currentAPY || 0}
                 suffix=" %"
                 highlightColor={userRewardsColorCheck()}
