@@ -228,10 +228,8 @@ export const CreateLockConfirm: FC = () => {
             />{' '}
             out of{' '}
             {simTotalStaticWeight ? (
-              <DifferentialCountup
+              <CountUp
                 end={simTotalStaticWeight.simple}
-                prevValue={userStakingBalance?.simple}
-                currentValue={simUserStakingBalance?.simple}
                 suffix=" pMTA"
                 decimals={4}
               />
