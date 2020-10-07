@@ -2,9 +2,16 @@
 
 ## v.NEXT
 
+## v1.1.0
+
 Features
 
-- Add support for increasing lock time and increasing lock amount of an existing stake position
+- Add support for increasing the amount and duration of a stake position
+- Add average locktime metric to STAKE
+
+Bug fixes
+
+- Fixed an issue where the stake forms were not properly reset when changing account
 
 ## v1.0.0
 

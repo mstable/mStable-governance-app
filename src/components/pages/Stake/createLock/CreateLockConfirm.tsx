@@ -10,6 +10,8 @@ import { Tooltip } from '../../../core/ReactTooltip';
 import { useStakeState } from '../StakeProvider';
 import { ViewportWidth, Color } from '../../../../theme';
 import { TransactionType } from '../types';
+import { formatUnix } from '../../../../utils/time';
+import { IncentivisedVotingLockup } from '../../../../context/DataProvider/types';
 
 const Row = styled.div`
   align-items: center;
@@ -69,7 +71,7 @@ export const CreateLockConfirm: FC = () => {
     transactionType,
   } = useStakeState();
 
-  const { address } = incentivisedVotingLockup || {};
+  const { address, lockTimes, userLockup } = incentivisedVotingLockup || {};
 
   const totalSupply = useTotalSupply(address);
 
@@ -79,17 +81,19 @@ export const CreateLockConfirm: FC = () => {
     userStakingBalance: simUserStakingBalance,
     userStakingReward: simUserStakingReward,
   } = simulatedData || {};
-  const txValueCheck =
+
+  const cannotIncreaseTime =
+    userLockup && lockTimes && lockTimes.max <= userLockup.lockDays;
+
+  const existingLockupValue =
     transactionType === TransactionType.IncreaseLockTime
       ? incentivisedVotingLockup?.userLockup?.value.simple
       : undefined;
-  const txCalcCheck =
-    transactionType === TransactionType.IncreaseLockTime
-      ? (
-          (incentivisedVotingLockup?.userLockup?.length as number) /
-          ONE_WEEK.toNumber()
-        ).toFixed(1)
-      : '-';
+
+  const simulatedOrExistingUserLockup =
+    transactionType === TransactionType.IncreaseLockAmount || cannotIncreaseTime
+      ? (incentivisedVotingLockup as IncentivisedVotingLockup).userLockup
+      : simUserLockup;
 
   const userLockupColorCheck =
     simUserLockup &&
@@ -123,15 +127,19 @@ export const CreateLockConfirm: FC = () => {
               end={
                 simUserLockup && simUserLockup.value.simple > 0
                   ? simUserLockup.value.simple
-                  : txValueCheck
+                  : existingLockupValue
               }
               suffix=" MTA"
             />{' '}
-            for{' '}
-            {simUserLockup
-              ? (simUserLockup.length / ONE_WEEK.toNumber()).toFixed(1)
-              : txCalcCheck}{' '}
-            weeks
+            {simulatedOrExistingUserLockup
+              ? `from ${formatUnix(
+                  simulatedOrExistingUserLockup.ts,
+                )} until ${formatUnix(
+                  simulatedOrExistingUserLockup.lockTime,
+                )} (${(
+                  simulatedOrExistingUserLockup.length / ONE_WEEK.toNumber()
+                ).toFixed(1)} weeks)`
+              : '-'}
           </InfoRow>
           <InfoRow
             title="Voting Power"

@@ -26,7 +26,7 @@ export const useErc20Contract = (
 export const useFormatDays = (days: number): string => {
   return useMemo<string>(() => {
     const weeks = Math.floor(days / 7);
-    const remainderDays = Math.floor(days - weeks * 7);
+    const remainderDays = Math.ceil(days - weeks * 7);
     return formatDuration(
       { weeks, days: remainderDays },
       { format: ['weeks', 'days'], zero: false },
