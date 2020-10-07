@@ -1,15 +1,15 @@
 import { Reducer } from 'react';
 import { pipeline } from 'ts-pipe-compose';
-import { addDays, getDayOfYear } from 'date-fns';
+import addDays from 'date-fns/addDays';
 import { BigNumber } from 'ethers/utils';
-import { ONE_DAY } from '../../../utils/constants';
 
 import {
   UserLockup,
   UserStakingReward,
 } from '../../../context/DataProvider/types';
 
-import { nowUnix, toUnix } from '../../../utils/time';
+import { durationInDaysUnix, nowUnix, toUnix } from '../../../utils/time';
+import { BigDecimal } from '../../../utils/BigDecimal';
 import {
   Action,
   Actions,
@@ -18,7 +18,6 @@ import {
   TransactionType,
 } from './types';
 import { validate } from './validation';
-import { BigDecimal } from '../../../utils/BigDecimal';
 import { getShareAndAPY } from './helpers';
 
 const reduce: Reducer<State, Action> = (state, action) => {
@@ -34,7 +33,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
         const medianDays = lockTimes.min + 7 * 26;
         const medianTime = toUnix(addDays(Date.now(), medianDays));
         const unlockTime = Math.min(medianTime, end.toNumber());
-        const formValue = getDayOfYear(unlockTime);
+        const formValue = durationInDaysUnix(unlockTime, nowUnix());
         return {
           ...state,
           data: action.payload,
@@ -80,11 +79,9 @@ const reduce: Reducer<State, Action> = (state, action) => {
         amount: undefined,
       };
 
-      const userLockupPeriod = parseFloat(
-        (
-          (state.data.incentivisedVotingLockup?.userLockup?.length as number) /
-          ONE_DAY.toNumber()
-        ).toFixed(1),
+      const lockDays = Math.max(
+        state.data.incentivisedVotingLockup?.userLockup?.lockDays || 0,
+        1,
       );
 
       if (transactionType === TransactionType.IncreaseLockTime) {
@@ -101,7 +98,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
         transactionType,
         lockupAmount,
         lockupPeriod: {
-          formValue: userLockupPeriod,
+          formValue: lockDays,
           unlockTime: state.data.incentivisedVotingLockup?.userLockup?.lockTime,
         },
         touched: false,
@@ -224,6 +221,7 @@ const calculate = (state: State): State => {
     const simulatedLockup: UserLockup = {
       value: simulatedLockupAmount,
       lockTime: simulatedLockTime,
+      lockDays: Math.max(durationInDaysUnix(simulatedLockTime, now), 1),
       ts: now,
       slope,
       bias: new BigDecimal(slope.mul(new BigNumber(length))),

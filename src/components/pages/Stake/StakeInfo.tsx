@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import Skeleton from 'react-loading-skeleton';
-import format from 'date-fns/format';
 
 import { H3, H4 } from '../../core/Typography';
 import { Tooltip } from '../../core/ReactTooltip';
@@ -10,6 +9,7 @@ import { useRewardsEarned, useStakeData } from './StakeProvider';
 import { useToken } from '../../../context/DataProvider/TokensProvider';
 import { useTotalSupply } from '../../../context/DataProvider/subscriptions';
 import { ONE_WEEK } from '../../../utils/constants';
+import { formatUnix } from '../../../utils/time';
 import { ViewportWidth } from '../../../theme';
 import { EtherscanLink } from '../../core/EtherscanLink';
 import { Protip } from '../../core/Protip';
@@ -73,11 +73,9 @@ const UserStake: FC = () => {
           <InfoGroup>
             <InfoRow title="You staked">
               <ChangingCountUp end={userLockup.value.simple} suffix=" MTA" />{' '}
-              for {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks
-              on{' '}
-              {userLockup.ts
-                ? format(userLockup.ts * 1000, 'dd-MM-yyyy')
-                : null}
+              from {formatUnix(userLockup.ts)} until{' '}
+              {formatUnix(userLockup.lockTime)} (
+              {(userLockup.length / ONE_WEEK.toNumber()).toFixed(1)} weeks).
             </InfoRow>
             <InfoRow
               title="Voting Power"

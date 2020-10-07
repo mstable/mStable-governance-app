@@ -6,6 +6,7 @@ import { BigDecimal } from '../../utils/BigDecimal';
 export interface UserLockup {
   value: BigDecimal;
   lockTime: number;
+  lockDays: number;
   ts: number;
   slope: BigNumber;
   bias: BigDecimal;
@@ -30,6 +31,7 @@ export interface LockTimes {
 export interface IncentivisedVotingLockup {
   address: string;
   duration: BigNumber;
+  start: BigNumber;
   end: BigNumber;
   lockTimes: LockTimes;
   expired: boolean;

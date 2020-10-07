@@ -13618,9 +13618,9 @@ react-loading-skeleton@^2.0.1:
     "@emotion/core" "^10.0.22"
 
 react-range@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.7.0.tgz#94ac3851661dabbb9bcc37001ba5ddd7cd0cca5d"
-  integrity sha512-OFF+bcD5o1TJ8M6YcQI4A3b6OYh4bDG0gUkyXETPJHXeut39XL8RZZZPUgfeoEOP1PmtMtluGMbFleP59S9OXg==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.0.tgz#15ff0de891079670505078fba3d2ee2ef359ee95"
+  integrity sha512-IGVIFGauuA7DciUIkRt+RZVYYw+4uCV0wYbaqAIpi3MU3lGW6Sv58CPHsGXTG2mt9sK72Pr4QSDXv2rTeYFwfA==
 
 react-scripts@^3.4.1:
   version "3.4.1"

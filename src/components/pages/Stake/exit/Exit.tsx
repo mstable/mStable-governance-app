@@ -1,17 +1,18 @@
 import React, { FC, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
-import format from 'date-fns/format';
+
 import { Interfaces } from '../../../../types';
+import { formatUnix } from '../../../../utils/time';
 import { TransactionForm } from '../../../forms/TransactionForm';
 import {
   FormProvider,
   useSetFormManifest,
 } from '../../../forms/TransactionForm/FormProvider';
+import { Protip } from '../../../core/Protip';
 import { useStakeState, useStakeContract } from '../StakeProvider';
 import { ExitInput } from './ExitInput';
 import { ExitConfirm } from './ExitConfirm';
-import { Protip } from '../../../core/Protip';
 
 const StyledTransactionForm = styled(TransactionForm)`
   h3 {
@@ -19,7 +20,7 @@ const StyledTransactionForm = styled(TransactionForm)`
   }
 `;
 
-const ExitForm: FC<{}> = () => {
+const ExitForm: FC = () => {
   const {
     data: { incentivisedVotingLockup },
   } = useStakeState();
@@ -55,10 +56,7 @@ const ExitForm: FC<{}> = () => {
           Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
           {incentivisedVotingLockup.userLockup?.lockTime
-            ? format(
-                incentivisedVotingLockup.userLockup?.lockTime * 1000,
-                'dd-MM-yyyy',
-              )
+            ? formatUnix(incentivisedVotingLockup.userLockup?.lockTime)
             : null}
           .
         </Protip>
@@ -70,7 +68,7 @@ const ExitForm: FC<{}> = () => {
   );
 };
 
-export const Exit: FC<{}> = () => (
+export const Exit: FC = () => (
   <FormProvider formId="exit">
     <ExitForm />
   </FormProvider>

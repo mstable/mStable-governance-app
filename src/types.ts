@@ -52,7 +52,7 @@ export interface Instances {
 export interface SendTxManifest<
   TIface extends Interfaces,
   TFn extends keyof Instances[TIface]['functions']
-> {
+  > {
   contract: Instances[TIface];
   fn: Extract<keyof Instances[TIface]['functions'], TFn> & string;
   args: Parameters<

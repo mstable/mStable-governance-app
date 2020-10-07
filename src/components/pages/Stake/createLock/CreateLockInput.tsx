@@ -1,19 +1,18 @@
 import React, { FC } from 'react';
-import format from 'date-fns/format';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
 
+import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
+import { RangeInput } from '../../../forms/RangeInput';
 import { FormRow } from '../../../core/Form';
 import { H3, H4 } from '../../../core/Typography';
-import { RangeInput } from '../../../forms/RangeInput';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { Protip } from '../../../core/Protip';
 import { ExternalLink } from '../../../core/ExternalLink';
 import { useFormatDays } from '../../../../utils/hooks';
-import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
-import { useStakeDispatch, useStakeState } from '../StakeProvider';
-import { fromUnix } from '../../../../utils/time';
+import { formatUnix } from '../../../../utils/time';
 import { ONE_DAY } from '../../../../utils/constants';
+import { useStakeDispatch, useStakeState } from '../StakeProvider';
 
 const AmountContainer = styled.div`
   > :first-child {
@@ -93,24 +92,18 @@ export const CreateLockInput: FC = () => {
         )}
       </div>
       <FormRow>
-        {userLockupPeriod === data.incentivisedVotingLockup?.lockTimes.max ? (
+        {data.incentivisedVotingLockup?.userLockup &&
+        userLockupPeriod === data.incentivisedVotingLockup.lockTimes.max ? (
           <>
             <Protip
               emoji="😊"
               title="You have already staked for a maximum period!"
             >
-              <br />
               Your stake of{' '}
-              {data.incentivisedVotingLockup?.userLockup?.value.simple} MTA will
+              {data.incentivisedVotingLockup.userLockup.value.simple} MTA will
               unlock on{' '}
-              {data.incentivisedVotingLockup?.userLockup?.lockTime
-                ? format(
-                    data.incentivisedVotingLockup.userLockup?.lockTime * 1000,
-                    'dd-MM-yyyy',
-                  )
-                : null}
+              {formatUnix(data.incentivisedVotingLockup.userLockup.lockTime)}
             </Protip>
-            <br />
           </>
         ) : (
           <>
@@ -124,21 +117,14 @@ export const CreateLockInput: FC = () => {
                 min={data.incentivisedVotingLockup.lockTimes.min}
                 step={7}
                 max={data.incentivisedVotingLockup.lockTimes.max}
-                value={Math.max(
-                  lockupDays,
-                  data.incentivisedVotingLockup.lockTimes.min,
-                )}
+                value={lockupDays}
                 onChange={setLockupDays}
                 startLabel="Today"
                 endLabel="End date"
                 onSetMax={setMaxLockupDays}
               >
                 <div>{duration}</div>
-                <div>
-                  {unlockTime
-                    ? format(fromUnix(unlockTime), 'dd-MM-yyyy')
-                    : '-'}
-                </div>
+                <div>{unlockTime ? formatUnix(unlockTime) : '-'}</div>
               </RangeInput>
             ) : (
               <Skeleton />

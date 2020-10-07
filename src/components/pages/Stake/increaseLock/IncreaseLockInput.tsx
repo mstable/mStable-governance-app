@@ -1,19 +1,18 @@
 import React, { FC } from 'react';
-import format from 'date-fns/format';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
 
-import { H3, H4 } from '../../../core/Typography';
 import { RangeInput } from '../../../forms/RangeInput';
+import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
+import { H3, H4 } from '../../../core/Typography';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { Protip } from '../../../core/Protip';
 import { ExternalLink } from '../../../core/ExternalLink';
+import { FormRow } from '../../../core/Form';
 import { useFormatDays } from '../../../../utils/hooks';
-import { fromUnix } from '../../../../utils/time';
-import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
+import { formatUnix } from '../../../../utils/time';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 import { TransactionType } from '../types';
-import { FormRow } from '../../../core/Form';
 
 const AmountContainer = styled.div`
   > :first-child {
@@ -30,8 +29,6 @@ const TooltipContainer = styled.div`
   display: flex;
 `;
 
-const ONE_DAY = 24 * 60 * 60;
-
 export const IncreaseLockInput: FC = () => {
   const {
     lockupAmount: { formValue: amountFormValue, amount },
@@ -41,13 +38,12 @@ export const IncreaseLockInput: FC = () => {
     transactionType,
   } = useStakeState();
 
-  const { userLockup, end } = incentivisedVotingLockup || {};
+  const { userLockup, lockTimes } = incentivisedVotingLockup || {};
 
   const duration = useFormatDays(lockupDays);
 
-  const lockedUpForMaxTime =
-    (userLockup && end && end.toNumber() - userLockup.lockTime < ONE_DAY) ||
-    false;
+  const cannotIncreaseTime =
+    userLockup && lockTimes && lockTimes.max <= userLockup.lockDays;
 
   const {
     setLockupAmount,
@@ -111,8 +107,8 @@ export const IncreaseLockInput: FC = () => {
           <Skeleton />
         )}
       </div>
-      {transactionType === TransactionType.IncreaseLockTime ? (
-        lockedUpForMaxTime ? (
+      {transactionType === TransactionType.IncreaseLockTime && lockupDays ? (
+        cannotIncreaseTime ? (
           <Protip title="Unable to extend further">
             You are already staking for the maximum duration, and therefore
             cannot increase the lockup time with this account.
@@ -128,8 +124,8 @@ export const IncreaseLockInput: FC = () => {
               <RangeInput
                 min={incentivisedVotingLockup.lockTimes.min}
                 step={7}
-                max={Math.max(incentivisedVotingLockup.lockTimes.max)}
-                value={Math.max(lockupDays)}
+                max={incentivisedVotingLockup.lockTimes.max}
+                value={lockupDays}
                 onChange={setLockupDays}
                 startLabel="Start"
                 endLabel="End date"
@@ -137,11 +133,7 @@ export const IncreaseLockInput: FC = () => {
                 error={error}
               >
                 <div>{duration}</div>
-                <div>
-                  {unlockTime
-                    ? format(fromUnix(unlockTime), 'dd-MM-yyyy')
-                    : '-'}
-                </div>
+                <div>{unlockTime ? formatUnix(unlockTime) : '-'}</div>
               </RangeInput>
             ) : (
               <Skeleton />
