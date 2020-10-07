@@ -4,7 +4,7 @@
 
 Features
 
-- Add support for increasing lock time and increasing lock amount of an existing stake position
+- Add average locktime metric to STAKE
 
 ## v1.0.0
 

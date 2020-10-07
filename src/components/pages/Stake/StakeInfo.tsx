@@ -222,7 +222,7 @@ const UserStake: FC = () => {
   );
 };
 
-const TotalsAndAverages: FC = () => {
+const Metrics: FC = () => {
   const { incentivisedVotingLockup } = useStakeData();
   const { totalValue, totalStakingRewards, lockTimes } =
     incentivisedVotingLockup || {};
@@ -230,11 +230,11 @@ const TotalsAndAverages: FC = () => {
   const totalSupply = useTotalSupply(address);
   return (
     <div>
-      <H3 borderTop>Totals</H3>
+      <H3 borderTop>Metrics</H3>
       <InfoGroup>
         <InfoRow
           title="Total MTA staked"
-          tip="Total units of MTA locked in Staking"
+          tip="Total units of MTA locked in staking"
         >
           {totalValue ? (
             <CountUp end={totalValue.simple} />
@@ -252,12 +252,9 @@ const TotalsAndAverages: FC = () => {
             <Skeleton width={100} />
           )}
         </InfoRow>
-      </InfoGroup>
-      <H3 borderTop>Averages</H3>
-      <InfoGroup>
         <InfoRow
-          title="Average Lockup Time"
-          tip="Average lockup time of all lockups"
+          title="Average lockup time"
+          tip="Average lockup time across all stakers"
         >
           {lockTimes && totalValue && totalSupply && totalSupply.simple > 0 ? (
             <ChangingCountUp
@@ -297,7 +294,7 @@ export const StakeInfo: FC = () => {
   return (
     <Container>
       <UserStake />
-      <TotalsAndAverages />
+      <Metrics />
     </Container>
   );
 };
