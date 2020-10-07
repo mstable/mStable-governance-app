@@ -44,6 +44,10 @@ const InfoRow: FC<{ tip?: string; title: string }> = ({
 
 const InfoGroup = styled.div`
   padding-bottom: 16px;
+  min-height: 65px;
+  @media (min-width: ${ViewportWidth.s}) {
+    min-height: 155px;
+  }
 `;
 
 const UserStake: FC = () => {
@@ -218,34 +222,51 @@ const UserStake: FC = () => {
   );
 };
 
-const Totals: FC = () => {
+const Metrics: FC = () => {
   const { incentivisedVotingLockup } = useStakeData();
-  const { totalValue, totalStakingRewards } = incentivisedVotingLockup || {};
-
+  const { totalValue, totalStakingRewards, lockTimes } =
+    incentivisedVotingLockup || {};
+  const { address } = incentivisedVotingLockup || {};
+  const totalSupply = useTotalSupply(address);
   return (
-    <InfoGroup>
-      <H3 borderTop>Totals</H3>
-      <InfoRow
-        title="Total MTA staked"
-        tip="Total units of MTA locked in Staking"
-      >
-        {totalValue ? (
-          <CountUp end={totalValue.simple} />
-        ) : (
-          <Skeleton width={100} />
-        )}
-      </InfoRow>
-      <InfoRow
-        title="Total weekly rewards"
-        tip="Units of MTA being emitted to stakers this week"
-      >
-        {totalStakingRewards ? (
-          <CountUp end={totalStakingRewards.simple} suffix=" MTA" />
-        ) : (
-          <Skeleton width={100} />
-        )}
-      </InfoRow>
-    </InfoGroup>
+    <div>
+      <H3 borderTop>Metrics</H3>
+      <InfoGroup>
+        <InfoRow
+          title="Total MTA staked"
+          tip="Total units of MTA locked in staking"
+        >
+          {totalValue ? (
+            <CountUp end={totalValue.simple} />
+          ) : (
+            <Skeleton width={100} />
+          )}
+        </InfoRow>
+        <InfoRow
+          title="Total weekly rewards"
+          tip="Units of MTA being emitted to stakers this week"
+        >
+          {totalStakingRewards ? (
+            <CountUp end={totalStakingRewards.simple} suffix=" MTA" />
+          ) : (
+            <Skeleton width={100} />
+          )}
+        </InfoRow>
+        <InfoRow
+          title="Average lockup time"
+          tip="Average lockup time across all stakers"
+        >
+          {lockTimes && totalValue && totalSupply && totalSupply.simple > 0 ? (
+            <ChangingCountUp
+              end={totalSupply.simple / (totalValue.simple / lockTimes.max)}
+              suffix=" Days"
+            />
+          ) : (
+            <Skeleton width={100} />
+          )}
+        </InfoRow>
+      </InfoGroup>
+    </div>
   );
 };
 
@@ -273,7 +294,7 @@ export const StakeInfo: FC = () => {
   return (
     <Container>
       <UserStake />
-      <Totals />
+      <Metrics />
     </Container>
   );
 };
