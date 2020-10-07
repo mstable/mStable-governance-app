@@ -2,6 +2,11 @@
 
 ## v.NEXT
 
+Bug fixes
+
+- Fixed an issue where simulated voting power was not displayed
+  correctly when increasing stake amount
+
 ## v1.1.0
 
 Features
