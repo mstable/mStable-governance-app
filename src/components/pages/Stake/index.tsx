@@ -8,14 +8,17 @@ import { StakeInfo } from './StakeInfo';
 import { ReactComponent as StakeIcon } from '../../icons/circle/lock.svg';
 import { Protip } from '../../core/Protip';
 import { ExternalLink } from '../../core/ExternalLink';
+import { useAccount } from '../../../context/UserProvider';
 
 const StyledProtip = styled(Protip)`
   font-size: 12px;
 `;
 
 export const StakeTabs: FC = () => {
+  // Use a key to remount the component when the account changes
+  const account = useAccount();
   return (
-    <StakeProvider>
+    <StakeProvider key={account}>
       <PageHeader
         icon={<StakeIcon />}
         title="Stake"
