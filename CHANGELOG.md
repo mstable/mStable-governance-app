@@ -2,6 +2,8 @@
 
 ## v.NEXT
 
+## v1.1.1
+
 Bug fixes
 
 - Fixed an issue where simulated voting power was not displayed
