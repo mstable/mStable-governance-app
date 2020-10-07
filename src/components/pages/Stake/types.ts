@@ -75,7 +75,6 @@ export enum Actions {
   SetMaxLockupDays,
   SetLockupDays,
   SetTransactionType,
-  ExtendLockupDays,
 }
 
 export type Action =
@@ -91,5 +90,4 @@ export type Action =
   | { type: Actions.SetLockupDays; payload: number }
   | { type: Actions.SetMaxLockupAmount }
   | { type: Actions.SetMaxLockupDays }
-  | { type: Actions.SetTransactionType; payload: TransactionType }
-  | { type: Actions.ExtendLockupDays; payload: number };
+  | { type: Actions.SetTransactionType; payload: TransactionType };

@@ -63,6 +63,24 @@ const getPendingTxDescription = (tx: Transaction): JSX.Element => {
         </>
       );
     }
+
+    case 'increaseLockAmount': {
+      return (
+        <>
+          You {tx.status ? 'increased' : 'are increasing'} the staking contract
+          lockup value
+        </>
+      );
+    }
+
+    case 'increaseLockLength': {
+      return (
+        <>
+          You {tx.status ? 'extended' : 'are extending'} the staking contract
+          lockup time
+        </>
+      );
+    }
     default:
       return <> Unsupported transaction </>;
   }
