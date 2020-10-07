@@ -2,8 +2,11 @@
 
 ## v.NEXT
 
+## v1.1.0
+
 Features
 
+- Add support for increasing the amount and duration of a stake position
 - Add average locktime metric to STAKE
 
 Bug fixes
