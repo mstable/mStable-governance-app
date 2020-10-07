@@ -8,11 +8,8 @@ import { CountUp } from '../../../core/CountUp';
 import { H3, H4 } from '../../../core/Typography';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { useStakeState } from '../StakeProvider';
-import { ViewportWidth } from '../../../../theme';
-
-const SimulatedCountUp = styled(CountUp)`
-  color: ${({ theme }) => theme.color.green};
-`;
+import { ViewportWidth, Color } from '../../../../theme';
+import { TransactionType } from '../types';
 
 const Row = styled.div`
   align-items: center;
@@ -69,6 +66,7 @@ export const CreateLockConfirm: FC = () => {
   const {
     data: { incentivisedVotingLockup, simulatedData },
     valid,
+    transactionType,
   } = useStakeState();
 
   const { address } = incentivisedVotingLockup || {};
@@ -81,6 +79,39 @@ export const CreateLockConfirm: FC = () => {
     userStakingBalance: simUserStakingBalance,
     userStakingReward: simUserStakingReward,
   } = simulatedData || {};
+  const txValueCheck =
+    transactionType === TransactionType.IncreaseLockTime
+      ? incentivisedVotingLockup?.userLockup?.value.simple
+      : undefined;
+  const txCalcCheck =
+    transactionType === TransactionType.IncreaseLockTime
+      ? (
+          (incentivisedVotingLockup?.userLockup?.length as number) /
+          ONE_WEEK.toNumber()
+        ).toFixed(1)
+      : '-';
+
+  const userLockupColorCheck =
+    simUserLockup &&
+    simUserLockup.bias.simple <
+      (incentivisedVotingLockup?.userLockup?.bias.simple as number)
+      ? Color.red
+      : Color.green;
+
+  const userBalanceColorCheck =
+    simUserStakingBalance &&
+    simUserStakingBalance.simple <
+      (incentivisedVotingLockup?.userStakingBalance?.simple as number)
+      ? Color.red
+      : Color.green;
+
+  const userRewardsColorCheck =
+    (simUserStakingReward &&
+      (simUserStakingReward.currentAPY as number) <
+        (incentivisedVotingLockup?.userStakingReward?.currentAPY as number)) ||
+    0
+      ? Color.red
+      : Color.green;
 
   return (
     <Container valid={valid}>
@@ -88,18 +119,18 @@ export const CreateLockConfirm: FC = () => {
         <H3 borderTop>Your stake</H3>
         <InfoGroup>
           <InfoRow title="You will stake">
-            <SimulatedCountUp
+            <CountUp
               end={
                 simUserLockup && simUserLockup.value.simple > 0
                   ? simUserLockup.value.simple
-                  : undefined
+                  : txValueCheck
               }
               suffix=" MTA"
             />{' '}
             for{' '}
             {simUserLockup
               ? (simUserLockup.length / ONE_WEEK.toNumber()).toFixed(1)
-              : '-'}{' '}
+              : txCalcCheck}{' '}
             weeks
           </InfoRow>
           <InfoRow
@@ -111,7 +142,7 @@ export const CreateLockConfirm: FC = () => {
             simUserLockup.bias.simple > 0 &&
             totalSupply &&
             totalSupply.simple > 0 ? (
-              <SimulatedCountUp
+              <CountUp
                 end={
                   (simUserLockup.bias.simple /
                     (totalSupply.simple + simUserLockup.bias.simple)) *
@@ -119,19 +150,23 @@ export const CreateLockConfirm: FC = () => {
                 }
                 decimals={6}
                 suffix=" %"
+                highlight
+                highlightColor={userLockupColorCheck}
               />
             ) : (
               '-'
             )}{' '}
             of the voting power (
-            <SimulatedCountUp
+            <CountUp
               end={simUserLockup?.bias.simple}
               suffix=" vMTA"
               decimals={4}
+              highlight
+              highlightColor={userLockupColorCheck}
             />{' '}
             out of{' '}
             {totalSupply ? (
-              <SimulatedCountUp
+              <CountUp
                 end={
                   simUserLockup?.bias
                     ? totalSupply.simple + simUserLockup.bias.simple
@@ -139,6 +174,7 @@ export const CreateLockConfirm: FC = () => {
                 }
                 suffix=" vMTA"
                 decimals={4}
+                highlightColor={Color.green}
               />
             ) : (
               <Skeleton width={100} />
@@ -159,29 +195,33 @@ export const CreateLockConfirm: FC = () => {
             simUserStakingBalance &&
             simTotalStaticWeight.simple > 0 &&
             simUserStakingBalance.simple > 0 ? (
-              <SimulatedCountUp
+              <CountUp
                 end={
                   (simUserStakingBalance.simple / simTotalStaticWeight.simple) *
                   100
                 }
                 suffix=" %"
                 decimals={6}
+                highlight
+                highlightColor={userBalanceColorCheck}
               />
             ) : (
               '-'
             )}{' '}
             of the earning power (
-            <SimulatedCountUp
+            <CountUp
               end={simUserStakingBalance?.simple}
               suffix=" pMTA"
               decimals={4}
             />{' '}
             out of{' '}
             {simTotalStaticWeight ? (
-              <SimulatedCountUp
+              <CountUp
                 end={simTotalStaticWeight.simple}
                 suffix=" pMTA"
                 decimals={4}
+                highlight
+                highlightColor={userBalanceColorCheck}
               />
             ) : (
               <Skeleton width={100} />
@@ -193,9 +233,11 @@ export const CreateLockConfirm: FC = () => {
             tip="APY is highly volatile because it is based on your earning power with respect to the total earning power. As more MTA is staked, a users share is likely to go down."
           >
             {simUserStakingReward ? (
-              <SimulatedCountUp
+              <CountUp
                 end={simUserStakingReward.currentAPY || 0}
                 suffix=" %"
+                highlight
+                highlightColor={userRewardsColorCheck}
               />
             ) : (
               '-'
