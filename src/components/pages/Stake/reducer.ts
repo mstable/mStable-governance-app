@@ -212,7 +212,7 @@ const calculate = (state: State): State => {
 
     const now = nowUnix();
 
-    const length = simulatedLockTime - now;
+    const length = Math.max(simulatedLockTime - now, 0);
 
     const slope = simulatedLockupAmount.exact.div(
       incentivisedVotingLockup.maxTime,
@@ -233,9 +233,11 @@ const calculate = (state: State): State => {
       slope.mul(10000).mul(Math.floor(Math.sqrt(length))),
     );
 
-    const simulatedTotalStaticWeight = incentivisedVotingLockup.totalStaticWeight.add(
-      simulatedStakingBalance,
-    );
+    const simulatedTotalStaticWeight = incentivisedVotingLockup.totalStaticWeight
+      .add(simulatedStakingBalance)
+      // With an existing balance, remove the existing staking balance,
+      // because it's already included in the simulated balance.
+      .sub(userStakingBalance ?? new BigDecimal(0));
 
     const simulatedApy = getShareAndAPY(
       rewardRate,
