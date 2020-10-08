@@ -1,7 +1,8 @@
 import { BigNumber } from 'ethers/utils';
+
 import { BigDecimal } from '../../utils/BigDecimal';
 import { ONE_DAY, ONE_WEEK } from '../../utils/constants';
-import { nowUnix } from '../../utils/time';
+import { durationInDaysUnix, nowUnix } from '../../utils/time';
 import {
   DataState,
   IncentivisedVotingLockup,
@@ -18,17 +19,19 @@ const transformUserLockup = (
   data: RawIncentivisedVotingLockup['userLockups'][0] | undefined,
 ): UserLockup | undefined => {
   if (data) {
-    const { value, bias, lockTime, slope, ts, ejected, ejectedHash } = data;
-
+    const ts = parseInt(data.ts, 10);
+    const lockTime = parseInt(data.lockTime, 10);
+    const lockDays = durationInDaysUnix(lockTime, ts);
     return {
-      value: new BigDecimal(value),
-      bias: new BigDecimal(bias),
-      slope: new BigNumber(slope),
-      ts: parseInt(ts, 10),
-      lockTime: parseInt(lockTime, 10),
-      length: parseInt(lockTime, 10) - parseInt(ts, 10),
-      ejected,
-      ejectedHash,
+      ejected: data.ejected,
+      ejectedHash: data.ejectedHash,
+      lockTime,
+      lockDays,
+      ts,
+      length: lockTime - ts,
+      value: new BigDecimal(data.value),
+      bias: new BigDecimal(data.bias),
+      slope: new BigNumber(data.slope),
     };
   }
   return undefined;
@@ -97,14 +100,16 @@ export const transformRawData = ({
   const now = nowUnix();
   const unixWeekCount = Math.floor(now / ONE_WEEK.toNumber());
   const nextUnixWeek = (unixWeekCount + 1) * ONE_WEEK.toNumber();
-  const minDays = Math.ceil((nextUnixWeek - now) / ONE_DAY.toNumber());
-  // Min days = nextUniWeekStart - now
 
-  // Max days = END - now
-  // let maxDays = 365;
+  // Min days = nextUnixWeekStart - now
+  const minDays = Math.ceil((nextUnixWeek - now) / ONE_DAY.toNumber());
+
   const endBN = new BigNumber(end);
+  const startBN = endBN.sub(maxTime);
+
+  // Max days = (end - nextUnixWeek) + min days
   const maxDays = Math.floor(
-    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber(),
+    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber() + minDays,
   );
 
   const incentivisedVotingLockup: IncentivisedVotingLockup = {
@@ -120,6 +125,7 @@ export const transformRawData = ({
     },
     rewardPerTokenStored: new BigDecimal(rewardPerTokenStored),
     duration: new BigNumber(duration),
+    start: startBN,
     end: endBN,
     lockTimes: {
       min: minDays,

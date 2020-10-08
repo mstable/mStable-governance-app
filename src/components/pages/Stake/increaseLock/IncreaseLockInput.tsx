@@ -1,19 +1,18 @@
 import React, { FC } from 'react';
-import format from 'date-fns/format';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
 
-import { H3, H4 } from '../../../core/Typography';
 import { RangeInput } from '../../../forms/RangeInput';
+import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
+import { H3, H4 } from '../../../core/Typography';
 import { Tooltip } from '../../../core/ReactTooltip';
 import { Protip } from '../../../core/Protip';
 import { ExternalLink } from '../../../core/ExternalLink';
+import { FormRow } from '../../../core/Form';
 import { useFormatDays } from '../../../../utils/hooks';
-import { fromUnix } from '../../../../utils/time';
-import { InlineTokenAmountInput } from '../../../forms/InlineTokenAmountInput';
+import { formatUnix } from '../../../../utils/time';
 import { useStakeDispatch, useStakeState } from '../StakeProvider';
 import { TransactionType } from '../types';
-import { FormRow } from '../../../core/Form';
 
 const AmountContainer = styled.div`
   > :first-child {
@@ -39,7 +38,12 @@ export const IncreaseLockInput: FC = () => {
     transactionType,
   } = useStakeState();
 
+  const { userLockup, lockTimes } = incentivisedVotingLockup || {};
+
   const duration = useFormatDays(lockupDays);
+
+  const cannotIncreaseTime =
+    userLockup && lockTimes && lockTimes.max <= userLockup.lockDays;
 
   const {
     setLockupAmount,
@@ -83,7 +87,10 @@ export const IncreaseLockInput: FC = () => {
                 />
               </div>
             )}
-            {metaToken && metaToken?.balance.simple < 1000 ? (
+            {(transactionType === TransactionType.CreateLock ||
+              transactionType === TransactionType.IncreaseLockAmount) &&
+            metaToken &&
+            metaToken?.balance.simple < 1000 ? (
               <Protip title="Need tokens to stake?">
                 Get MTA tokens on{' '}
                 <ExternalLink href="https://balancer.exchange/#/swap">
@@ -100,38 +107,40 @@ export const IncreaseLockInput: FC = () => {
           <Skeleton />
         )}
       </div>
-      {transactionType === TransactionType.IncreaseLockTime && (
-        <FormRow>
-          <H3>
-            <Tooltip tip="Period of time to stake for (rounded to the nearest week)">
-              Stake lockup period
-            </Tooltip>
-          </H3>
-          {incentivisedVotingLockup ? (
-            <RangeInput
-              min={incentivisedVotingLockup.lockTimes.min}
-              step={7}
-              max={incentivisedVotingLockup.lockTimes.max}
-              value={Math.max(
-                lockupDays,
-                incentivisedVotingLockup.lockTimes.min,
-              )}
-              onChange={setLockupDays}
-              startLabel="Start"
-              endLabel="End date"
-              onSetMax={setMaxLockupDays}
-              error={error}
-            >
-              <div>{duration}</div>
-              <div>
-                {unlockTime ? format(fromUnix(unlockTime), 'dd-MM-yyyy') : '-'}
-              </div>
-            </RangeInput>
-          ) : (
-            <Skeleton />
-          )}
-        </FormRow>
-      )}
+      {transactionType === TransactionType.IncreaseLockTime && lockupDays ? (
+        cannotIncreaseTime ? (
+          <Protip title="Unable to extend further">
+            You are already staking for the maximum duration, and therefore
+            cannot increase the lockup time with this account.
+          </Protip>
+        ) : (
+          <FormRow>
+            <H3>
+              <Tooltip tip="Period of time to stake for (rounded to the nearest week)">
+                Stake lockup period
+              </Tooltip>
+            </H3>
+            {incentivisedVotingLockup ? (
+              <RangeInput
+                min={incentivisedVotingLockup.lockTimes.min}
+                step={7}
+                max={incentivisedVotingLockup.lockTimes.max}
+                value={lockupDays}
+                onChange={setLockupDays}
+                startLabel="Start"
+                endLabel="End date"
+                onSetMax={setMaxLockupDays}
+                error={error}
+              >
+                <div>{duration}</div>
+                <div>{unlockTime ? formatUnix(unlockTime) : '-'}</div>
+              </RangeInput>
+            ) : (
+              <Skeleton />
+            )}
+          </FormRow>
+        )
+      ) : null}
     </>
   );
 };

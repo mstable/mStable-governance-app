@@ -15,9 +15,9 @@ import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataP
 import {
   Actions,
   Dispatch,
+  RewardsEarned,
   State,
   TransactionType,
-  RewardsEarned,
 } from './types';
 import { SCALE } from '../../../utils/constants';
 import { BigDecimal } from '../../../utils/BigDecimal';
@@ -32,7 +32,7 @@ const initialState: State = {
     formValue: null,
   },
   lockupPeriod: {
-    formValue: 0,
+    formValue: 1,
   },
   touched: false,
   transactionType: TransactionType.CreateLock,
@@ -147,7 +147,7 @@ const useRewardsEarnedInterval = (): RewardsEarned => {
   return value;
 };
 
-const RewardsEarnedProvider: FC<{}> = ({ children }) => {
+const RewardsEarnedProvider: FC = ({ children }) => {
   const rewardsEarned = useRewardsEarnedInterval();
   return (
     <rewardsEarnedCtx.Provider value={rewardsEarned}>
@@ -156,7 +156,7 @@ const RewardsEarnedProvider: FC<{}> = ({ children }) => {
   );
 };
 
-export const StakeProvider: FC<{}> = ({ children }) => {
+export const StakeProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const metaToken = useMetaToken();
