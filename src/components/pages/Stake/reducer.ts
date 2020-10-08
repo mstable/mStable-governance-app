@@ -75,7 +75,12 @@ const reduce: Reducer<State, Action> = (state, action) => {
         amount: undefined,
       };
 
-      const userLockupPeriod = parseFloat((state.data.incentivisedVotingLockup?.userLockup?.length as number / ONE_DAY.toNumber()).toFixed(1))
+      const userLockupPeriod = parseFloat(
+        (
+          (state.data.incentivisedVotingLockup?.userLockup?.length as number) /
+          ONE_DAY.toNumber()
+        ).toFixed(1),
+      );
 
       if (transactionType === TransactionType.IncreaseLockTime) {
         if (!userLockup) return state;
@@ -90,7 +95,10 @@ const reduce: Reducer<State, Action> = (state, action) => {
         ...state,
         transactionType,
         lockupAmount,
-        lockupPeriod: { formValue: userLockupPeriod, unlockTime: state.data.incentivisedVotingLockup?.userLockup?.lockTime },
+        lockupPeriod: {
+          formValue: userLockupPeriod,
+          unlockTime: state.data.incentivisedVotingLockup?.userLockup?.lockTime,
+        },
         touched: false,
       };
     }
@@ -202,7 +210,7 @@ const calculate = (state: State): State => {
 
     const now = nowUnix();
 
-    const length = simulatedLockTime - now;
+    const length = Math.max(simulatedLockTime - now, 0);
 
     const slope = simulatedLockupAmount.exact.div(
       incentivisedVotingLockup.maxTime,
