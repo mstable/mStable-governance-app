@@ -125,7 +125,10 @@ export const IncreaseLockInput: FC = () => {
                 min={incentivisedVotingLockup.lockTimes.min}
                 step={7}
                 max={incentivisedVotingLockup.lockTimes.max}
-                value={lockupDays}
+                value={Math.max(
+                  lockupDays,
+                  incentivisedVotingLockup.lockTimes.min,
+                )}
                 onChange={setLockupDays}
                 startLabel="Start"
                 endLabel="End date"
