@@ -208,7 +208,11 @@ const UserStake: FC = () => {
                 <Protip emoji="⌛" title="Your previous stake has finished">
                   Your previous stake completed - you were ejected from the pool
                   and your stake has been returned (see
-                  <EtherscanLink data={userLockup.ejectedHash} />)
+                  <EtherscanLink
+                    data={userLockup.ejectedHash}
+                    type="transaction"
+                  />
+                  )
                   <br />
                   You still have {rewards.rewards.simple} MTA to claim!
                 </Protip>
