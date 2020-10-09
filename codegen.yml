@@ -13,7 +13,7 @@ config:
 generates:
   ./src/graphql/mstable/schema.graphql:
     overwrite: true
-    schema: ${REACT_APP_GRAPHQL_ENDPOINT_MSTABLE}
+    schema: ${REACT_APP_GRAPHQL_ENDPOINT_MSTABLE_GOV}
     plugins:
       - 'schema-ast'
     config:
@@ -21,7 +21,7 @@ generates:
 
   ./src/graphql/mstable.tsx:
     overwrite: true
-    schema: ${REACT_APP_GRAPHQL_ENDPOINT_MSTABLE}
+    schema: ${REACT_APP_GRAPHQL_ENDPOINT_MSTABLE_GOV}
     documents: 'src/graphql/mstable/*.graphql'
     plugins:
       - 'fragment-matcher'
