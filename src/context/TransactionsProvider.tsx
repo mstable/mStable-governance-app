@@ -170,6 +170,7 @@ const initialState: State = {
   latestStatus: {},
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getTxPurpose = ({ fn }: SendTxManifest<any, any>): Purpose => {
   switch (fn) {
     case 'claimReward':

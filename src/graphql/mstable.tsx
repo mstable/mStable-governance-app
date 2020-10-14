@@ -1660,6 +1660,14 @@ export enum WithdrawTransaction_OrderBy {
 
 export type TokenDetailsFragment = Pick<Token, 'id' | 'address' | 'decimals' | 'symbol' | 'totalSupply'>;
 
+export type UserLockupDetailsFragment = Pick<UserLockup, 'value' | 'account' | 'lockTime' | 'bias' | 'slope' | 'ts'>;
+
+export type IncentivisedVotingLockupDetailsFragment = (
+  Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'end' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
+  & { address: IncentivisedVotingLockup['id'] }
+  & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, votingToken: TokenDetailsFragment }
+);
+
 export type Erc20TokensQueryVariables = {
   addresses: Array<Scalars['Bytes']>;
 };
@@ -1679,18 +1687,41 @@ export type TokenQueryVariables = {
 
 export type TokenQuery = { token?: Maybe<TokenDetailsFragment> };
 
-export type UserLockupsQueryVariables = {
-  account?: Maybe<Scalars['Bytes']>;
+export type IncentivisedVotingLockupsQueryVariables = {
   hasAccount: Scalars['Boolean'];
+  hasBlock: Scalars['Boolean'];
+  account?: Maybe<Scalars['Bytes']>;
+  block?: Maybe<Block_Height>;
 };
 
 
-export type UserLockupsQuery = { incentivisedVotingLockups: Array<(
-    Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'end' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
-    & { address: IncentivisedVotingLockup['id'] }
-    & { stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, rewardsDistributor: Pick<RewardsDistributor, 'id' | 'fundManagers'>, stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<Pick<UserLockup, 'value' | 'lockTime' | 'ts' | 'slope' | 'bias' | 'ejected' | 'ejectedHash'>> }
-  )> };
+export type IncentivisedVotingLockupsQuery = { current: Array<(
+    { stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<(
+      Pick<UserLockup, 'ejected' | 'ejectedHash'>
+      & UserLockupDetailsFragment
+    )> }
+    & IncentivisedVotingLockupDetailsFragment
+  )>, historic: Array<IncentivisedVotingLockupDetailsFragment> };
 
+export type AllUserLockupsQueryVariables = {
+  minLockTime: Scalars['BigInt'];
+  hasBlock: Scalars['Boolean'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type AllUserLockupsQuery = { current: Array<UserLockupDetailsFragment>, historic: Array<UserLockupDetailsFragment> };
+
+export const UserLockupDetailsFragmentDoc = gql`
+    fragment UserLockupDetails on UserLockup {
+  value
+  account
+  lockTime
+  bias
+  slope
+  ts
+}
+    `;
 export const TokenDetailsFragmentDoc = gql`
     fragment TokenDetails on Token {
   id
@@ -1700,8 +1731,34 @@ export const TokenDetailsFragmentDoc = gql`
   totalSupply
 }
     `;
+export const IncentivisedVotingLockupDetailsFragmentDoc = gql`
+    fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
+  address: id
+  periodFinish
+  lastUpdateTime
+  rewardPerTokenStored
+  end
+  duration
+  rewardRate
+  globalEpoch
+  expired
+  maxTime
+  totalStaticWeight
+  totalStakingRewards
+  totalValue
+  stakingToken {
+    ...TokenDetails
+  }
+  rewardsToken {
+    ...TokenDetails
+  }
+  votingToken {
+    ...TokenDetails
+  }
+}
+    ${TokenDetailsFragmentDoc}`;
 export const Erc20TokensDocument = gql`
-    query Erc20Tokens($addresses: [Bytes!]!) @api(name: mstable) {
+    query Erc20Tokens($addresses: [Bytes!]!) {
   tokens(where: {address_in: $addresses}) {
     ...TokenDetails
   }
@@ -1734,7 +1791,7 @@ export type Erc20TokensQueryHookResult = ReturnType<typeof useErc20TokensQuery>;
 export type Erc20TokensLazyQueryHookResult = ReturnType<typeof useErc20TokensLazyQuery>;
 export type Erc20TokensQueryResult = ApolloReactCommon.QueryResult<Erc20TokensQuery, Erc20TokensQueryVariables>;
 export const AllErc20TokensDocument = gql`
-    query AllErc20Tokens @api(name: mstable) {
+    query AllErc20Tokens {
   tokens {
     ...TokenDetails
   }
@@ -1766,7 +1823,7 @@ export type AllErc20TokensQueryHookResult = ReturnType<typeof useAllErc20TokensQ
 export type AllErc20TokensLazyQueryHookResult = ReturnType<typeof useAllErc20TokensLazyQuery>;
 export type AllErc20TokensQueryResult = ApolloReactCommon.QueryResult<AllErc20TokensQuery, AllErc20TokensQueryVariables>;
 export const TokenDocument = gql`
-    query Token($id: ID!) @api(name: mstable) {
+    query Token($id: ID!) {
   token(id: $id) {
     ...TokenDetails
   }
@@ -1798,32 +1855,10 @@ export function useTokenLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOp
 export type TokenQueryHookResult = ReturnType<typeof useTokenQuery>;
 export type TokenLazyQueryHookResult = ReturnType<typeof useTokenLazyQuery>;
 export type TokenQueryResult = ApolloReactCommon.QueryResult<TokenQuery, TokenQueryVariables>;
-export const UserLockupsDocument = gql`
-    query UserLockups($account: Bytes, $hasAccount: Boolean!) @api(name: mstable) {
-  incentivisedVotingLockups {
-    address: id
-    periodFinish
-    lastUpdateTime
-    rewardPerTokenStored
-    end
-    duration
-    rewardRate
-    globalEpoch
-    expired
-    maxTime
-    totalStaticWeight
-    totalStakingRewards
-    totalValue
-    stakingToken {
-      ...TokenDetails
-    }
-    rewardsToken {
-      ...TokenDetails
-    }
-    rewardsDistributor {
-      id
-      fundManagers
-    }
+export const IncentivisedVotingLockupsDocument = gql`
+    query IncentivisedVotingLockups($hasAccount: Boolean!, $hasBlock: Boolean!, $account: Bytes, $block: Block_height) {
+  current: incentivisedVotingLockups @skip(if: $hasBlock) {
+    ...IncentivisedVotingLockupDetails
     stakingRewards(where: {account: $account}, first: 1) @include(if: $hasAccount) {
       amount
       amountPerTokenPaid
@@ -1833,41 +1868,81 @@ export const UserLockupsDocument = gql`
       amount
     }
     userLockups(where: {account: $account}, first: 1) @include(if: $hasAccount) {
-      value
-      lockTime
-      ts
-      slope
-      bias
+      ...UserLockupDetails
       ejected
       ejectedHash
     }
   }
+  historic: incentivisedVotingLockups(block: $block) @include(if: $hasBlock) {
+    ...IncentivisedVotingLockupDetails
+  }
 }
-    ${TokenDetailsFragmentDoc}`;
+    ${IncentivisedVotingLockupDetailsFragmentDoc}
+${UserLockupDetailsFragmentDoc}`;
 
 /**
- * __useUserLockupsQuery__
+ * __useIncentivisedVotingLockupsQuery__
  *
- * To run a query within a React component, call `useUserLockupsQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserLockupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useIncentivisedVotingLockupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIncentivisedVotingLockupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUserLockupsQuery({
+ * const { data, loading, error } = useIncentivisedVotingLockupsQuery({
  *   variables: {
- *      account: // value for 'account'
  *      hasAccount: // value for 'hasAccount'
+ *      hasBlock: // value for 'hasBlock'
+ *      account: // value for 'account'
+ *      block: // value for 'block'
  *   },
  * });
  */
-export function useUserLockupsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UserLockupsQuery, UserLockupsQueryVariables>) {
-        return ApolloReactHooks.useQuery<UserLockupsQuery, UserLockupsQueryVariables>(UserLockupsDocument, baseOptions);
+export function useIncentivisedVotingLockupsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>) {
+        return ApolloReactHooks.useQuery<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>(IncentivisedVotingLockupsDocument, baseOptions);
       }
-export function useUserLockupsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UserLockupsQuery, UserLockupsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<UserLockupsQuery, UserLockupsQueryVariables>(UserLockupsDocument, baseOptions);
+export function useIncentivisedVotingLockupsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>(IncentivisedVotingLockupsDocument, baseOptions);
         }
-export type UserLockupsQueryHookResult = ReturnType<typeof useUserLockupsQuery>;
-export type UserLockupsLazyQueryHookResult = ReturnType<typeof useUserLockupsLazyQuery>;
-export type UserLockupsQueryResult = ApolloReactCommon.QueryResult<UserLockupsQuery, UserLockupsQueryVariables>;
+export type IncentivisedVotingLockupsQueryHookResult = ReturnType<typeof useIncentivisedVotingLockupsQuery>;
+export type IncentivisedVotingLockupsLazyQueryHookResult = ReturnType<typeof useIncentivisedVotingLockupsLazyQuery>;
+export type IncentivisedVotingLockupsQueryResult = ApolloReactCommon.QueryResult<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>;
+export const AllUserLockupsDocument = gql`
+    query AllUserLockups($minLockTime: BigInt!, $hasBlock: Boolean!, $block: Block_height) {
+  current: userLockups(where: {lockTime_gte: $minLockTime}, first: 1000, orderBy: bias, orderDirection: desc) @skip(if: $hasBlock) {
+    ...UserLockupDetails
+  }
+  historic: userLockups(where: {lockTime_gte: $minLockTime}, block: $block, first: 1000, orderBy: bias, orderDirection: desc) @include(if: $hasBlock) {
+    ...UserLockupDetails
+  }
+}
+    ${UserLockupDetailsFragmentDoc}`;
+
+/**
+ * __useAllUserLockupsQuery__
+ *
+ * To run a query within a React component, call `useAllUserLockupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllUserLockupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllUserLockupsQuery({
+ *   variables: {
+ *      minLockTime: // value for 'minLockTime'
+ *      hasBlock: // value for 'hasBlock'
+ *      block: // value for 'block'
+ *   },
+ * });
+ */
+export function useAllUserLockupsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllUserLockupsQuery, AllUserLockupsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AllUserLockupsQuery, AllUserLockupsQueryVariables>(AllUserLockupsDocument, baseOptions);
+      }
+export function useAllUserLockupsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllUserLockupsQuery, AllUserLockupsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AllUserLockupsQuery, AllUserLockupsQueryVariables>(AllUserLockupsDocument, baseOptions);
+        }
+export type AllUserLockupsQueryHookResult = ReturnType<typeof useAllUserLockupsQuery>;
+export type AllUserLockupsLazyQueryHookResult = ReturnType<typeof useAllUserLockupsLazyQuery>;
+export type AllUserLockupsQueryResult = ApolloReactCommon.QueryResult<AllUserLockupsQuery, AllUserLockupsQueryVariables>;

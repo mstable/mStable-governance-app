@@ -5,3 +5,37 @@ fragment TokenDetails on Token {
   symbol
   totalSupply
 }
+
+fragment UserLockupDetails on UserLockup {
+  value
+  account
+  lockTime
+  bias
+  slope
+  ts
+}
+
+fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
+  address: id
+  periodFinish
+  lastUpdateTime
+  rewardPerTokenStored
+  end
+  duration
+  rewardRate
+  globalEpoch
+  expired
+  maxTime
+  totalStaticWeight
+  totalStakingRewards
+  totalValue
+  stakingToken {
+    ...TokenDetails
+  }
+  rewardsToken {
+    ...TokenDetails
+  }
+  votingToken {
+    ...TokenDetails
+  }
+}

@@ -3,7 +3,6 @@ import { TransactionResponse } from 'ethers/providers';
 import { Connectors } from 'use-wallet';
 import { Ierc20 } from './typechain/Ierc20.d';
 import { BigDecimal } from './utils/BigDecimal';
-import { RewardsDistributor as IRewardsDistributor } from './typechain/RewardsDistributor.d';
 import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d';
 
 export interface Transaction {
@@ -32,13 +31,11 @@ export enum TransactionStatus {
 
 export enum Interfaces {
   ERC20,
-  RewardsDistibutor,
   IncentivisedVotingLockup,
 }
 
 export interface Instances {
   [Interfaces.ERC20]: Ierc20;
-  [Interfaces.RewardsDistibutor]: IRewardsDistributor;
   [Interfaces.IncentivisedVotingLockup]: IIncentivisedVotingLockup;
 }
 
@@ -52,7 +49,7 @@ export interface Instances {
 export interface SendTxManifest<
   TIface extends Interfaces,
   TFn extends keyof Instances[TIface]['functions']
-  > {
+> {
   contract: Instances[TIface];
   fn: Extract<keyof Instances[TIface]['functions'], TFn> & string;
   args: Parameters<
@@ -71,6 +68,7 @@ export interface Token {
   address: string;
   decimals: number;
   symbol: string;
+  totalSupply?: BigDecimal;
   price?: BigDecimal;
 }
 

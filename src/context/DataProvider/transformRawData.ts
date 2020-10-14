@@ -4,19 +4,22 @@ import { BigDecimal } from '../../utils/BigDecimal';
 import { ONE_DAY, ONE_WEEK } from '../../utils/constants';
 import { durationInDaysUnix, nowUnix } from '../../utils/time';
 import {
-  DataState,
   IncentivisedVotingLockup,
-  RawData,
   UserStakingReward,
   UserLockup,
 } from './types';
+import { IncentivisedVotingLockupsQueryResult } from '../../graphql/mstable';
 
-type RawIncentivisedVotingLockup = NonNullable<
-  RawData['incentivisedVotingLockups'][0]
->;
+type HistoricIncentivisedVotingLockup = NonNullable<
+  IncentivisedVotingLockupsQueryResult['data']
+>['historic'][0];
+
+type CurrentIncentivisedVotingLockup = NonNullable<
+  IncentivisedVotingLockupsQueryResult['data']
+>['current'][0];
 
 const transformUserLockup = (
-  data: RawIncentivisedVotingLockup['userLockups'][0] | undefined,
+  data: CurrentIncentivisedVotingLockup['userLockups'][0] | undefined,
 ): UserLockup | undefined => {
   if (data) {
     const ts = parseInt(data.ts, 10);
@@ -38,7 +41,7 @@ const transformUserLockup = (
 };
 
 const transformUserStakingReward = (
-  data: RawIncentivisedVotingLockup['stakingRewards'][0] | undefined,
+  data?: CurrentIncentivisedVotingLockup['stakingRewards'][0],
 ): UserStakingReward | undefined => {
   if (data) {
     const { amount, amountPerTokenPaid, rewardsPaid } = data;
@@ -52,7 +55,7 @@ const transformUserStakingReward = (
 };
 
 const transformUserStakingBalance = (
-  data: RawIncentivisedVotingLockup['stakingBalances'][0] | undefined,
+  data?: CurrentIncentivisedVotingLockup['stakingBalances'][0],
 ): BigDecimal | undefined => {
   if (data) {
     return new BigDecimal(data.amount);
@@ -60,14 +63,26 @@ const transformUserStakingBalance = (
   return undefined;
 };
 
-export const transformRawData = ({
-  tokens,
-  incentivisedVotingLockups: [
-    incentivisedVotingLockupData,
-  ] = ([] as unknown) as RawData['incentivisedVotingLockups'],
-}: RawData): DataState => {
-  if (!incentivisedVotingLockupData) {
-    return { tokens };
+export const transformRawTokenData = ({
+  decimals,
+  totalSupply,
+  symbol,
+  address,
+}: CurrentIncentivisedVotingLockup['stakingToken']): IncentivisedVotingLockup['stakingToken'] => ({
+  address,
+  totalSupply: new BigDecimal(totalSupply, decimals),
+  decimals,
+  symbol,
+});
+
+export const transformRawIncentivisedVotingLockups = (
+  data: IncentivisedVotingLockupsQueryResult['data'],
+): IncentivisedVotingLockup | undefined => {
+  const current = data?.current?.[0];
+  const historic = data?.historic?.[0];
+
+  if (!(current || historic)) {
+    return undefined;
   }
 
   const {
@@ -81,20 +96,13 @@ export const transformRawData = ({
     periodFinish,
     rewardPerTokenStored,
     rewardRate,
-    rewardsDistributor,
     rewardsToken,
-    stakingBalances: [rawUserStakingBalance] = [],
-    stakingRewards: [rawUserStakingReward] = [],
     stakingToken,
+    votingToken,
     totalStakingRewards,
     totalStaticWeight,
     totalValue,
-    userLockups: [rawUserLockup] = [],
-  } = incentivisedVotingLockupData;
-
-  const userLockup = transformUserLockup(rawUserLockup);
-  const userStakingReward = transformUserStakingReward(rawUserStakingReward);
-  const userStakingBalance = transformUserStakingBalance(rawUserStakingBalance);
+  } = (current ?? historic) as HistoricIncentivisedVotingLockup;
 
   // Get current unix
   const now = nowUnix();
@@ -114,15 +122,9 @@ export const transformRawData = ({
 
   const incentivisedVotingLockup: IncentivisedVotingLockup = {
     address,
-    userLockup,
-    userStakingBalance,
-    userStakingReward,
     periodFinish,
     lastUpdateTime,
-    stakingToken: {
-      ...stakingToken,
-      name: '',
-    },
+    stakingToken: transformRawTokenData(stakingToken),
     rewardPerTokenStored: new BigDecimal(rewardPerTokenStored),
     duration: new BigNumber(duration),
     start: startBN,
@@ -132,11 +134,8 @@ export const transformRawData = ({
       max: maxDays,
     },
     rewardRate: new BigDecimal(rewardRate),
-    rewardsToken: {
-      ...rewardsToken,
-      name: '',
-    },
-    rewardsDistributor,
+    rewardsToken: transformRawTokenData(rewardsToken),
+    votingToken: transformRawTokenData(votingToken),
     globalEpoch: new BigNumber(globalEpoch),
     expired,
     maxTime: new BigNumber(maxTime),
@@ -145,8 +144,19 @@ export const transformRawData = ({
     totalValue: new BigDecimal(totalValue),
   };
 
-  return {
-    tokens,
-    incentivisedVotingLockup,
-  };
+  // Specific to data from queries with an account provided
+  if (current) {
+    const [rawUserStakingBalance] = current.stakingBalances ?? [];
+    const [rawUserStakingReward] = current.stakingRewards ?? [];
+    const [rawUserLockup] = current.userLockups ?? [];
+    incentivisedVotingLockup.userLockup = transformUserLockup(rawUserLockup);
+    incentivisedVotingLockup.userStakingReward = transformUserStakingReward(
+      rawUserStakingReward,
+    );
+    incentivisedVotingLockup.userStakingBalance = transformUserStakingBalance(
+      rawUserStakingBalance,
+    );
+  }
+
+  return incentivisedVotingLockup;
 };

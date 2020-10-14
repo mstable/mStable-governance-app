@@ -184,7 +184,7 @@ export const Footer: FC<Props> = ({ accountOpen }) => {
               <Version>
                 Current version{' '}
                 <a
-                  href={`https://github.com/mstable/mStable-app/releases/tag/v${DAPP_VERSION}`}
+                  href={`https://github.com/mstable/mStable-governance-app/releases/tag/v${DAPP_VERSION}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
