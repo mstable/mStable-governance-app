@@ -34,9 +34,8 @@ export const BlockFilter: FC = () => {
 
   const error = !blockVal
     ? undefined
-    : !blockNumber
-    ? 'Missing block number'
-    : blockVal < CONTRACT_DEPLOY_BLOCK || blockVal > blockNumber
+    : blockVal < CONTRACT_DEPLOY_BLOCK ||
+      (blockNumber && blockVal > blockNumber)
     ? 'Invalid block'
     : undefined;
 
@@ -67,9 +66,11 @@ export const BlockFilter: FC = () => {
       <BlockTip>
         Start <span>{CONTRACT_DEPLOY_BLOCK}</span>
       </BlockTip>
-      <BlockTip>
-        Current <span>{blockNumber}</span>
-      </BlockTip>
+      {blockNumber && (
+        <BlockTip>
+          Current <span>{blockNumber}</span>
+        </BlockTip>
+      )}
     </Container>
   );
 };
