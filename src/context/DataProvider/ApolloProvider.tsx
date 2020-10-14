@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { ApolloProvider as ApolloReactProvider } from '@apollo/react-hooks';
-import { MultiAPILink } from '@habx/apollo-multi-endpoint-link';
 import {
   ApolloClient,
   InMemoryCache,
@@ -25,7 +24,7 @@ const cache = new InMemoryCache({
 /**
  * Provider for accessing Apollo queries and subscriptions.
  */
-export const ApolloProvider: FC<{}> = ({ children }) => {
+export const ApolloProvider: FC = ({ children }) => {
   const addErrorNotification = useAddErrorNotification();
   const [persisted, setPersisted] = useState(false);
 
@@ -42,17 +41,10 @@ export const ApolloProvider: FC<{}> = ({ children }) => {
   });
 
   const apolloLink = ApolloLink.from([
-    new MultiAPILink({
-      endpoints: {
-        mstable: process.env.REACT_APP_GRAPHQL_ENDPOINT_MSTABLE_GOV as string,
-        balancer: process.env.REACT_APP_GRAPHQL_ENDPOINT_BALANCER as string,
-        uniswap: process.env.REACT_APP_GRAPHQL_ENDPOINT_UNISWAP as string,
-        blocks: process.env.REACT_APP_GRAPHQL_ENDPOINT_BLOCKS as string,
-      },
-      httpSuffix: '', // By default, this library adds `/graphql` as a suffix
-      createHttpLink: () => (new HttpLink() as unknown) as ApolloLink,
-    }),
     errorLink,
+    (new HttpLink({
+      uri: process.env.REACT_APP_GRAPHQL_ENDPOINT_MSTABLE_GOV,
+    }) as unknown) as ApolloLink,
   ]);
 
   useEffect(() => {

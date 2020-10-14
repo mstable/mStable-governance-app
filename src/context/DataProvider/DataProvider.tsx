@@ -1,29 +1,27 @@
 import React, { createContext, FC, useContext, useMemo } from 'react';
 
-import { useTokensState } from './TokensProvider';
-import { RawData, DataState, IncentivisedVotingLockup } from './types';
-import { transformRawData } from './transformRawData';
+import { DataState, IncentivisedVotingLockup } from './types';
+import { transformRawIncentivisedVotingLockups } from './transformRawData';
 import { useUserLockupsSubscription } from './subscriptions';
 import { useAccount } from '../UserProvider';
+import { IncentivisedVotingLockupsQueryResult } from '../../graphql/mstable';
 
 const dataStateCtx = createContext<DataState>({} as DataState);
 
-const useRawData = (): RawData => {
-  const { tokens } = useTokensState();
+const useRawData = (): IncentivisedVotingLockupsQueryResult['data'] => {
   const account = useAccount();
   const { data } = useUserLockupsSubscription(account);
-  const incentivisedVotingLockups = (data?.incentivisedVotingLockups ??
-    []) as RawData['incentivisedVotingLockups'];
-
-  return {
-    tokens,
-    incentivisedVotingLockups,
-  };
+  return data;
 };
 
-export const DataProvider: FC<{}> = ({ children }) => {
+export const DataProvider: FC = ({ children }) => {
   const data = useRawData();
-  const dataState = useMemo<DataState>(() => transformRawData(data), [data]);
+  const dataState = useMemo<DataState>(() => {
+    const incentivisedVotingLockup = transformRawIncentivisedVotingLockups(
+      data,
+    );
+    return { incentivisedVotingLockup };
+  }, [data]);
 
   return (
     <dataStateCtx.Provider value={dataState}>{children}</dataStateCtx.Provider>

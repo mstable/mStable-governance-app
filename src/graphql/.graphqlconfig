@@ -1,0 +1,29 @@
+{
+  "name": "mStable-governance",
+  "projects": {
+    "mstable": {
+      "includes": ["./shared/*", "./mstable/*"],
+      "schemaPath": "./mstable/schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "mainnet": {
+            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-governance",
+            "introspect": false
+          },
+          "kovan": {
+            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-governance-kovan",
+            "introspect": false
+          },
+          "ropsten": {
+            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-governance-ropsten",
+            "introspect": false
+          },
+          "staging": {
+            "url": "https://api.thegraph.com/subgraphs/name/mstable/mstable-governance-staging",
+            "introspect": false
+          }
+        }
+      }
+    }
+  }
+}

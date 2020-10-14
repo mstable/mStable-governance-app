@@ -62,6 +62,7 @@ const Item = styled.li<{
 const navItems: NavItem[] = [
   { title: 'Govern', path: '/govern' },
   { title: 'Stake', path: '/stake' },
+  { title: 'Stats', path: '/stats' },
   { title: 'Vote', path: 'https://snapshot.page/#/mstable', external: true },
 ];
 

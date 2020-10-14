@@ -14,6 +14,7 @@ import { NotFound } from './components/pages/NotFound';
 import { StakeTabs } from './components/pages/Stake';
 import { Discuss } from './components/pages/Discuss';
 import { Govern } from './components/pages/Govern';
+import { Stats } from './components/pages/Stats';
 
 checkRequiredEnvVars();
 
@@ -25,6 +26,7 @@ Sentry.init({
 const routes = {
   '/govern': () => <Govern />,
   '/stake': () => <StakeTabs />,
+  '/stats': () => <Stats />,
   '/discuss': () => <Discuss />,
 };
 

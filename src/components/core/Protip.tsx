@@ -13,7 +13,10 @@ const ProtipLabel = styled.div`
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
-  padding-bottom: 16px;
+`;
+
+const ProtipContent = styled.div`
+  padding-top: 16px;
 `;
 
 const Container = styled.div`
@@ -39,6 +42,6 @@ export const Protip: FC<Props> = ({
     <ProtipLabel>
       {title} {emoji ? <span>{emoji}</span> : null}
     </ProtipLabel>
-    <div>{children}</div>
+    {children && <ProtipContent>{children}</ProtipContent>}
   </Container>
 );

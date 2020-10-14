@@ -3,8 +3,8 @@ import { QueryResult } from '@apollo/react-common';
 import { useEffect, useMemo, useRef } from 'react';
 import { useBlockNumber } from './BlockProvider';
 import {
-  useUserLockupsLazyQuery,
-  UserLockupsQueryResult,
+  useIncentivisedVotingLockupsLazyQuery,
+  IncentivisedVotingLockupsQueryResult,
 } from '../../graphql/mstable';
 import { useWeb3Provider } from '../SignerProvider';
 
@@ -59,9 +59,14 @@ export const useBlockPollingSubscription = <TData, TVariables>(
 
 export const useUserLockupsSubscription = (
   account?: string,
-): UserLockupsQueryResult => {
-  return useBlockPollingSubscription(useUserLockupsLazyQuery, {
-    variables: { account: account as string, hasAccount: !!account },
+): IncentivisedVotingLockupsQueryResult => {
+  return useBlockPollingSubscription(useIncentivisedVotingLockupsLazyQuery, {
+    variables: {
+      account,
+      hasAccount: !!account,
+      hasBlock: false,
+      block: { number: 0 },
+    },
   });
 };
 
