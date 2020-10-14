@@ -2,6 +2,13 @@
 
 ## v.NEXT
 
+## v1.2.0
+
+Features
+
+- Add Stats page with vMTA distribution chart and stakers table, and the option to
+  view stats at a given block
+
 ## v1.1.1
 
 Bug fixes
