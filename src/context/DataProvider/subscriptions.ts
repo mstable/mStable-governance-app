@@ -1,11 +1,14 @@
 import { LazyQueryHookOptions, QueryTuple } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
 import { useEffect, useMemo, useRef } from 'react';
-import { useBlockNumber } from './BlockProvider';
 import {
+  HistoricTransactionsQueryResult,
+  useHistoricTransactionsLazyQuery,
   useIncentivisedVotingLockupsLazyQuery,
   IncentivisedVotingLockupsQueryResult,
 } from '../../graphql/mstable';
+import { useBlockNumber } from './BlockProvider';
+
 import { useWeb3Provider } from '../SignerProvider';
 
 import { BigDecimal } from '../../utils/BigDecimal';
@@ -97,4 +100,14 @@ export const useTotalSupply = (
   }, [contract, blockNumber]);
 
   return totalSupply.current;
+};
+
+export const useHistoricTransactionsSubscription = (
+  account: string,
+): HistoricTransactionsQueryResult => {
+  return useBlockPollingSubscription(useHistoricTransactionsLazyQuery, {
+    variables: {
+      account,
+    },
+  });
 };

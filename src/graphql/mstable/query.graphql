@@ -1,31 +1,48 @@
 # import './fragments.graphql'
 
-query Erc20Tokens($addresses: [Bytes!]!) {
+query Erc20Tokens($addresses: [Bytes!]!) @api(name: mstable) {
   tokens(where: { address_in: $addresses }) {
     ...TokenDetails
   }
 }
 
-query AllErc20Tokens {
+query AllErc20Tokens @api(name: mstable) {
   tokens {
     ...TokenDetails
   }
 }
 
-query Token($id: ID!) {
+query Token($id: ID!) @api(name: mstable) {
   token(id: $id) {
     ...TokenDetails
   }
 }
 
-query IncentivisedVotingLockups(
-  $hasAccount: Boolean!
-  $hasBlock: Boolean!
-  $account: Bytes
-  $block: Block_height
-) {
-  current: incentivisedVotingLockups @skip(if: $hasBlock) {
-    ...IncentivisedVotingLockupDetails
+query UserLockups($account: Bytes, $hasAccount: Boolean!) @api(name: mstable) {
+  incentivisedVotingLockups {
+    address: id
+    periodFinish
+    lastUpdateTime
+    rewardPerTokenStored
+    end
+    duration
+    rewardRate
+    globalEpoch
+    expired
+    maxTime
+    totalStaticWeight
+    totalStakingRewards
+    totalValue
+    stakingToken {
+      ...TokenDetails
+    }
+    rewardsToken {
+      ...TokenDetails
+    }
+    rewardsDistributor {
+      id
+      fundManagers
+    }
     stakingRewards(where: { account: $account }, first: 1)
       @include(if: $hasAccount) {
       amount
@@ -38,36 +55,59 @@ query IncentivisedVotingLockups(
     }
     userLockups(where: { account: $account }, first: 1)
       @include(if: $hasAccount) {
-      ...UserLockupDetails
+      value
+      lockTime
+      ts
+      slope
+      bias
       ejected
       ejectedHash
     }
   }
-  historic: incentivisedVotingLockups(block: $block) @include(if: $hasBlock) {
-    ...IncentivisedVotingLockupDetails
+}
+
+query AllUserLockups($minLockTime: BigInt!) @api(name: mstable) {
+  userLockups(
+    where: { lockTime_gte: $minLockTime }
+    first: 1000
+    orderBy: bias
+    orderDirection: desc
+  ) {
+    value
+    account
+    lockTime
+    bias
+    slope
+    ts
   }
 }
 
-query AllUserLockups(
-  $minLockTime: BigInt!
-  $hasBlock: Boolean!
-  $block: Block_height
-) {
-  current: userLockups(
-    where: { lockTime_gte: $minLockTime }
-    first: 1000
-    orderBy: bias
-    orderDirection: desc
-  ) @skip(if: $hasBlock) {
-    ...UserLockupDetails
+query HistoricTransactions($account: Bytes) @api(name: mstable) {
+  createLockTransactions(where: { provider: $account }, orderBy: timestamp) {
+    ...TransactionDetails
+    value
+    lockTime
   }
-  historic: userLockups(
-    where: { lockTime_gte: $minLockTime }
-    block: $block
-    first: 1000
-    orderBy: bias
-    orderDirection: desc
-  ) @include(if: $hasBlock) {
-    ...UserLockupDetails
+  increaseLockTimeTransactions(
+    where: { provider: $account }
+    orderBy: timestamp
+  ) {
+    ...TransactionDetails
+    lockTime
+  }
+  increaseLockAmountTransactions(
+    where: { provider: $account }
+    orderBy: timestamp
+  ) {
+    ...TransactionDetails
+    value
+  }
+  withdrawTransactions(where: { provider: $account }, orderBy: timestamp) {
+    ...TransactionDetails
+    value
+  }
+  claimTransactions(where: { user: $account }, orderBy: timestamp) {
+    ...TransactionDetails
+    reward
   }
 }
