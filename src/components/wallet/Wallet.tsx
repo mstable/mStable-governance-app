@@ -21,6 +21,7 @@ import { ReactComponent as AccountIcon } from '../icons/circle/account.svg';
 import { Balances } from './Balances';
 import { Transactions } from './Transactions';
 import { Connector } from '../../types';
+import { useHistoricTransactionsSubscription } from '../../context/DataProvider/subscriptions';
 
 const Container = styled.div`
   flex: 1;
@@ -164,7 +165,7 @@ export const Wallet: FC<{}> = () => {
   const { status, account } = useWallet();
   const connected = status === 'connected';
   const wallet = useWalletConnector();
-
+  const historicTxs = useHistoricTransactionsSubscription(account as string);
   return (
     <Container>
       <div>
