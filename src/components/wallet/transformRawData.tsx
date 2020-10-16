@@ -20,7 +20,7 @@ export const transformRawData = (
     ...increaseLockTimeTransactions,
     ...claimTransactions,
     ...withdrawTransactions,
-  ];
+  ].sort((a, b) => parseInt(a.timestamp, 10) - parseInt(b.timestamp, 10));
 
   return allTransactions;
 };

@@ -2,8 +2,6 @@ import { LazyQueryHookOptions, QueryTuple } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
 import { useEffect, useMemo, useRef } from 'react';
 import {
-  HistoricTransactionsQueryResult,
-  useHistoricTransactionsLazyQuery,
   useIncentivisedVotingLockupsLazyQuery,
   IncentivisedVotingLockupsQueryResult,
 } from '../../graphql/mstable';

@@ -1,18 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import styled from 'styled-components';
-
-import { useOrderedCurrentTransactions } from '../../context/TransactionsProvider';
-import { Transaction, TransactionStatus } from '../../types';
-import { getTransactionStatus } from '../../utils/transactions';
 import { EMOJIS } from '../../utils/constants';
-import { ActivitySpinner } from '../core/ActivitySpinner';
 import { EtherscanLink } from '../core/EtherscanLink';
 import { List, ListItem } from '../core/List';
 import { P } from '../core/Typography';
 import { CountUp } from '../core/CountUp';
 import { useHistoricTransactionsQuery } from '../../graphql/mstable';
 import { transformRawData } from './transformRawData';
-import { HistoricTransactionsData, HistoricTransaction } from './types';
+import { HistoricTransaction } from './types';
 import { BigDecimal } from '../../utils/BigDecimal';
 import { formatUnix } from '../../utils/time';
 
@@ -41,9 +36,9 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
     case 'CREATE_LOCK': {
       return (
         <>
-          {' '}
-          You created a lock of{' '}
-          <Balance end={new BigDecimal(tx.value as string).simple} /> MTA until{' '}
+          {formatUnix(parseInt(tx.timestamp as string, 10))}: You created a lock
+          of <Balance end={new BigDecimal(tx.value as string).simple} /> MTA
+          until{' '}
           <LockTime>{formatUnix(parseInt(tx.lockTime as string, 10))}</LockTime>{' '}
         </>
       );
@@ -51,8 +46,8 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
     case 'INCREASE_LOCK_AMOUNT': {
       return (
         <>
-          {' '}
-          You increased an amount of the lock for additional{' '}
+          {formatUnix(parseInt(tx.timestamp as string, 10))}: You increased an
+          amount of the lock for additional{' '}
           <Balance end={new BigDecimal(tx.value as string).simple} /> MTA{' '}
         </>
       );
@@ -60,19 +55,16 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
     case 'INCREASE_LOCK_TIME': {
       return (
         <>
-          {' '}
-          You increased lock period until{' '}
-          <LockTime>
-            {formatUnix(parseInt(tx.lockTime as string, 10))}
-          </LockTime>{' '}
+          {formatUnix(parseInt(tx.timestamp as string, 10))}: You increased lock
+          period until{' '}
+          <LockTime>{formatUnix(parseInt(tx.lockTime as string, 10))}</LockTime>{' '}
         </>
       );
     }
     case 'WITHDRAW': {
       return (
         <>
-          {' '}
-          You withdrew
+          {formatUnix(parseInt(tx.timestamp as string, 10))}: You withdrew{' '}
           <Balance end={new BigDecimal(tx.value as string).simple} /> MTA{' '}
         </>
       );
@@ -80,9 +72,8 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
     case 'CLAIM': {
       return (
         <>
-          {' '}
-          // TODO
-          {/* <Balance end={new BigDecimal(tx.reward as string).simple} /> MTA{' '} */}
+          {formatUnix(parseInt(tx.timestamp as string, 10))}: You claimed{' '}
+          <Balance end={new BigDecimal(tx.reward as string).simple} /> MTA{' '}
         </>
       );
     }
@@ -118,7 +109,7 @@ export const HistoricTransactions: FC<{ account: string }> = ({ account }) => {
     variables: {
       account: account as string,
     },
-    fetchPolicy: 'cache-first',
+    fetchPolicy: 'cache-and-network',
   });
   const historicTxsData = historicTxsQuery.data;
   const transformedData = transformRawData(historicTxsData);
