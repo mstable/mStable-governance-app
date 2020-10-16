@@ -22,6 +22,7 @@ import { Balances } from './Balances';
 import { Transactions } from './Transactions';
 import { Connector } from '../../types';
 import { useHistoricTransactionsQuery } from '../../graphql/mstable';
+import { HistoricTransactions } from './HistoricTransactions';
 
 const Container = styled.div`
   flex: 1;
@@ -157,7 +158,7 @@ const Connected: FC<{ walletLabel: string; account: string }> = ({
       </Row>
       <Row>
         <H3>Historic Transactions</H3>
-        <Transactions />
+        <HistoricTransactions account={account} />
       </Row>
     </Rows>
   );
@@ -169,13 +170,7 @@ export const Wallet: FC<{}> = () => {
   const { status, account } = useWallet();
   const connected = status === 'connected';
   const wallet = useWalletConnector();
-  const historicTxsQuery = useHistoricTransactionsQuery({
-    variables: {
-      account: account as string,
-    },
-    fetchPolicy: 'cache-first',
-  });
-  const historixTxsData = historicTxsQuery.data;
+
   return (
     <Container>
       <div>
