@@ -39,10 +39,3 @@ fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
     ...TokenDetails
   }
 }
-
-fragment TransactionDetails on Transaction {
-  hash
-  timestamp
-  type
-}
-

@@ -1707,14 +1707,6 @@ export type HistoricTransactionsQuery = {
   >;
 };
 
-export const TransactionDetailsFragmentDoc = gql`
-  fragment TransactionDetails on Transaction {
-    hash
-    timestamp
-    type
-  }
-`;
-
 export const UserLockupDetailsFragmentDoc = gql`
   fragment UserLockupDetails on UserLockup {
     value
@@ -2040,34 +2032,43 @@ export const AllUserLockupsDocument = gql`
 export const HistoricTransactionsDocument = gql`
   query HistoricTransactions($account: Bytes) @api(name: mstable) {
     createLockTransactions(where: { provider: $account }, orderBy: timestamp) {
-      ...TransactionDetails
       value
       lockTime
+      hash
+      timestamp
+      type
     }
     increaseLockTimeTransactions(
       where: { provider: $account }
       orderBy: timestamp
     ) {
-      ...TransactionDetails
       lockTime
+      hash
+      timestamp
+      type
     }
     increaseLockAmountTransactions(
       where: { provider: $account }
       orderBy: timestamp
     ) {
-      ...TransactionDetails
       value
+      hash
+      timestamp
+      type
     }
     withdrawTransactions(where: { provider: $account }, orderBy: timestamp) {
-      ...TransactionDetails
       value
+      hash
+      timestamp
+      type
     }
     claimTransactions(where: { user: $account }, orderBy: timestamp) {
-      ...TransactionDetails
       reward
+      hash
+      timestamp
+      type
     }
   }
-  ${TransactionDetailsFragmentDoc}
 `;
 
 export /**
