@@ -21,7 +21,6 @@ import { ReactComponent as AccountIcon } from '../icons/circle/account.svg';
 import { Balances } from './Balances';
 import { Transactions } from './Transactions';
 import { Connector } from '../../types';
-import { useHistoricTransactionsQuery } from '../../graphql/mstable';
 import { HistoricTransactions } from './HistoricTransactions';
 
 const Container = styled.div`
