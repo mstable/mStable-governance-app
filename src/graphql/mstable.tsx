@@ -1690,20 +1690,25 @@ export type HistoricTransactionsQueryVariables = {
 
 export type HistoricTransactionsQuery = {
   createLockTransactions: Array<
-    Pick<CreateLockTransaction, 'value' | 'lockTime'> &
-      TransactionDetailsFragment
+    Pick<
+      CreateLockTransaction,
+      'value' | 'lockTime' | 'timestamp' | 'hash' | 'type'
+    >
   >;
   increaseLockTimeTransactions: Array<
-    Pick<IncreaseLockTimeTransaction, 'lockTime'> & TransactionDetailsFragment
+    Pick<
+      IncreaseLockTimeTransaction,
+      'lockTime' | 'timestamp' | 'hash' | 'type'
+    >
   >;
   increaseLockAmountTransactions: Array<
-    Pick<IncreaseLockAmountTransaction, 'value'> & TransactionDetailsFragment
+    Pick<IncreaseLockAmountTransaction, 'value' | 'timestamp' | 'hash' | 'type'>
   >;
   withdrawTransactions: Array<
-    Pick<WithdrawTransaction, 'value'> & TransactionDetailsFragment
+    Pick<WithdrawTransaction, 'value' | 'timestamp' | 'hash' | 'type'>
   >;
   claimTransactions: Array<
-    Pick<ClaimTransaction, 'reward'> & TransactionDetailsFragment
+    Pick<ClaimTransaction, 'reward' | 'timestamp' | 'hash' | 'type'>
   >;
 };
 
