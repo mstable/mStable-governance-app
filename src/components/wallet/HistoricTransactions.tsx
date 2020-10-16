@@ -76,7 +76,7 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
 const Tx: FC<{
   tx: HistoricTransaction;
 }> = ({ tx }) => {
-  const description = useMemo(() => getTxDescription(tx), [tx]);
+  const description = getTxDescription(tx);
   return (
     <TxContainer>
       <EtherscanLink data={tx.hash as string} type="transaction">
