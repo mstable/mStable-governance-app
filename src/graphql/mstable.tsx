@@ -2121,7 +2121,7 @@ export type AllUserLockupsQueryResult = ApolloReactCommon.QueryResult<
   AllUserLockupsQueryVariables
 >;
 
-function useHistoricTransactionsQuery(
+export function useHistoricTransactionsQuery(
   baseOptions?: ApolloReactHooks.QueryHookOptions<
     HistoricTransactionsQuery,
     HistoricTransactionsQueryVariables
