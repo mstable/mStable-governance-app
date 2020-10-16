@@ -2,6 +2,8 @@
 
 ## v.NEXT
 
+- Added historic transaction descriptions
+
 ## v1.2.0
 
 Features
