@@ -101,13 +101,3 @@ export const useTotalSupply = (
 
   return totalSupply.current;
 };
-
-export const useHistoricTransactionsSubscription = (
-  account: string,
-): HistoricTransactionsQueryResult => {
-  return useBlockPollingSubscription(useHistoricTransactionsLazyQuery, {
-    variables: {
-      account,
-    },
-  });
-};

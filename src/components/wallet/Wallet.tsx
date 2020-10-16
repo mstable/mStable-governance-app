@@ -21,7 +21,7 @@ import { ReactComponent as AccountIcon } from '../icons/circle/account.svg';
 import { Balances } from './Balances';
 import { Transactions } from './Transactions';
 import { Connector } from '../../types';
-import { useHistoricTransactionsSubscription } from '../../context/DataProvider/subscriptions';
+import { useHistoricTransactionsQuery } from '../../graphql/mstable';
 
 const Container = styled.div`
   flex: 1;
@@ -155,6 +155,10 @@ const Connected: FC<{ walletLabel: string; account: string }> = ({
         <H3>Transactions</H3>
         <Transactions />
       </Row>
+      <Row>
+        <H3>Historic Transactions</H3>
+        <Transactions />
+      </Row>
     </Rows>
   );
 };
@@ -165,7 +169,13 @@ export const Wallet: FC<{}> = () => {
   const { status, account } = useWallet();
   const connected = status === 'connected';
   const wallet = useWalletConnector();
-  const historicTxs = useHistoricTransactionsSubscription(account as string);
+  const historicTxsQuery = useHistoricTransactionsQuery({
+    variables: {
+      account: account as string,
+    },
+    fetchPolicy: 'cache-first',
+  });
+  const historixTxsData = historicTxsQuery.data;
   return (
     <Container>
       <div>
