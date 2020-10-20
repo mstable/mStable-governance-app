@@ -90,6 +90,7 @@ export interface InjectedEthereum {
   isBrave?: boolean;
   isTrust?: boolean;
   isDapper?: boolean;
+  isMeetOne?: boolean;
 }
 
 export interface Connector {
