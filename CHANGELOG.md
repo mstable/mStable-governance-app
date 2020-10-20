@@ -2,7 +2,10 @@
 
 ## v.NEXT
 
-- Added historic transaction descriptions
+Features
+
+- Add support for Meet.one wallet
+- Add historic transaction descriptions
 
 ## v1.2.0
 
