@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
-
+import useEffectOnce from 'react-use/lib/useEffectOnce';
 import * as Sentry from '@sentry/react';
 import * as serviceWorker from './serviceWorker';
 import { checkRequiredEnvVars } from './checkRequiredEnvVars';
@@ -22,6 +22,16 @@ Sentry.init({
 });
 
 const Routes: FC = () => {
+  useEffectOnce(() => {
+    // Redirect for legacy links (without hash)
+    if (
+      window.location.pathname !== '/' &&
+      !window.location.pathname.startsWith('/ipfs/')
+    ) {
+      window.location.hash = window.location.pathname;
+      window.location.pathname = '';
+    }
+  });
   return (
     <Switch>
       <Route exact path="/">
