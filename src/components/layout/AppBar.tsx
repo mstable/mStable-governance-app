@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { FC } from 'react';
-import { A } from 'hookrouter';
+import { Link } from 'react-router-dom';
 import { useWallet } from 'use-wallet';
 
 import {
@@ -350,9 +350,9 @@ export const AppBar: FC<{}> = () => {
       <Inner>
         <Top>
           <Logo inverted={accountOpen}>
-            <A href="/" title="Home" onClick={closeAccount}>
+            <Link to="/" title="Home" onClick={closeAccount}>
               <LogoSvg />
-            </A>
+            </Link>
           </Logo>
           <Buttons>
             <NotificationsButton />
