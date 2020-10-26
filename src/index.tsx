@@ -13,6 +13,7 @@ import { StakeTabs } from './components/pages/Stake';
 import { Discuss } from './components/pages/Discuss';
 import { Govern } from './components/pages/Govern';
 import { Stats } from './components/pages/Stats';
+import { NotFound } from './components/pages/NotFound';
 
 checkRequiredEnvVars();
 
@@ -41,6 +42,7 @@ const Routes: FC = () => {
       <Route exact path="/stake" component={StakeTabs} />
       <Route exact path="/stats" component={Stats} />
       <Route exact path="/discuss" component={Discuss} />
+      <Route component={NotFound} />
     </Switch>
   );
 };
