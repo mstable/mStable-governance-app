@@ -2,6 +2,8 @@
 
 ## v.NEXT
 
+- Add support for running the dApp on IPFS
+
 Features
 
 - Add support for Meet.one wallet
