@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { A } from 'hookrouter';
+import { Link } from 'react-router-dom';
 
 import { useToggleWallet } from '../../../context/AppProvider';
 import { useIncentivisedVotingLockup } from '../../../context/DataProvider/DataProvider';
@@ -114,7 +114,7 @@ export const OnboardingWizard: FC = () => {
           <H3>3. Stake $MTA to get $vMTA</H3>
           <StakeIcon />
         </IconsContainer>
-        {!hasStakingBalance && <A href="/stake">Stake</A>}
+        {!hasStakingBalance && <Link to="/stake">Stake</Link>}
       </Step>
       <Step active={hasStakingBalance}>
         <IconsContainer>
