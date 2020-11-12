@@ -67,20 +67,13 @@ const CountBadge: FC<{ count: number; error: boolean }> = ({
 );
 
 const Logo = styled.div<{ inverted?: boolean }>`
-  overflow: hidden;
-  flex-shrink: 0;
-  width: 25px;
-  height: 100%;
-
   a {
     border-bottom: 0;
   }
 
   svg {
-    // Gentle nudge to visual centre
-    top: 8px;
-    position: relative;
-    width: 100px;
+    width: 20px;
+    height: 24px;
 
     path,
     rect {
@@ -148,10 +141,11 @@ const WalletButtonBtn = styled(AccountButton)`
 const Buttons = styled.div`
   display: flex;
   justify-content: space-evenly;
-  align-items: flex-end;
+  align-items: center;
   height: 100%;
 
   > * {
+    font-size: 16px;
     margin-right: 6px;
     &:last-child {
       margin-right: 0;
@@ -181,9 +175,10 @@ const Inner = styled.div`
 
 const Container = styled.div<{ inverted: boolean }>`
   background: ${({ inverted }) => (inverted ? Color.black : Color.white)};
-  height: 32px;
+  height: 48px;
   display: flex;
   justify-content: center;
+  padding-top: 2px;
 
   ${AccountButton} {
     color: ${({ inverted }) => (inverted ? Color.white : Color.offBlack)};

@@ -7,7 +7,6 @@ const Container = styled.div`
   padding-bottom: 96px;
   grid-column: 1 / 4 !important;
   background: blue;
-  margin: 0px 24px;
 `;
 
 export const GovernFeed: FC = () => {
