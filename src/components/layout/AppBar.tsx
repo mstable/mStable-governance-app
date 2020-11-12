@@ -180,7 +180,7 @@ const Inner = styled.div`
 `;
 
 const Container = styled.div<{ inverted: boolean }>`
-  background: ${({ inverted }) => (inverted ? Color.black : Color.offWhite)};
+  background: ${({ inverted }) => (inverted ? Color.black : Color.white)};
   height: 32px;
   display: flex;
   justify-content: center;

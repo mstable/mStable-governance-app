@@ -39,7 +39,6 @@ const ThumbCircle = styled.div`
 const ThumbLabel = styled.div`
   text-align: center;
   text-transform: uppercase;
-  background: ${Color.offWhite};
   /* padding: 4px; */
   border-radius: 4px;
 

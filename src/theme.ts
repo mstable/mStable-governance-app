@@ -17,7 +17,6 @@ export enum Color {
   whiteTransparent = 'rgba(255,255,255,0.2)',
   blackTransparent = 'rgba(0,0,0,0.2)',
   blackTransparenter = 'rgba(0,0,0,0.06)',
-  offWhite = 'rgb(249,245,242)',
   offBlack = 'rgb(37,39,45)',
   greyTransparent = 'rgba(127, 127, 127, 0.5)',
 }
