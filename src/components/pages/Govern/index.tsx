@@ -7,8 +7,7 @@ import { GovernFeed } from './GovernFeed';
 const Wrapper = styled.div`
   display: grid;
   overflow-x: hidden;
-  min-height: 100vh;
-  grid-template-columns: 1fr min(1200px, 100%) 1fr;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
 export const Govern: FC<{}> = () => {
