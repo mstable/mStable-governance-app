@@ -179,6 +179,7 @@ const Container = styled.div<{ inverted: boolean }>`
   display: flex;
   justify-content: center;
   padding-top: 2px;
+  border-bottom: 1px solid ${Color.blackTransparenter};
 
   ${AccountButton} {
     color: ${({ inverted }) => (inverted ? Color.white : Color.offBlack)};
