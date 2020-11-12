@@ -167,7 +167,7 @@ const Top = styled.div`
 `;
 
 const Inner = styled.div`
-  padding: 0 16px;
+  padding: 0 20px;
   height: 100%;
 
   ${centredLayout}
