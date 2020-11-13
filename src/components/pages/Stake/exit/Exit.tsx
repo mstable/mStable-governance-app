@@ -27,7 +27,8 @@ const ExitForm: FC = () => {
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
   const canUnlock =
-    (incentivisedVotingLockup?.userLockup?.lockTime as number) > Date.now();
+    Date.now() >=
+    (incentivisedVotingLockup?.userLockup?.lockTime as number) * 1000;
   const balance = incentivisedVotingLockup?.userStakingBalance;
 
   useEffect(() => {
