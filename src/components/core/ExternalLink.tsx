@@ -5,6 +5,15 @@ import { ReactComponent as ExternalLinkArrow } from './external-link-arrow.svg';
 
 const Anchor = styled.a`
   border-bottom: 0;
+  text-decoration: none;
+  color: ${({ theme }) => theme.color.blue};
+  font-weight: 700;
+  transition: color 1s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.color.gold};
+  }
+
   svg {
     margin-left: 4px;
     width: 14px;
@@ -12,11 +21,9 @@ const Anchor = styled.a`
   }
 `;
 
-export const ExternalLink: FC<AnchorHTMLAttributes<never>> = ({
-  children,
-  className,
-  href,
-}) => (
+export const ExternalLink: FC<AnchorHTMLAttributes<never> & {
+  externalArrow?: boolean;
+}> = ({ children, className, href, externalArrow = true }) => (
   <Anchor
     className={className}
     href={href}
@@ -24,6 +31,6 @@ export const ExternalLink: FC<AnchorHTMLAttributes<never>> = ({
     rel="noopener noreferrer"
   >
     <span>{children}</span>
-    <ExternalLinkArrow />
+    {externalArrow && <ExternalLinkArrow />}
   </Anchor>
 );
