@@ -5,7 +5,7 @@ export const P = styled.p<{ center?: boolean; size?: Size }>`
   font-size: ${({ theme, size = theme.size.m }) => mapSizeToFontSize(size)};
   padding-top: 4px;
   padding-bottom: 12px;
-  
+
   &:last-of-type {
     padding-bottom: 0;
   }
