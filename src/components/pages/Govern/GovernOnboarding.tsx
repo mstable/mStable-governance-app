@@ -5,13 +5,13 @@ import { ViewportWidth } from '../../../theme';
 const Container = styled.div`
   grid-column: 1 / 6;
   height: 150px;
-  background: blue;
+  background: purple;
 
   @media (min-width: ${ViewportWidth.l}) {
-    grid-column: 1 / 4;
+    grid-column: 4 / 6;
   }
 `;
 
-export const GovernFeed: FC = () => {
+export const GovernOnboarding: FC = () => {
   return <Container />;
 };
