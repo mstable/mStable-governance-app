@@ -107,6 +107,7 @@ const StyledRow = styled.div`
 
 const Row: FC<{ title: string; value?: number; suffix?: string }> = props => {
   const { title, value, suffix } = props;
+  const valueRounded = value ? Math.floor(value) : undefined;
   const formattedSuffix = suffix ? ` ${suffix}` : undefined;
   return (
     <StyledRow>
@@ -114,7 +115,7 @@ const Row: FC<{ title: string; value?: number; suffix?: string }> = props => {
         <b>{title}:</b>
       </p>
       {value ? (
-        <CountUp end={value} suffix={formattedSuffix} decimals={0} />
+        <CountUp end={valueRounded} suffix={formattedSuffix} decimals={0} />
       ) : (
         <Skeleton width={100} />
       )}
