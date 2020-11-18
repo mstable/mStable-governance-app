@@ -1,8 +1,5 @@
-import {
-  HistoricTransactionsQueryResult,
-  TransactionType,
-} from '../../graphql/mstable';
-import { HistoricTransaction, HistoricTxsArr } from './types';
+import { HistoricTransactionsQueryResult } from '../../graphql/mstable';
+import { HistoricTransaction, HistoricTxsArr, TransactionType } from './types';
 import { BigDecimal } from '../../utils/BigDecimal';
 import { formatUnix } from '../../utils/time';
 
@@ -21,65 +18,63 @@ export const transformRawData = (
     withdrawTransactions,
   } = data;
 
-  const historicTxsData = [
+  return ([
     ...createLockTransactions,
     ...increaseLockAmountTransactions,
     ...increaseLockTimeTransactions,
     ...claimTransactions,
     ...withdrawTransactions,
-  ].sort(
-    (a, b) => parseInt(a.timestamp, 10) - parseInt(b.timestamp, 10),
-  ) as HistoricTxsArr;
+  ] as HistoricTxsArr)
+    .map(({ hash, ...tx }) => {
+      const timestamp = parseInt(tx.timestamp, 10);
+      const formattedDate = formatUnix(timestamp);
+      switch (tx.__typename) {
+        case TransactionType.ClaimTransaction:
+          return {
+            type: tx.__typename as TransactionType.ClaimTransaction,
+            timestamp,
+            formattedDate,
+            hash,
+            reward: new BigDecimal(tx.reward),
+          };
+        case TransactionType.CreateLockTransaction:
+          return {
+            type: tx.__typename as TransactionType.CreateLockTransaction,
+            timestamp,
+            formattedDate,
+            hash,
+            value: new BigDecimal(tx.value),
+            lockTime: formatUnix(parseInt(tx.lockTime as string, 10)),
+          };
+        case TransactionType.IncreaseLockAmountTransaction:
+          return {
+            type: tx.__typename as TransactionType.IncreaseLockAmountTransaction,
+            timestamp,
+            formattedDate,
+            hash,
+            value: new BigDecimal(tx.value),
+          };
+        case TransactionType.IncreaseLockTimeTransaction:
+          return {
+            type: tx.__typename as TransactionType.IncreaseLockTimeTransaction,
+            timestamp,
+            formattedDate,
+            hash,
+            lockTime: formatUnix(parseInt(tx.lockTime as string, 10)),
+          };
+        case TransactionType.WithdrawTransaction:
+          return {
+            type: tx.__typename as TransactionType.WithdrawTransaction,
+            timestamp,
+            formattedDate,
+            hash,
+            value: new BigDecimal(tx.value),
+          };
+        // Other cases
 
-  return historicTxsData.map(({ hash, ...tx }) => {
-    const timestamp = parseInt(tx.timestamp, 10);
-    const formattedDate = formatUnix(timestamp);
-    switch (tx.type) {
-      case TransactionType.Claim:
-        return {
-          type: tx.type,
-          timestamp,
-          formattedDate,
-          hash,
-          reward: new BigDecimal(tx.reward),
-        };
-      case TransactionType.CreateLock:
-        return {
-          type: tx.type,
-          timestamp,
-          formattedDate,
-          hash,
-          value: new BigDecimal(tx.value),
-          lockTime: formatUnix(parseInt(tx.lockTime as string, 10)),
-        };
-      case TransactionType.IncreaseLockAmount:
-        return {
-          type: tx.type,
-          timestamp,
-          formattedDate,
-          hash,
-          value: new BigDecimal(tx.value),
-        };
-      case TransactionType.IncreaseLockTime:
-        return {
-          type: tx.type,
-          timestamp,
-          formattedDate,
-          hash,
-          lockTime: formatUnix(parseInt(tx.lockTime as string, 10)),
-        };
-      case TransactionType.Withdraw:
-        return {
-          type: tx.type,
-          timestamp,
-          formattedDate,
-          hash,
-          value: new BigDecimal(tx.value),
-        };
-      // Other cases
-
-      default:
-        throw new Error('Unhandled transaction type');
-    }
-  });
+        default:
+          throw new Error('Unhandled transaction type');
+      }
+    })
+    .sort((a, b) => b.timestamp - a.timestamp);
 };

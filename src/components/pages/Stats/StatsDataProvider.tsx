@@ -45,22 +45,41 @@ export const StatsDataProvider: FC = ({ children }) => {
     ? (incentivisedVotingLockup as IncentivisedVotingLockup).lastUpdateTime
     : now;
 
-  const allUserLockupsQuery = useAllUserLockupsQuery({
+  const variables = {
+    minLockTime: currentTime.toString(),
+    block: { number: block || 0 },
+    hasBlock: !!block,
+  };
+
+  // TODO Non sustainable; better to consume with `skip` iteratively
+  const allUserLockupsQuery0 = useAllUserLockupsQuery({
     variables: {
-      minLockTime: currentTime.toString(),
-      block: { number: block || 0 },
-      hasBlock: !!block,
+      ...variables,
+      skip: 0,
     },
-    fetchPolicy: 'cache-first',
+  });
+  const allUserLockupsQuery1 = useAllUserLockupsQuery({
+    variables: {
+      ...variables,
+      skip: 500,
+    },
   });
 
-  const userLockupsData =
-    allUserLockupsQuery.data?.current ?? allUserLockupsQuery.data?.historic;
+  const userLockupsData0 =
+    allUserLockupsQuery0.data?.current ??
+    allUserLockupsQuery0.data?.historic ??
+    [];
+  const userLockupsData1 =
+    allUserLockupsQuery1.data?.current ??
+    allUserLockupsQuery1.data?.historic ??
+    [];
 
   const totalSupplyRounded = totalSupply?.simpleRounded;
 
   const data = useMemo<UserLockupDatum[]>(() => {
-    const userLockups = transformAllUserLockups(userLockupsData);
+    const userLockups = transformAllUserLockups(
+      userLockupsData0.concat(userLockupsData1),
+    );
 
     return totalSupplyRounded && totalSupplyRounded > 0
       ? userLockups.map<UserLockupDatum>(userLockup => {
@@ -82,7 +101,7 @@ export const StatsDataProvider: FC = ({ children }) => {
           };
         })
       : [];
-  }, [userLockupsData, totalSupplyRounded, currentTime]);
+  }, [userLockupsData0, userLockupsData1, totalSupplyRounded, currentTime]);
 
   return <statsDataCtx.Provider value={data}>{children}</statsDataCtx.Provider>;
 };

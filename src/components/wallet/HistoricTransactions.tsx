@@ -4,12 +4,9 @@ import { EtherscanLink } from '../core/EtherscanLink';
 import { List, ListItem } from '../core/List';
 import { P } from '../core/Typography';
 import { CountUp } from '../core/CountUp';
-import {
-  useHistoricTransactionsQuery,
-  TransactionType,
-} from '../../graphql/mstable';
+import { useHistoricTransactionsQuery } from '../../graphql/mstable';
 import { transformRawData } from './transformRawData';
-import { HistoricTransaction } from './types';
+import { HistoricTransaction, TransactionType } from './types';
 
 const TxContainer = styled.div<{}>`
   display: flex;
@@ -29,7 +26,7 @@ const LockTime = styled.p<{}>`
 
 const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
   switch (tx.type) {
-    case TransactionType.CreateLock: {
+    case TransactionType.CreateLockTransaction: {
       return (
         <>
           {tx.formattedDate}: You created a lock of{' '}
@@ -38,7 +35,7 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
         </>
       );
     }
-    case TransactionType.IncreaseLockAmount: {
+    case TransactionType.IncreaseLockAmountTransaction: {
       return (
         <>
           {tx.formattedDate}: You increased an amount of the lock for additional{' '}
@@ -46,7 +43,7 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
         </>
       );
     }
-    case TransactionType.IncreaseLockTime: {
+    case TransactionType.IncreaseLockTimeTransaction: {
       return (
         <>
           {tx.formattedDate}: You increased lock period until{' '}
@@ -54,14 +51,14 @@ const getTxDescription = (tx: HistoricTransaction): JSX.Element => {
         </>
       );
     }
-    case TransactionType.Withdraw: {
+    case TransactionType.WithdrawTransaction: {
       return (
         <>
           {tx.formattedDate}: You withdrew <Balance end={tx.value.simple} /> MTA{' '}
         </>
       );
     }
-    case TransactionType.Claim: {
+    case TransactionType.ClaimTransaction: {
       return (
         <>
           {tx.formattedDate}: You claimed <Balance end={tx.reward.simple} /> MTA{' '}

@@ -5,7 +5,6 @@ import Skeleton from 'react-loading-skeleton';
 import { H3, H4, P } from '../../core/Typography';
 import { Tooltip } from '../../core/ReactTooltip';
 import { CountUp } from '../../core/CountUp';
-import { useStatsData } from './StatsDataProvider';
 import { ViewportWidth } from '../../../theme';
 import { useIncentivisedVotingLockupAtBlock } from './IncentivisedVotingLockupAtBlockProvider';
 
@@ -51,11 +50,15 @@ const InfoGroup = styled.div`
 `;
 
 export const Metrics: FC = () => {
-  const data = useStatsData();
   const { incentivisedVotingLockup } = useIncentivisedVotingLockupAtBlock();
 
-  const { totalValue, totalStakingRewards, lockTimes, votingToken } =
-    incentivisedVotingLockup || {};
+  const {
+    totalValue,
+    totalStakingRewards,
+    lockTimes,
+    votingToken,
+    totalStakers,
+  } = incentivisedVotingLockup || {};
   const totalSupply = votingToken?.totalSupply;
 
   return (
@@ -96,7 +99,7 @@ export const Metrics: FC = () => {
           )}
         </InfoRow>
         <InfoRow title="Total stakers">
-          {data.length > 0 ? <P>{data.length}</P> : <Skeleton width={100} />}
+          {totalStakers ? <P>{totalStakers}</P> : <Skeleton width={100} />}
         </InfoRow>
       </InfoGroup>
     </Container>

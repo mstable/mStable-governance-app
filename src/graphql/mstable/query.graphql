@@ -49,13 +49,15 @@ query IncentivisedVotingLockups(
 }
 
 query AllUserLockups(
+  $skip: Int!
   $minLockTime: BigInt!
   $hasBlock: Boolean!
   $block: Block_height
 ) {
   current: userLockups(
     where: { lockTime_gte: $minLockTime }
-    first: 1000
+    first: 500
+    skip: $skip
     orderBy: bias
     orderDirection: desc
   ) @skip(if: $hasBlock) {
@@ -64,7 +66,8 @@ query AllUserLockups(
   historic: userLockups(
     where: { lockTime_gte: $minLockTime }
     block: $block
-    first: 1000
+    skip: $skip
+    first: 500
     orderBy: bias
     orderDirection: desc
   ) @include(if: $hasBlock) {
@@ -74,40 +77,40 @@ query AllUserLockups(
 
 query HistoricTransactions($account: Bytes) @api(name: mstable) {
   createLockTransactions(where: { provider: $account }, orderBy: timestamp) {
+    __typename
     value
     lockTime
     hash
     timestamp
-    type
   }
   increaseLockTimeTransactions(
     where: { provider: $account }
     orderBy: timestamp
   ) {
+    __typename
     lockTime
     hash
     timestamp
-    type
   }
   increaseLockAmountTransactions(
     where: { provider: $account }
     orderBy: timestamp
   ) {
+    __typename
     value
     hash
     timestamp
-    type
   }
   withdrawTransactions(where: { provider: $account }, orderBy: timestamp) {
+    __typename
     value
     hash
     timestamp
-    type
   }
   claimTransactions(where: { user: $account }, orderBy: timestamp) {
+    __typename
     reward
     hash
     timestamp
-    type
   }
 }

@@ -3,49 +3,49 @@ import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
 
-export interface IntrospectionResultData {
-  __schema: {
-    types: {
-      kind: string;
-      name: string;
-      possibleTypes: {
-        name: string;
-      }[];
-    }[];
-  };
-}
-const result: IntrospectionResultData = {
-  __schema: {
-    types: [
+      export interface IntrospectionResultData {
+        __schema: {
+          types: {
+            kind: string;
+            name: string;
+            possibleTypes: {
+              name: string;
+            }[];
+          }[];
+        };
+      }
+      const result: IntrospectionResultData = {
+  "__schema": {
+    "types": [
       {
-        kind: 'INTERFACE',
-        name: 'Transaction',
-        possibleTypes: [
+        "kind": "INTERFACE",
+        "name": "Transaction",
+        "possibleTypes": [
           {
-            name: 'WithdrawTransaction',
+            "name": "WithdrawTransaction"
           },
           {
-            name: 'EjectTransaction',
+            "name": "EjectTransaction"
           },
           {
-            name: 'ClaimTransaction',
+            "name": "ClaimTransaction"
           },
           {
-            name: 'CreateLockTransaction',
+            "name": "CreateLockTransaction"
           },
           {
-            name: 'IncreaseLockAmountTransaction',
+            "name": "IncreaseLockAmountTransaction"
           },
           {
-            name: 'IncreaseLockTimeTransaction',
-          },
-        ],
-      },
-    ],
-  },
+            "name": "IncreaseLockTimeTransaction"
+          }
+        ]
+      }
+    ]
+  }
 };
-export default result;
-
+      export default result;
+    
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -58,10 +58,33 @@ export type Scalars = {
   BigDecimal: string;
 };
 
+export type _Block_ = {
+  /** The hash of the block */
+  hash?: Maybe<Scalars['Bytes']>;
+  /** The block number */
+  number: Scalars['Int'];
+};
+
+/** The type for the top-level _meta field */
+export type _Meta_ = {
+  /**
+   * Information about a specific subgraph block. The hash of the block
+   * will be null if the _meta field has a block constraint that asks for
+   * a block number. It will be filled if the _meta field has no block constraint
+   * and therefore asks for the latest  block
+   */
+  block: _Block_;
+  /** The deployment ID */
+  deployment: Scalars['String'];
+};
+
+
+
 export type Block_Height = {
   hash?: Maybe<Scalars['Bytes']>;
   number?: Maybe<Scalars['Int']>;
 };
+
 
 export type ClaimTransaction = Transaction & {
   id: Scalars['ID'];
@@ -70,7 +93,6 @@ export type ClaimTransaction = Transaction & {
   reward: Scalars['BigInt'];
   sender: Scalars['Bytes'];
   timestamp: Scalars['BigInt'];
-  type: TransactionType;
   user: Scalars['Bytes'];
 };
 
@@ -119,8 +141,6 @@ export type ClaimTransaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
   user?: Maybe<Scalars['Bytes']>;
   user_not?: Maybe<Scalars['Bytes']>;
   user_in?: Maybe<Array<Scalars['Bytes']>>;
@@ -136,8 +156,37 @@ export enum ClaimTransaction_OrderBy {
   Reward = 'reward',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Type = 'type',
-  User = 'user',
+  User = 'user'
+}
+
+export type Counter = {
+  id: Scalars['ID'];
+  /** Value of the counter; should be positive */
+  value: Scalars['BigInt'];
+};
+
+export type Counter_Filter = {
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  value?: Maybe<Scalars['BigInt']>;
+  value_not?: Maybe<Scalars['BigInt']>;
+  value_gt?: Maybe<Scalars['BigInt']>;
+  value_lt?: Maybe<Scalars['BigInt']>;
+  value_gte?: Maybe<Scalars['BigInt']>;
+  value_lte?: Maybe<Scalars['BigInt']>;
+  value_in?: Maybe<Array<Scalars['BigInt']>>;
+  value_not_in?: Maybe<Array<Scalars['BigInt']>>;
+};
+
+export enum Counter_OrderBy {
+  Id = 'id',
+  Value = 'value'
 }
 
 export type CreateLockTransaction = Transaction & {
@@ -148,7 +197,6 @@ export type CreateLockTransaction = Transaction & {
   provider: Scalars['Bytes'];
   sender: Scalars['Bytes'];
   timestamp: Scalars['BigInt'];
-  type: TransactionType;
   value: Scalars['BigInt'];
 };
 
@@ -203,8 +251,6 @@ export type CreateLockTransaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
   value?: Maybe<Scalars['BigInt']>;
   value_not?: Maybe<Scalars['BigInt']>;
   value_gt?: Maybe<Scalars['BigInt']>;
@@ -223,8 +269,7 @@ export enum CreateLockTransaction_OrderBy {
   Provider = 'provider',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Type = 'type',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type EjectTransaction = Transaction & {
@@ -235,7 +280,6 @@ export type EjectTransaction = Transaction & {
   hash: Scalars['Bytes'];
   sender: Scalars['Bytes'];
   timestamp: Scalars['BigInt'];
-  type: TransactionType;
 };
 
 export type EjectTransaction_Filter = {
@@ -287,8 +331,6 @@ export type EjectTransaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
 };
 
 export enum EjectTransaction_OrderBy {
@@ -298,8 +340,7 @@ export enum EjectTransaction_OrderBy {
   Ejector = 'ejector',
   Hash = 'hash',
   Sender = 'sender',
-  Timestamp = 'timestamp',
-  Type = 'type',
+  Timestamp = 'timestamp'
 }
 
 export type IncentivisedVotingLockup = {
@@ -323,7 +364,9 @@ export type IncentivisedVotingLockup = {
   totalStaticWeight: Scalars['BigInt'];
   totalStakingRewards: Scalars['BigInt'];
   totalValue: Scalars['BigInt'];
+  totalStakers: Counter;
 };
+
 
 export type IncentivisedVotingLockupUserLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -333,6 +376,7 @@ export type IncentivisedVotingLockupUserLockupsArgs = {
   where?: Maybe<UserLockup_Filter>;
 };
 
+
 export type IncentivisedVotingLockupStakingRewardsArgs = {
   skip?: Maybe<Scalars['Int']>;
   first?: Maybe<Scalars['Int']>;
@@ -340,6 +384,7 @@ export type IncentivisedVotingLockupStakingRewardsArgs = {
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<StakingReward_Filter>;
 };
+
 
 export type IncentivisedVotingLockupStakingBalancesArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -506,6 +551,20 @@ export type IncentivisedVotingLockup_Filter = {
   totalValue_lte?: Maybe<Scalars['BigInt']>;
   totalValue_in?: Maybe<Array<Scalars['BigInt']>>;
   totalValue_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalStakers?: Maybe<Scalars['String']>;
+  totalStakers_not?: Maybe<Scalars['String']>;
+  totalStakers_gt?: Maybe<Scalars['String']>;
+  totalStakers_lt?: Maybe<Scalars['String']>;
+  totalStakers_gte?: Maybe<Scalars['String']>;
+  totalStakers_lte?: Maybe<Scalars['String']>;
+  totalStakers_in?: Maybe<Array<Scalars['String']>>;
+  totalStakers_not_in?: Maybe<Array<Scalars['String']>>;
+  totalStakers_contains?: Maybe<Scalars['String']>;
+  totalStakers_not_contains?: Maybe<Scalars['String']>;
+  totalStakers_starts_with?: Maybe<Scalars['String']>;
+  totalStakers_not_starts_with?: Maybe<Scalars['String']>;
+  totalStakers_ends_with?: Maybe<Scalars['String']>;
+  totalStakers_not_ends_with?: Maybe<Scalars['String']>;
 };
 
 export enum IncentivisedVotingLockup_OrderBy {
@@ -529,6 +588,7 @@ export enum IncentivisedVotingLockup_OrderBy {
   TotalStaticWeight = 'totalStaticWeight',
   TotalStakingRewards = 'totalStakingRewards',
   TotalValue = 'totalValue',
+  TotalStakers = 'totalStakers'
 }
 
 export type IncreaseLockAmountTransaction = Transaction & {
@@ -538,7 +598,6 @@ export type IncreaseLockAmountTransaction = Transaction & {
   provider: Scalars['Bytes'];
   sender: Scalars['Bytes'];
   timestamp: Scalars['BigInt'];
-  type: TransactionType;
   value: Scalars['BigInt'];
 };
 
@@ -585,8 +644,6 @@ export type IncreaseLockAmountTransaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
   value?: Maybe<Scalars['BigInt']>;
   value_not?: Maybe<Scalars['BigInt']>;
   value_gt?: Maybe<Scalars['BigInt']>;
@@ -604,8 +661,7 @@ export enum IncreaseLockAmountTransaction_OrderBy {
   Provider = 'provider',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Type = 'type',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type IncreaseLockTimeTransaction = Transaction & {
@@ -615,7 +671,6 @@ export type IncreaseLockTimeTransaction = Transaction & {
   lockTime: Scalars['BigInt'];
   provider: Scalars['Bytes'];
   sender: Scalars['Bytes'];
-  type: TransactionType;
   timestamp: Scalars['BigInt'];
 };
 
@@ -662,8 +717,6 @@ export type IncreaseLockTimeTransaction_Filter = {
   sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
   sender_contains?: Maybe<Scalars['Bytes']>;
   sender_not_contains?: Maybe<Scalars['Bytes']>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
   timestamp?: Maybe<Scalars['BigInt']>;
   timestamp_not?: Maybe<Scalars['BigInt']>;
   timestamp_gt?: Maybe<Scalars['BigInt']>;
@@ -681,26 +734,81 @@ export enum IncreaseLockTimeTransaction_OrderBy {
   LockTime = 'lockTime',
   Provider = 'provider',
   Sender = 'sender',
-  Type = 'type',
-  Timestamp = 'timestamp',
+  Timestamp = 'timestamp'
 }
 
 export enum LockAction {
   CreateLock = 'CREATE_LOCK',
   IncreaseLockAmount = 'INCREASE_LOCK_AMOUNT',
-  IncreaseLockTime = 'INCREASE_LOCK_TIME',
+  IncreaseLockTime = 'INCREASE_LOCK_TIME'
+}
+
+export type Metric = {
+  id: Scalars['ID'];
+  /** Exact value of the metric, i.e. in base units as an integer */
+  exact: Scalars['BigInt'];
+  /** Decimals used for the exact value (default: 18) */
+  decimals: Scalars['Int'];
+  /** Simple value of the metric, i.e. the exact value represented as a decimal */
+  simple: Scalars['BigDecimal'];
+};
+
+export type Metric_Filter = {
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  exact?: Maybe<Scalars['BigInt']>;
+  exact_not?: Maybe<Scalars['BigInt']>;
+  exact_gt?: Maybe<Scalars['BigInt']>;
+  exact_lt?: Maybe<Scalars['BigInt']>;
+  exact_gte?: Maybe<Scalars['BigInt']>;
+  exact_lte?: Maybe<Scalars['BigInt']>;
+  exact_in?: Maybe<Array<Scalars['BigInt']>>;
+  exact_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  decimals?: Maybe<Scalars['Int']>;
+  decimals_not?: Maybe<Scalars['Int']>;
+  decimals_gt?: Maybe<Scalars['Int']>;
+  decimals_lt?: Maybe<Scalars['Int']>;
+  decimals_gte?: Maybe<Scalars['Int']>;
+  decimals_lte?: Maybe<Scalars['Int']>;
+  decimals_in?: Maybe<Array<Scalars['Int']>>;
+  decimals_not_in?: Maybe<Array<Scalars['Int']>>;
+  simple?: Maybe<Scalars['BigDecimal']>;
+  simple_not?: Maybe<Scalars['BigDecimal']>;
+  simple_gt?: Maybe<Scalars['BigDecimal']>;
+  simple_lt?: Maybe<Scalars['BigDecimal']>;
+  simple_gte?: Maybe<Scalars['BigDecimal']>;
+  simple_lte?: Maybe<Scalars['BigDecimal']>;
+  simple_in?: Maybe<Array<Scalars['BigDecimal']>>;
+  simple_not_in?: Maybe<Array<Scalars['BigDecimal']>>;
+};
+
+export enum Metric_OrderBy {
+  Id = 'id',
+  Exact = 'exact',
+  Decimals = 'decimals',
+  Simple = 'simple'
 }
 
 export enum OrderDirection {
   Asc = 'asc',
-  Desc = 'desc',
+  Desc = 'desc'
 }
 
 export type Query = {
-  userLockup?: Maybe<UserLockup>;
-  userLockups: Array<UserLockup>;
+  metric?: Maybe<Metric>;
+  metrics: Array<Metric>;
+  counter?: Maybe<Counter>;
+  counters: Array<Counter>;
   token?: Maybe<Token>;
   tokens: Array<Token>;
+  userLockup?: Maybe<UserLockup>;
+  userLockups: Array<UserLockup>;
   incentivisedVotingLockup?: Maybe<IncentivisedVotingLockup>;
   incentivisedVotingLockups: Array<IncentivisedVotingLockup>;
   rewardsDistributor?: Maybe<RewardsDistributor>;
@@ -723,26 +831,48 @@ export type Query = {
   increaseLockTimeTransactions: Array<IncreaseLockTimeTransaction>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
+  /** Access to subgraph metadata */
+  _meta?: Maybe<_Meta_>;
 };
 
-export type QueryUserLockupArgs = {
+
+export type QueryMetricArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
 
-export type QueryUserLockupsArgs = {
+
+export type QueryMetricsArgs = {
   skip?: Maybe<Scalars['Int']>;
   first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<UserLockup_OrderBy>;
+  orderBy?: Maybe<Metric_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
-  where?: Maybe<UserLockup_Filter>;
+  where?: Maybe<Metric_Filter>;
   block?: Maybe<Block_Height>;
 };
+
+
+export type QueryCounterArgs = {
+  id: Scalars['ID'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type QueryCountersArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Counter_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Counter_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
 
 export type QueryTokenArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryTokensArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -753,10 +883,28 @@ export type QueryTokensArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
+export type QueryUserLockupArgs = {
+  id: Scalars['ID'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type QueryUserLockupsArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<UserLockup_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<UserLockup_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
+
 export type QueryIncentivisedVotingLockupArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryIncentivisedVotingLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -767,10 +915,12 @@ export type QueryIncentivisedVotingLockupsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryRewardsDistributorArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryRewardsDistributorsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -781,10 +931,12 @@ export type QueryRewardsDistributorsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryStakingRewardArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryStakingRewardsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -795,10 +947,12 @@ export type QueryStakingRewardsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryStakingBalanceArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryStakingBalancesArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -809,10 +963,12 @@ export type QueryStakingBalancesArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryWithdrawTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryWithdrawTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -823,10 +979,12 @@ export type QueryWithdrawTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryEjectTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryEjectTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -837,10 +995,12 @@ export type QueryEjectTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryClaimTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryClaimTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -851,10 +1011,12 @@ export type QueryClaimTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryCreateLockTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryCreateLockTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -865,10 +1027,12 @@ export type QueryCreateLockTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryIncreaseLockAmountTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryIncreaseLockAmountTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -879,10 +1043,12 @@ export type QueryIncreaseLockAmountTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryIncreaseLockTimeTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryIncreaseLockTimeTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -893,10 +1059,12 @@ export type QueryIncreaseLockTimeTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -904,6 +1072,11 @@ export type QueryTransactionsArgs = {
   orderBy?: Maybe<Transaction_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<Transaction_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
+
+export type Query_MetaArgs = {
   block?: Maybe<Block_Height>;
 };
 
@@ -929,7 +1102,7 @@ export type RewardsDistributor_Filter = {
 
 export enum RewardsDistributor_OrderBy {
   Id = 'id',
-  FundManagers = 'fundManagers',
+  FundManagers = 'fundManagers'
 }
 
 export type StakingBalance = {
@@ -982,7 +1155,7 @@ export enum StakingBalance_OrderBy {
   Id = 'id',
   Account = 'account',
   IncentivisedVotingLockup = 'incentivisedVotingLockup',
-  Amount = 'amount',
+  Amount = 'amount'
 }
 
 export type StakingReward = {
@@ -1055,14 +1228,18 @@ export enum StakingReward_OrderBy {
   RewardsPaid = 'rewardsPaid',
   AmountPerTokenPaid = 'amountPerTokenPaid',
   Account = 'account',
-  IncentivisedVotingLockup = 'incentivisedVotingLockup',
+  IncentivisedVotingLockup = 'incentivisedVotingLockup'
 }
 
 export type Subscription = {
-  userLockup?: Maybe<UserLockup>;
-  userLockups: Array<UserLockup>;
+  metric?: Maybe<Metric>;
+  metrics: Array<Metric>;
+  counter?: Maybe<Counter>;
+  counters: Array<Counter>;
   token?: Maybe<Token>;
   tokens: Array<Token>;
+  userLockup?: Maybe<UserLockup>;
+  userLockups: Array<UserLockup>;
   incentivisedVotingLockup?: Maybe<IncentivisedVotingLockup>;
   incentivisedVotingLockups: Array<IncentivisedVotingLockup>;
   rewardsDistributor?: Maybe<RewardsDistributor>;
@@ -1085,26 +1262,48 @@ export type Subscription = {
   increaseLockTimeTransactions: Array<IncreaseLockTimeTransaction>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
+  /** Access to subgraph metadata */
+  _meta?: Maybe<_Meta_>;
 };
 
-export type SubscriptionUserLockupArgs = {
+
+export type SubscriptionMetricArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
 
-export type SubscriptionUserLockupsArgs = {
+
+export type SubscriptionMetricsArgs = {
   skip?: Maybe<Scalars['Int']>;
   first?: Maybe<Scalars['Int']>;
-  orderBy?: Maybe<UserLockup_OrderBy>;
+  orderBy?: Maybe<Metric_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
-  where?: Maybe<UserLockup_Filter>;
+  where?: Maybe<Metric_Filter>;
   block?: Maybe<Block_Height>;
 };
+
+
+export type SubscriptionCounterArgs = {
+  id: Scalars['ID'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type SubscriptionCountersArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Counter_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Counter_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
 
 export type SubscriptionTokenArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionTokensArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1115,10 +1314,28 @@ export type SubscriptionTokensArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
+export type SubscriptionUserLockupArgs = {
+  id: Scalars['ID'];
+  block?: Maybe<Block_Height>;
+};
+
+
+export type SubscriptionUserLockupsArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<UserLockup_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<UserLockup_Filter>;
+  block?: Maybe<Block_Height>;
+};
+
+
 export type SubscriptionIncentivisedVotingLockupArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionIncentivisedVotingLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1129,10 +1346,12 @@ export type SubscriptionIncentivisedVotingLockupsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionRewardsDistributorArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionRewardsDistributorsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1143,10 +1362,12 @@ export type SubscriptionRewardsDistributorsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionStakingRewardArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionStakingRewardsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1157,10 +1378,12 @@ export type SubscriptionStakingRewardsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionStakingBalanceArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionStakingBalancesArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1171,10 +1394,12 @@ export type SubscriptionStakingBalancesArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionWithdrawTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionWithdrawTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1185,10 +1410,12 @@ export type SubscriptionWithdrawTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionEjectTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionEjectTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1199,10 +1426,12 @@ export type SubscriptionEjectTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionClaimTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionClaimTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1213,10 +1442,12 @@ export type SubscriptionClaimTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionCreateLockTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionCreateLockTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1227,10 +1458,12 @@ export type SubscriptionCreateLockTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionIncreaseLockAmountTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionIncreaseLockAmountTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1241,10 +1474,12 @@ export type SubscriptionIncreaseLockAmountTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionIncreaseLockTimeTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionIncreaseLockTimeTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1255,10 +1490,12 @@ export type SubscriptionIncreaseLockTimeTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1269,13 +1506,34 @@ export type SubscriptionTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
+export type Subscription_MetaArgs = {
+  block?: Maybe<Block_Height>;
+};
+
+/** An ERC20-compatible token */
 export type Token = {
   id: Scalars['ID'];
+  /** Token address */
   address: Scalars['Bytes'];
+  /** Token decimals */
   decimals: Scalars['Int'];
+  /** Token name */
   name: Scalars['String'];
+  /** Token symbol */
   symbol: Scalars['String'];
-  totalSupply: Scalars['BigInt'];
+  /** Total supply of the token */
+  totalSupply: Metric;
+  /** Total quantity of tokens burned */
+  totalBurned: Metric;
+  /** Total quantity of tokens minted */
+  totalMinted: Metric;
+  /** Count of transfer transactions */
+  totalTransfers: Counter;
+  /** Count of transfer transactions that minted the token */
+  totalMints: Counter;
+  /** Count of transfer transactions that burned the token */
+  totalBurns: Counter;
 };
 
 export type Token_Filter = {
@@ -1329,14 +1587,90 @@ export type Token_Filter = {
   symbol_not_starts_with?: Maybe<Scalars['String']>;
   symbol_ends_with?: Maybe<Scalars['String']>;
   symbol_not_ends_with?: Maybe<Scalars['String']>;
-  totalSupply?: Maybe<Scalars['BigInt']>;
-  totalSupply_not?: Maybe<Scalars['BigInt']>;
-  totalSupply_gt?: Maybe<Scalars['BigInt']>;
-  totalSupply_lt?: Maybe<Scalars['BigInt']>;
-  totalSupply_gte?: Maybe<Scalars['BigInt']>;
-  totalSupply_lte?: Maybe<Scalars['BigInt']>;
-  totalSupply_in?: Maybe<Array<Scalars['BigInt']>>;
-  totalSupply_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalSupply?: Maybe<Scalars['String']>;
+  totalSupply_not?: Maybe<Scalars['String']>;
+  totalSupply_gt?: Maybe<Scalars['String']>;
+  totalSupply_lt?: Maybe<Scalars['String']>;
+  totalSupply_gte?: Maybe<Scalars['String']>;
+  totalSupply_lte?: Maybe<Scalars['String']>;
+  totalSupply_in?: Maybe<Array<Scalars['String']>>;
+  totalSupply_not_in?: Maybe<Array<Scalars['String']>>;
+  totalSupply_contains?: Maybe<Scalars['String']>;
+  totalSupply_not_contains?: Maybe<Scalars['String']>;
+  totalSupply_starts_with?: Maybe<Scalars['String']>;
+  totalSupply_not_starts_with?: Maybe<Scalars['String']>;
+  totalSupply_ends_with?: Maybe<Scalars['String']>;
+  totalSupply_not_ends_with?: Maybe<Scalars['String']>;
+  totalBurned?: Maybe<Scalars['String']>;
+  totalBurned_not?: Maybe<Scalars['String']>;
+  totalBurned_gt?: Maybe<Scalars['String']>;
+  totalBurned_lt?: Maybe<Scalars['String']>;
+  totalBurned_gte?: Maybe<Scalars['String']>;
+  totalBurned_lte?: Maybe<Scalars['String']>;
+  totalBurned_in?: Maybe<Array<Scalars['String']>>;
+  totalBurned_not_in?: Maybe<Array<Scalars['String']>>;
+  totalBurned_contains?: Maybe<Scalars['String']>;
+  totalBurned_not_contains?: Maybe<Scalars['String']>;
+  totalBurned_starts_with?: Maybe<Scalars['String']>;
+  totalBurned_not_starts_with?: Maybe<Scalars['String']>;
+  totalBurned_ends_with?: Maybe<Scalars['String']>;
+  totalBurned_not_ends_with?: Maybe<Scalars['String']>;
+  totalMinted?: Maybe<Scalars['String']>;
+  totalMinted_not?: Maybe<Scalars['String']>;
+  totalMinted_gt?: Maybe<Scalars['String']>;
+  totalMinted_lt?: Maybe<Scalars['String']>;
+  totalMinted_gte?: Maybe<Scalars['String']>;
+  totalMinted_lte?: Maybe<Scalars['String']>;
+  totalMinted_in?: Maybe<Array<Scalars['String']>>;
+  totalMinted_not_in?: Maybe<Array<Scalars['String']>>;
+  totalMinted_contains?: Maybe<Scalars['String']>;
+  totalMinted_not_contains?: Maybe<Scalars['String']>;
+  totalMinted_starts_with?: Maybe<Scalars['String']>;
+  totalMinted_not_starts_with?: Maybe<Scalars['String']>;
+  totalMinted_ends_with?: Maybe<Scalars['String']>;
+  totalMinted_not_ends_with?: Maybe<Scalars['String']>;
+  totalTransfers?: Maybe<Scalars['String']>;
+  totalTransfers_not?: Maybe<Scalars['String']>;
+  totalTransfers_gt?: Maybe<Scalars['String']>;
+  totalTransfers_lt?: Maybe<Scalars['String']>;
+  totalTransfers_gte?: Maybe<Scalars['String']>;
+  totalTransfers_lte?: Maybe<Scalars['String']>;
+  totalTransfers_in?: Maybe<Array<Scalars['String']>>;
+  totalTransfers_not_in?: Maybe<Array<Scalars['String']>>;
+  totalTransfers_contains?: Maybe<Scalars['String']>;
+  totalTransfers_not_contains?: Maybe<Scalars['String']>;
+  totalTransfers_starts_with?: Maybe<Scalars['String']>;
+  totalTransfers_not_starts_with?: Maybe<Scalars['String']>;
+  totalTransfers_ends_with?: Maybe<Scalars['String']>;
+  totalTransfers_not_ends_with?: Maybe<Scalars['String']>;
+  totalMints?: Maybe<Scalars['String']>;
+  totalMints_not?: Maybe<Scalars['String']>;
+  totalMints_gt?: Maybe<Scalars['String']>;
+  totalMints_lt?: Maybe<Scalars['String']>;
+  totalMints_gte?: Maybe<Scalars['String']>;
+  totalMints_lte?: Maybe<Scalars['String']>;
+  totalMints_in?: Maybe<Array<Scalars['String']>>;
+  totalMints_not_in?: Maybe<Array<Scalars['String']>>;
+  totalMints_contains?: Maybe<Scalars['String']>;
+  totalMints_not_contains?: Maybe<Scalars['String']>;
+  totalMints_starts_with?: Maybe<Scalars['String']>;
+  totalMints_not_starts_with?: Maybe<Scalars['String']>;
+  totalMints_ends_with?: Maybe<Scalars['String']>;
+  totalMints_not_ends_with?: Maybe<Scalars['String']>;
+  totalBurns?: Maybe<Scalars['String']>;
+  totalBurns_not?: Maybe<Scalars['String']>;
+  totalBurns_gt?: Maybe<Scalars['String']>;
+  totalBurns_lt?: Maybe<Scalars['String']>;
+  totalBurns_gte?: Maybe<Scalars['String']>;
+  totalBurns_lte?: Maybe<Scalars['String']>;
+  totalBurns_in?: Maybe<Array<Scalars['String']>>;
+  totalBurns_not_in?: Maybe<Array<Scalars['String']>>;
+  totalBurns_contains?: Maybe<Scalars['String']>;
+  totalBurns_not_contains?: Maybe<Scalars['String']>;
+  totalBurns_starts_with?: Maybe<Scalars['String']>;
+  totalBurns_not_starts_with?: Maybe<Scalars['String']>;
+  totalBurns_ends_with?: Maybe<Scalars['String']>;
+  totalBurns_not_ends_with?: Maybe<Scalars['String']>;
 };
 
 export enum Token_OrderBy {
@@ -1346,15 +1680,24 @@ export enum Token_OrderBy {
   Name = 'name',
   Symbol = 'symbol',
   TotalSupply = 'totalSupply',
+  TotalBurned = 'totalBurned',
+  TotalMinted = 'totalMinted',
+  TotalTransfers = 'totalTransfers',
+  TotalMints = 'totalMints',
+  TotalBurns = 'totalBurns'
 }
 
 export type Transaction = {
+  /** Transaction hash + log index */
   id: Scalars['ID'];
-  block: Scalars['Int'];
+  /** Transaction hash */
   hash: Scalars['Bytes'];
-  sender: Scalars['Bytes'];
+  /** Block number the transaction is in */
+  block: Scalars['Int'];
+  /** Timestamp of the block the transaction is in */
   timestamp: Scalars['BigInt'];
-  type: TransactionType;
+  /** Address of the sender of the transaction */
+  sender: Scalars['Bytes'];
 };
 
 export type Transaction_Filter = {
@@ -1366,6 +1709,12 @@ export type Transaction_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
+  hash?: Maybe<Scalars['Bytes']>;
+  hash_not?: Maybe<Scalars['Bytes']>;
+  hash_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  hash_contains?: Maybe<Scalars['Bytes']>;
+  hash_not_contains?: Maybe<Scalars['Bytes']>;
   block?: Maybe<Scalars['Int']>;
   block_not?: Maybe<Scalars['Int']>;
   block_gt?: Maybe<Scalars['Int']>;
@@ -1374,18 +1723,6 @@ export type Transaction_Filter = {
   block_lte?: Maybe<Scalars['Int']>;
   block_in?: Maybe<Array<Scalars['Int']>>;
   block_not_in?: Maybe<Array<Scalars['Int']>>;
-  hash?: Maybe<Scalars['Bytes']>;
-  hash_not?: Maybe<Scalars['Bytes']>;
-  hash_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  hash_contains?: Maybe<Scalars['Bytes']>;
-  hash_not_contains?: Maybe<Scalars['Bytes']>;
-  sender?: Maybe<Scalars['Bytes']>;
-  sender_not?: Maybe<Scalars['Bytes']>;
-  sender_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
-  sender_contains?: Maybe<Scalars['Bytes']>;
-  sender_not_contains?: Maybe<Scalars['Bytes']>;
   timestamp?: Maybe<Scalars['BigInt']>;
   timestamp_not?: Maybe<Scalars['BigInt']>;
   timestamp_gt?: Maybe<Scalars['BigInt']>;
@@ -1394,26 +1731,20 @@ export type Transaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
+  sender?: Maybe<Scalars['Bytes']>;
+  sender_not?: Maybe<Scalars['Bytes']>;
+  sender_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: Maybe<Array<Scalars['Bytes']>>;
+  sender_contains?: Maybe<Scalars['Bytes']>;
+  sender_not_contains?: Maybe<Scalars['Bytes']>;
 };
 
 export enum Transaction_OrderBy {
   Id = 'id',
-  Block = 'block',
   Hash = 'hash',
-  Sender = 'sender',
+  Block = 'block',
   Timestamp = 'timestamp',
-  Type = 'type',
-}
-
-export enum TransactionType {
-  CreateLock = 'CREATE_LOCK',
-  IncreaseLockTime = 'INCREASE_LOCK_TIME',
-  IncreaseLockAmount = 'INCREASE_LOCK_AMOUNT',
-  Withdraw = 'WITHDRAW',
-  Eject = 'EJECT',
-  Claim = 'CLAIM',
+  Sender = 'sender'
 }
 
 export type UserLockup = {
@@ -1520,7 +1851,7 @@ export enum UserLockup_OrderBy {
   Slope = 'slope',
   Bias = 'bias',
   Ejected = 'ejected',
-  EjectedHash = 'ejectedHash',
+  EjectedHash = 'ejectedHash'
 }
 
 export type WithdrawTransaction = Transaction & {
@@ -1530,7 +1861,6 @@ export type WithdrawTransaction = Transaction & {
   provider: Scalars['Bytes'];
   sender: Scalars['Bytes'];
   timestamp: Scalars['BigInt'];
-  type: TransactionType;
   value: Scalars['BigInt'];
 };
 
@@ -1577,8 +1907,6 @@ export type WithdrawTransaction_Filter = {
   timestamp_lte?: Maybe<Scalars['BigInt']>;
   timestamp_in?: Maybe<Array<Scalars['BigInt']>>;
   timestamp_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  type?: Maybe<TransactionType>;
-  type_not?: Maybe<TransactionType>;
   value?: Maybe<Scalars['BigInt']>;
   value_not?: Maybe<Scalars['BigInt']>;
   value_gt?: Maybe<Scalars['BigInt']>;
@@ -1596,58 +1924,38 @@ export enum WithdrawTransaction_OrderBy {
   Provider = 'provider',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Type = 'type',
-  Value = 'value',
+  Value = 'value'
 }
 
-export type TokenDetailsFragment = Pick<
-  Token,
-  'id' | 'address' | 'decimals' | 'symbol' | 'totalSupply'
->;
+export type TokenDetailsFragment = (
+  Pick<Token, 'id' | 'address' | 'decimals' | 'symbol'>
+  & { totalSupply: Pick<Metric, 'simple' | 'exact' | 'decimals'> }
+);
 
-export type UserLockupDetailsFragment = Pick<
-  UserLockup,
-  'value' | 'account' | 'lockTime' | 'bias' | 'slope' | 'ts'
->;
+export type UserLockupDetailsFragment = Pick<UserLockup, 'value' | 'account' | 'lockTime' | 'bias' | 'slope' | 'ts'>;
 
-export type TransactionDetailsFragment = Pick<
-  Transaction,
-  'hash' | 'timestamp' | 'type'
->;
-
-export type IncentivisedVotingLockupDetailsFragment = Pick<
-  IncentivisedVotingLockup,
-  | 'periodFinish'
-  | 'lastUpdateTime'
-  | 'rewardPerTokenStored'
-  | 'end'
-  | 'duration'
-  | 'rewardRate'
-  | 'globalEpoch'
-  | 'expired'
-  | 'maxTime'
-  | 'totalStaticWeight'
-  | 'totalStakingRewards'
-  | 'totalValue'
-> & { address: IncentivisedVotingLockup['id'] } & {
-  stakingToken: TokenDetailsFragment;
-  rewardsToken: TokenDetailsFragment;
-  votingToken: TokenDetailsFragment;
-};
+export type IncentivisedVotingLockupDetailsFragment = (
+  Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'end' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
+  & { address: IncentivisedVotingLockup['id'] }
+  & { totalStakers: Pick<Counter, 'value'>, stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, votingToken: TokenDetailsFragment }
+);
 
 export type Erc20TokensQueryVariables = {
   addresses: Array<Scalars['Bytes']>;
 };
 
+
 export type Erc20TokensQuery = { tokens: Array<TokenDetailsFragment> };
 
 export type AllErc20TokensQueryVariables = {};
+
 
 export type AllErc20TokensQuery = { tokens: Array<TokenDetailsFragment> };
 
 export type TokenQueryVariables = {
   id: Scalars['ID'];
 };
+
 
 export type TokenQuery = { token?: Maybe<TokenDetailsFragment> };
 
@@ -1658,114 +1966,106 @@ export type IncentivisedVotingLockupsQueryVariables = {
   block?: Maybe<Block_Height>;
 };
 
-export type IncentivisedVotingLockupsQuery = {
-  current: Array<
-    {
-      stakingRewards: Array<
-        Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>
-      >;
-      stakingBalances: Array<Pick<StakingBalance, 'amount'>>;
-      userLockups: Array<
-        Pick<UserLockup, 'ejected' | 'ejectedHash'> & UserLockupDetailsFragment
-      >;
-    } & IncentivisedVotingLockupDetailsFragment
-  >;
-  historic: Array<IncentivisedVotingLockupDetailsFragment>;
-};
+
+export type IncentivisedVotingLockupsQuery = { current: Array<(
+    { stakingRewards: Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>, stakingBalances: Array<Pick<StakingBalance, 'amount'>>, userLockups: Array<(
+      Pick<UserLockup, 'ejected' | 'ejectedHash'>
+      & UserLockupDetailsFragment
+    )> }
+    & IncentivisedVotingLockupDetailsFragment
+  )>, historic: Array<IncentivisedVotingLockupDetailsFragment> };
 
 export type AllUserLockupsQueryVariables = {
+  skip: Scalars['Int'];
   minLockTime: Scalars['BigInt'];
   hasBlock: Scalars['Boolean'];
   block?: Maybe<Block_Height>;
 };
 
-export type AllUserLockupsQuery = {
-  current: Array<UserLockupDetailsFragment>;
-  historic: Array<UserLockupDetailsFragment>;
-};
+
+export type AllUserLockupsQuery = { current: Array<UserLockupDetailsFragment>, historic: Array<UserLockupDetailsFragment> };
 
 export type HistoricTransactionsQueryVariables = {
-  account: Scalars['Bytes'];
+  account?: Maybe<Scalars['Bytes']>;
 };
 
-export type HistoricTransactionsQuery = {
-  createLockTransactions: Array<
-    Pick<
-      CreateLockTransaction,
-      'value' | 'lockTime' | 'timestamp' | 'hash' | 'type'
-    >
-  >;
-  increaseLockTimeTransactions: Array<
-    Pick<
-      IncreaseLockTimeTransaction,
-      'lockTime' | 'timestamp' | 'hash' | 'type'
-    >
-  >;
-  increaseLockAmountTransactions: Array<
-    Pick<IncreaseLockAmountTransaction, 'value' | 'timestamp' | 'hash' | 'type'>
-  >;
-  withdrawTransactions: Array<
-    Pick<WithdrawTransaction, 'value' | 'timestamp' | 'hash' | 'type'>
-  >;
-  claimTransactions: Array<
-    Pick<ClaimTransaction, 'reward' | 'timestamp' | 'hash' | 'type'>
-  >;
-};
+
+export type HistoricTransactionsQuery = { createLockTransactions: Array<(
+    { __typename: 'CreateLockTransaction' }
+    & Pick<CreateLockTransaction, 'value' | 'lockTime' | 'hash' | 'timestamp'>
+  )>, increaseLockTimeTransactions: Array<(
+    { __typename: 'IncreaseLockTimeTransaction' }
+    & Pick<IncreaseLockTimeTransaction, 'lockTime' | 'hash' | 'timestamp'>
+  )>, increaseLockAmountTransactions: Array<(
+    { __typename: 'IncreaseLockAmountTransaction' }
+    & Pick<IncreaseLockAmountTransaction, 'value' | 'hash' | 'timestamp'>
+  )>, withdrawTransactions: Array<(
+    { __typename: 'WithdrawTransaction' }
+    & Pick<WithdrawTransaction, 'value' | 'hash' | 'timestamp'>
+  )>, claimTransactions: Array<(
+    { __typename: 'ClaimTransaction' }
+    & Pick<ClaimTransaction, 'reward' | 'hash' | 'timestamp'>
+  )> };
 
 export const UserLockupDetailsFragmentDoc = gql`
-  fragment UserLockupDetails on UserLockup {
-    value
-    account
-    lockTime
-    bias
-    slope
-    ts
-  }
-`;
+    fragment UserLockupDetails on UserLockup {
+  value
+  account
+  lockTime
+  bias
+  slope
+  ts
+}
+    `;
 export const TokenDetailsFragmentDoc = gql`
-  fragment TokenDetails on Token {
-    id
-    address
+    fragment TokenDetails on Token {
+  id
+  address
+  decimals
+  symbol
+  totalSupply {
+    simple
+    exact
     decimals
-    symbol
-    totalSupply
   }
-`;
+}
+    `;
 export const IncentivisedVotingLockupDetailsFragmentDoc = gql`
-  fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
-    address: id
-    periodFinish
-    lastUpdateTime
-    rewardPerTokenStored
-    end
-    duration
-    rewardRate
-    globalEpoch
-    expired
-    maxTime
-    totalStaticWeight
-    totalStakingRewards
-    totalValue
-    stakingToken {
-      ...TokenDetails
-    }
-    rewardsToken {
-      ...TokenDetails
-    }
-    votingToken {
-      ...TokenDetails
-    }
+    fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
+  address: id
+  periodFinish
+  lastUpdateTime
+  rewardPerTokenStored
+  end
+  duration
+  rewardRate
+  globalEpoch
+  expired
+  maxTime
+  totalStaticWeight
+  totalStakingRewards
+  totalValue
+  totalStakers {
+    value
   }
-  ${TokenDetailsFragmentDoc}
-`;
+  stakingToken {
+    ...TokenDetails
+  }
+  rewardsToken {
+    ...TokenDetails
+  }
+  votingToken {
+    ...TokenDetails
+  }
+}
+    ${TokenDetailsFragmentDoc}`;
 export const Erc20TokensDocument = gql`
-  query Erc20Tokens($addresses: [Bytes!]!) {
-    tokens(where: { address_in: $addresses }) {
-      ...TokenDetails
-    }
+    query Erc20Tokens($addresses: [Bytes!]!) {
+  tokens(where: {address_in: $addresses}) {
+    ...TokenDetails
   }
-  ${TokenDetailsFragmentDoc}
-`;
+}
+    ${TokenDetailsFragmentDoc}`;
 
 /**
  * __useErc20TokensQuery__
@@ -1783,44 +2083,22 @@ export const Erc20TokensDocument = gql`
  *   },
  * });
  */
-export function useErc20TokensQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Erc20TokensQuery,
-    Erc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<Erc20TokensQuery, Erc20TokensQueryVariables>(
-    Erc20TokensDocument,
-    baseOptions,
-  );
-}
-export function useErc20TokensLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Erc20TokensQuery,
-    Erc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    Erc20TokensQuery,
-    Erc20TokensQueryVariables
-  >(Erc20TokensDocument, baseOptions);
-}
+export function useErc20TokensQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<Erc20TokensQuery, Erc20TokensQueryVariables>) {
+        return ApolloReactHooks.useQuery<Erc20TokensQuery, Erc20TokensQueryVariables>(Erc20TokensDocument, baseOptions);
+      }
+export function useErc20TokensLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<Erc20TokensQuery, Erc20TokensQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<Erc20TokensQuery, Erc20TokensQueryVariables>(Erc20TokensDocument, baseOptions);
+        }
 export type Erc20TokensQueryHookResult = ReturnType<typeof useErc20TokensQuery>;
-export type Erc20TokensLazyQueryHookResult = ReturnType<
-  typeof useErc20TokensLazyQuery
->;
-export type Erc20TokensQueryResult = ApolloReactCommon.QueryResult<
-  Erc20TokensQuery,
-  Erc20TokensQueryVariables
->;
+export type Erc20TokensLazyQueryHookResult = ReturnType<typeof useErc20TokensLazyQuery>;
+export type Erc20TokensQueryResult = ApolloReactCommon.QueryResult<Erc20TokensQuery, Erc20TokensQueryVariables>;
 export const AllErc20TokensDocument = gql`
-  query AllErc20Tokens {
-    tokens {
-      ...TokenDetails
-    }
+    query AllErc20Tokens {
+  tokens {
+    ...TokenDetails
   }
-  ${TokenDetailsFragmentDoc}
-`;
+}
+    ${TokenDetailsFragmentDoc}`;
 
 /**
  * __useAllErc20TokensQuery__
@@ -1837,46 +2115,22 @@ export const AllErc20TokensDocument = gql`
  *   },
  * });
  */
-export function useAllErc20TokensQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >(AllErc20TokensDocument, baseOptions);
-}
-export function useAllErc20TokensLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >(AllErc20TokensDocument, baseOptions);
-}
-export type AllErc20TokensQueryHookResult = ReturnType<
-  typeof useAllErc20TokensQuery
->;
-export type AllErc20TokensLazyQueryHookResult = ReturnType<
-  typeof useAllErc20TokensLazyQuery
->;
-export type AllErc20TokensQueryResult = ApolloReactCommon.QueryResult<
-  AllErc20TokensQuery,
-  AllErc20TokensQueryVariables
->;
+export function useAllErc20TokensQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllErc20TokensQuery, AllErc20TokensQueryVariables>) {
+        return ApolloReactHooks.useQuery<AllErc20TokensQuery, AllErc20TokensQueryVariables>(AllErc20TokensDocument, baseOptions);
+      }
+export function useAllErc20TokensLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllErc20TokensQuery, AllErc20TokensQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AllErc20TokensQuery, AllErc20TokensQueryVariables>(AllErc20TokensDocument, baseOptions);
+        }
+export type AllErc20TokensQueryHookResult = ReturnType<typeof useAllErc20TokensQuery>;
+export type AllErc20TokensLazyQueryHookResult = ReturnType<typeof useAllErc20TokensLazyQuery>;
+export type AllErc20TokensQueryResult = ApolloReactCommon.QueryResult<AllErc20TokensQuery, AllErc20TokensQueryVariables>;
 export const TokenDocument = gql`
-  query Token($id: ID!) {
-    token(id: $id) {
-      ...TokenDetails
-    }
+    query Token($id: ID!) {
+  token(id: $id) {
+    ...TokenDetails
   }
-  ${TokenDetailsFragmentDoc}
-`;
+}
+    ${TokenDetailsFragmentDoc}`;
 
 /**
  * __useTokenQuery__
@@ -1894,67 +2148,39 @@ export const TokenDocument = gql`
  *   },
  * });
  */
-export function useTokenQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    TokenQuery,
-    TokenQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<TokenQuery, TokenQueryVariables>(
-    TokenDocument,
-    baseOptions,
-  );
-}
-export function useTokenLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    TokenQuery,
-    TokenQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<TokenQuery, TokenQueryVariables>(
-    TokenDocument,
-    baseOptions,
-  );
-}
+export function useTokenQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<TokenQuery, TokenQueryVariables>) {
+        return ApolloReactHooks.useQuery<TokenQuery, TokenQueryVariables>(TokenDocument, baseOptions);
+      }
+export function useTokenLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TokenQuery, TokenQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<TokenQuery, TokenQueryVariables>(TokenDocument, baseOptions);
+        }
 export type TokenQueryHookResult = ReturnType<typeof useTokenQuery>;
 export type TokenLazyQueryHookResult = ReturnType<typeof useTokenLazyQuery>;
-export type TokenQueryResult = ApolloReactCommon.QueryResult<
-  TokenQuery,
-  TokenQueryVariables
->;
+export type TokenQueryResult = ApolloReactCommon.QueryResult<TokenQuery, TokenQueryVariables>;
 export const IncentivisedVotingLockupsDocument = gql`
-  query IncentivisedVotingLockups(
-    $hasAccount: Boolean!
-    $hasBlock: Boolean!
-    $account: Bytes
-    $block: Block_height
-  ) {
-    current: incentivisedVotingLockups @skip(if: $hasBlock) {
-      ...IncentivisedVotingLockupDetails
-      stakingRewards(where: { account: $account }, first: 1)
-        @include(if: $hasAccount) {
-        amount
-        amountPerTokenPaid
-        rewardsPaid
-      }
-      stakingBalances(where: { account: $account }, first: 1)
-        @include(if: $hasAccount) {
-        amount
-      }
-      userLockups(where: { account: $account }, first: 1)
-        @include(if: $hasAccount) {
-        ...UserLockupDetails
-        ejected
-        ejectedHash
-      }
+    query IncentivisedVotingLockups($hasAccount: Boolean!, $hasBlock: Boolean!, $account: Bytes, $block: Block_height) {
+  current: incentivisedVotingLockups @skip(if: $hasBlock) {
+    ...IncentivisedVotingLockupDetails
+    stakingRewards(where: {account: $account}, first: 1) @include(if: $hasAccount) {
+      amount
+      amountPerTokenPaid
+      rewardsPaid
     }
-    historic: incentivisedVotingLockups(block: $block) @include(if: $hasBlock) {
-      ...IncentivisedVotingLockupDetails
+    stakingBalances(where: {account: $account}, first: 1) @include(if: $hasAccount) {
+      amount
+    }
+    userLockups(where: {account: $account}, first: 1) @include(if: $hasAccount) {
+      ...UserLockupDetails
+      ejected
+      ejectedHash
     }
   }
-  ${IncentivisedVotingLockupDetailsFragmentDoc}
-  ${UserLockupDetailsFragmentDoc}
-`;
+  historic: incentivisedVotingLockups(block: $block) @include(if: $hasBlock) {
+    ...IncentivisedVotingLockupDetails
+  }
+}
+    ${IncentivisedVotingLockupDetailsFragmentDoc}
+${UserLockupDetailsFragmentDoc}`;
 
 /**
  * __useIncentivisedVotingLockupsQuery__
@@ -1975,108 +2201,27 @@ export const IncentivisedVotingLockupsDocument = gql`
  *   },
  * });
  */
-export function useIncentivisedVotingLockupsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >(IncentivisedVotingLockupsDocument, baseOptions);
-}
-export function useIncentivisedVotingLockupsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >(IncentivisedVotingLockupsDocument, baseOptions);
-}
-export type IncentivisedVotingLockupsQueryHookResult = ReturnType<
-  typeof useIncentivisedVotingLockupsQuery
->;
-export type IncentivisedVotingLockupsLazyQueryHookResult = ReturnType<
-  typeof useIncentivisedVotingLockupsLazyQuery
->;
-export type IncentivisedVotingLockupsQueryResult = ApolloReactCommon.QueryResult<
-  IncentivisedVotingLockupsQuery,
-  IncentivisedVotingLockupsQueryVariables
->;
+export function useIncentivisedVotingLockupsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>) {
+        return ApolloReactHooks.useQuery<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>(IncentivisedVotingLockupsDocument, baseOptions);
+      }
+export function useIncentivisedVotingLockupsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>(IncentivisedVotingLockupsDocument, baseOptions);
+        }
+export type IncentivisedVotingLockupsQueryHookResult = ReturnType<typeof useIncentivisedVotingLockupsQuery>;
+export type IncentivisedVotingLockupsLazyQueryHookResult = ReturnType<typeof useIncentivisedVotingLockupsLazyQuery>;
+export type IncentivisedVotingLockupsQueryResult = ApolloReactCommon.QueryResult<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>;
 export const AllUserLockupsDocument = gql`
-  query AllUserLockups(
-    $minLockTime: BigInt!
-    $hasBlock: Boolean!
-    $block: Block_height
-  ) {
-    current: userLockups(
-      where: { lockTime_gte: $minLockTime }
-      first: 1000
-      orderBy: bias
-      orderDirection: desc
-    ) @skip(if: $hasBlock) {
-      ...UserLockupDetails
-    }
-    historic: userLockups(
-      where: { lockTime_gte: $minLockTime }
-      block: $block
-      first: 1000
-      orderBy: bias
-      orderDirection: desc
-    ) @include(if: $hasBlock) {
-      ...UserLockupDetails
-    }
+    query AllUserLockups($skip: Int!, $minLockTime: BigInt!, $hasBlock: Boolean!, $block: Block_height) {
+  current: userLockups(where: {lockTime_gte: $minLockTime}, first: 500, skip: $skip, orderBy: bias, orderDirection: desc) @skip(if: $hasBlock) {
+    ...UserLockupDetails
   }
-  ${UserLockupDetailsFragmentDoc}
-`;
-
-export const HistoricTransactionsDocument = gql`
-  query HistoricTransactions($account: Bytes) @api(name: mstable) {
-    createLockTransactions(where: { provider: $account }, orderBy: timestamp) {
-      value
-      lockTime
-      hash
-      timestamp
-      type
-    }
-    increaseLockTimeTransactions(
-      where: { provider: $account }
-      orderBy: timestamp
-    ) {
-      lockTime
-      hash
-      timestamp
-      type
-    }
-    increaseLockAmountTransactions(
-      where: { provider: $account }
-      orderBy: timestamp
-    ) {
-      value
-      hash
-      timestamp
-      type
-    }
-    withdrawTransactions(where: { provider: $account }, orderBy: timestamp) {
-      value
-      hash
-      timestamp
-      type
-    }
-    claimTransactions(where: { user: $account }, orderBy: timestamp) {
-      reward
-      hash
-      timestamp
-      type
-    }
+  historic: userLockups(where: {lockTime_gte: $minLockTime}, block: $block, skip: $skip, first: 500, orderBy: bias, orderDirection: desc) @include(if: $hasBlock) {
+    ...UserLockupDetails
   }
-`;
+}
+    ${UserLockupDetailsFragmentDoc}`;
 
-export /**
+/**
  * __useAllUserLockupsQuery__
  *
  * To run a query within a React component, call `useAllUserLockupsQuery` and pass it any options that fit your needs.
@@ -2088,74 +2233,80 @@ export /**
  * @example
  * const { data, loading, error } = useAllUserLockupsQuery({
  *   variables: {
+ *      skip: // value for 'skip'
  *      minLockTime: // value for 'minLockTime'
  *      hasBlock: // value for 'hasBlock'
  *      block: // value for 'block'
  *   },
  * });
  */
-function useAllUserLockupsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >(AllUserLockupsDocument, baseOptions);
+export function useAllUserLockupsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllUserLockupsQuery, AllUserLockupsQueryVariables>) {
+        return ApolloReactHooks.useQuery<AllUserLockupsQuery, AllUserLockupsQueryVariables>(AllUserLockupsDocument, baseOptions);
+      }
+export function useAllUserLockupsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllUserLockupsQuery, AllUserLockupsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AllUserLockupsQuery, AllUserLockupsQueryVariables>(AllUserLockupsDocument, baseOptions);
+        }
+export type AllUserLockupsQueryHookResult = ReturnType<typeof useAllUserLockupsQuery>;
+export type AllUserLockupsLazyQueryHookResult = ReturnType<typeof useAllUserLockupsLazyQuery>;
+export type AllUserLockupsQueryResult = ApolloReactCommon.QueryResult<AllUserLockupsQuery, AllUserLockupsQueryVariables>;
+export const HistoricTransactionsDocument = gql`
+    query HistoricTransactions($account: Bytes) @api(name: mstable) {
+  createLockTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    value
+    lockTime
+    hash
+    timestamp
+  }
+  increaseLockTimeTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    lockTime
+    hash
+    timestamp
+  }
+  increaseLockAmountTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    value
+    hash
+    timestamp
+  }
+  withdrawTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    value
+    hash
+    timestamp
+  }
+  claimTransactions(where: {user: $account}, orderBy: timestamp) {
+    __typename
+    reward
+    hash
+    timestamp
+  }
 }
-export function useAllUserLockupsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >(AllUserLockupsDocument, baseOptions);
-}
-export type AllUserLockupsQueryHookResult = ReturnType<
-  typeof useAllUserLockupsQuery
->;
-export type AllUserLockupsLazyQueryHookResult = ReturnType<
-  typeof useAllUserLockupsLazyQuery
->;
-export type AllUserLockupsQueryResult = ApolloReactCommon.QueryResult<
-  AllUserLockupsQuery,
-  AllUserLockupsQueryVariables
->;
+    `;
 
-export function useHistoricTransactionsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >(HistoricTransactionsDocument, baseOptions);
-}
-export function useHistoricTransactionsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >(HistoricTransactionsDocument, baseOptions);
-}
-export type HistoricTransactionsQueryHookResult = ReturnType<
-  typeof useHistoricTransactionsQuery
->;
-export type HistoricTransactionsLazyQueryHookResult = ReturnType<
-  typeof useHistoricTransactionsLazyQuery
->;
-export type HistoricTransactionsQueryResult = ApolloReactCommon.QueryResult<
-  HistoricTransactionsQuery,
-  HistoricTransactionsQueryVariables
->;
+/**
+ * __useHistoricTransactionsQuery__
+ *
+ * To run a query within a React component, call `useHistoricTransactionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHistoricTransactionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHistoricTransactionsQuery({
+ *   variables: {
+ *      account: // value for 'account'
+ *   },
+ * });
+ */
+export function useHistoricTransactionsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>) {
+        return ApolloReactHooks.useQuery<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>(HistoricTransactionsDocument, baseOptions);
+      }
+export function useHistoricTransactionsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>(HistoricTransactionsDocument, baseOptions);
+        }
+export type HistoricTransactionsQueryHookResult = ReturnType<typeof useHistoricTransactionsQuery>;
+export type HistoricTransactionsLazyQueryHookResult = ReturnType<typeof useHistoricTransactionsLazyQuery>;
+export type HistoricTransactionsQueryResult = ApolloReactCommon.QueryResult<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>;

@@ -1,5 +1,8 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { ApolloProvider as ApolloReactProvider } from '@apollo/react-hooks';
+import {
+  ApolloProvider as ApolloReactProvider,
+  Reference,
+} from '@apollo/react-hooks';
 import {
   ApolloClient,
   InMemoryCache,
@@ -10,15 +13,36 @@ import { ApolloLink } from 'apollo-link';
 import { onError } from 'apollo-link-error';
 import { persistCache } from 'apollo-cache-persist';
 import Skeleton from 'react-loading-skeleton';
+import useThrottleFn from 'react-use/lib/useThrottleFn';
 
 import { useAddErrorNotification } from '../NotificationsProvider';
 
 const CHAIN_ID = process.env.REACT_APP_CHAIN_ID;
 
-const CACHE_KEY = `apollo-cache-persist.CHAIN_ID_${CHAIN_ID}`;
+const CACHE_KEY = `apollo-cache-persist.CHAIN_ID_${CHAIN_ID}.v2`;
 
 const cache = new InMemoryCache({
   resultCaching: true,
+  typePolicies: {
+    'Query.tokens': {
+      // Hack: sometimes tokens of the same ID are loaded across separate
+      // subgraphs; `totalSupply` is an ID that will be unique
+      keyFields: ['id', 'totalSupply'],
+    },
+    Query: {
+      fields: {
+        tokens: {
+          merge(existing: Reference[] = [], incoming: Reference[] = []) {
+            const existingRefs = new Set(existing.map(item => item.__ref));
+            return [
+              ...existing,
+              ...incoming.filter(item => !existingRefs.has(item.__ref)),
+            ];
+          },
+        },
+      },
+    },
+  },
 });
 
 /**
@@ -27,16 +51,27 @@ const cache = new InMemoryCache({
 export const ApolloProvider: FC = ({ children }) => {
   const addErrorNotification = useAddErrorNotification();
   const [persisted, setPersisted] = useState(false);
+  const [error, setError] = useState<string>();
+
+  useThrottleFn(
+    () => {
+      if (error) {
+        addErrorNotification(error);
+      }
+    },
+    5000,
+    [error] as never,
+  );
 
   const errorLink = onError(({ networkError, graphQLErrors }) => {
     if (graphQLErrors) {
-      graphQLErrors.forEach(({ message, ...error }) => {
+      graphQLErrors.forEach(({ message, ..._error }) => {
         // eslint-disable-next-line no-console
-        console.error(message, error);
+        console.error(message, _error);
       });
     }
     if (networkError) {
-      addErrorNotification(`Network error: ${networkError.message}`);
+      setError(`TheGraph: ${networkError.message}`);
     }
   });
 
@@ -54,7 +89,7 @@ export const ApolloProvider: FC = ({ children }) => {
       key: CACHE_KEY,
     })
       // eslint-disable-next-line no-console
-      .catch(error => console.warn('Cache persist error', error))
+      .catch(_error => console.warn('Cache persist error', _error))
       .finally(() => {
         setPersisted(true);
       });

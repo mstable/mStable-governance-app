@@ -3,7 +3,7 @@ schema {
   subscription: Subscription
 }
 type Query {
-  userLockup(
+  metric(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -11,20 +11,42 @@ type Query {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): UserLockup
-  userLockups(
+  ): Metric
+  metrics(
     skip: Int = 0
     first: Int = 100
-    orderBy: UserLockup_orderBy
+    orderBy: Metric_orderBy
     orderDirection: OrderDirection
-    where: UserLockup_filter
+    where: Metric_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [UserLockup!]!
+  ): [Metric!]!
+  counter(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Counter
+  counters(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Counter_orderBy
+    orderDirection: OrderDirection
+    where: Counter_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Counter!]!
   token(
     id: ID!
     """
@@ -47,6 +69,28 @@ type Query {
     """
     block: Block_height
   ): [Token!]!
+  userLockup(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): UserLockup
+  userLockups(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: UserLockup_orderBy
+    orderDirection: OrderDirection
+    where: UserLockup_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [UserLockup!]!
   incentivisedVotingLockup(
     id: ID!
     """
@@ -289,12 +333,269 @@ type Query {
     """
     block: Block_height
   ): [Transaction!]!
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
 }
 input Block_height {
   hash: Bytes
   number: Int
 }
 scalar Bytes
+type Metric {
+  id: ID!
+  """Exact value of the metric, i.e. in base units as an integer"""
+  exact: BigInt!
+  """Decimals used for the exact value (default: 18)"""
+  decimals: Int!
+  """Simple value of the metric, i.e. the exact value represented as a decimal"""
+  simple: BigDecimal!
+}
+scalar BigInt
+scalar BigDecimal
+enum Metric_orderBy {
+  id
+  exact
+  decimals
+  simple
+}
+enum OrderDirection {
+  asc
+  desc
+}
+input Metric_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  exact: BigInt
+  exact_not: BigInt
+  exact_gt: BigInt
+  exact_lt: BigInt
+  exact_gte: BigInt
+  exact_lte: BigInt
+  exact_in: [BigInt!]
+  exact_not_in: [BigInt!]
+  decimals: Int
+  decimals_not: Int
+  decimals_gt: Int
+  decimals_lt: Int
+  decimals_gte: Int
+  decimals_lte: Int
+  decimals_in: [Int!]
+  decimals_not_in: [Int!]
+  simple: BigDecimal
+  simple_not: BigDecimal
+  simple_gt: BigDecimal
+  simple_lt: BigDecimal
+  simple_gte: BigDecimal
+  simple_lte: BigDecimal
+  simple_in: [BigDecimal!]
+  simple_not_in: [BigDecimal!]
+}
+type Counter {
+  id: ID!
+  """Value of the counter; should be positive"""
+  value: BigInt!
+}
+enum Counter_orderBy {
+  id
+  value
+}
+input Counter_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  value: BigInt
+  value_not: BigInt
+  value_gt: BigInt
+  value_lt: BigInt
+  value_gte: BigInt
+  value_lte: BigInt
+  value_in: [BigInt!]
+  value_not_in: [BigInt!]
+}
+"""An ERC20-compatible token"""
+type Token {
+  id: ID!
+  """Token address"""
+  address: Bytes!
+  """Token decimals"""
+  decimals: Int!
+  """Token name"""
+  name: String!
+  """Token symbol"""
+  symbol: String!
+  """Total supply of the token"""
+  totalSupply: Metric!
+  """Total quantity of tokens burned"""
+  totalBurned: Metric!
+  """Total quantity of tokens minted"""
+  totalMinted: Metric!
+  """Count of transfer transactions"""
+  totalTransfers: Counter!
+  """Count of transfer transactions that minted the token"""
+  totalMints: Counter!
+  """Count of transfer transactions that burned the token"""
+  totalBurns: Counter!
+}
+enum Token_orderBy {
+  id
+  address
+  decimals
+  name
+  symbol
+  totalSupply
+  totalBurned
+  totalMinted
+  totalTransfers
+  totalMints
+  totalBurns
+}
+input Token_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  address: Bytes
+  address_not: Bytes
+  address_in: [Bytes!]
+  address_not_in: [Bytes!]
+  address_contains: Bytes
+  address_not_contains: Bytes
+  decimals: Int
+  decimals_not: Int
+  decimals_gt: Int
+  decimals_lt: Int
+  decimals_gte: Int
+  decimals_lte: Int
+  decimals_in: [Int!]
+  decimals_not_in: [Int!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  symbol: String
+  symbol_not: String
+  symbol_gt: String
+  symbol_lt: String
+  symbol_gte: String
+  symbol_lte: String
+  symbol_in: [String!]
+  symbol_not_in: [String!]
+  symbol_contains: String
+  symbol_not_contains: String
+  symbol_starts_with: String
+  symbol_not_starts_with: String
+  symbol_ends_with: String
+  symbol_not_ends_with: String
+  totalSupply: String
+  totalSupply_not: String
+  totalSupply_gt: String
+  totalSupply_lt: String
+  totalSupply_gte: String
+  totalSupply_lte: String
+  totalSupply_in: [String!]
+  totalSupply_not_in: [String!]
+  totalSupply_contains: String
+  totalSupply_not_contains: String
+  totalSupply_starts_with: String
+  totalSupply_not_starts_with: String
+  totalSupply_ends_with: String
+  totalSupply_not_ends_with: String
+  totalBurned: String
+  totalBurned_not: String
+  totalBurned_gt: String
+  totalBurned_lt: String
+  totalBurned_gte: String
+  totalBurned_lte: String
+  totalBurned_in: [String!]
+  totalBurned_not_in: [String!]
+  totalBurned_contains: String
+  totalBurned_not_contains: String
+  totalBurned_starts_with: String
+  totalBurned_not_starts_with: String
+  totalBurned_ends_with: String
+  totalBurned_not_ends_with: String
+  totalMinted: String
+  totalMinted_not: String
+  totalMinted_gt: String
+  totalMinted_lt: String
+  totalMinted_gte: String
+  totalMinted_lte: String
+  totalMinted_in: [String!]
+  totalMinted_not_in: [String!]
+  totalMinted_contains: String
+  totalMinted_not_contains: String
+  totalMinted_starts_with: String
+  totalMinted_not_starts_with: String
+  totalMinted_ends_with: String
+  totalMinted_not_ends_with: String
+  totalTransfers: String
+  totalTransfers_not: String
+  totalTransfers_gt: String
+  totalTransfers_lt: String
+  totalTransfers_gte: String
+  totalTransfers_lte: String
+  totalTransfers_in: [String!]
+  totalTransfers_not_in: [String!]
+  totalTransfers_contains: String
+  totalTransfers_not_contains: String
+  totalTransfers_starts_with: String
+  totalTransfers_not_starts_with: String
+  totalTransfers_ends_with: String
+  totalTransfers_not_ends_with: String
+  totalMints: String
+  totalMints_not: String
+  totalMints_gt: String
+  totalMints_lt: String
+  totalMints_gte: String
+  totalMints_lte: String
+  totalMints_in: [String!]
+  totalMints_not_in: [String!]
+  totalMints_contains: String
+  totalMints_not_contains: String
+  totalMints_starts_with: String
+  totalMints_not_starts_with: String
+  totalMints_ends_with: String
+  totalMints_not_ends_with: String
+  totalBurns: String
+  totalBurns_not: String
+  totalBurns_gt: String
+  totalBurns_lt: String
+  totalBurns_gte: String
+  totalBurns_lte: String
+  totalBurns_in: [String!]
+  totalBurns_not_in: [String!]
+  totalBurns_contains: String
+  totalBurns_not_contains: String
+  totalBurns_starts_with: String
+  totalBurns_not_starts_with: String
+  totalBurns_ends_with: String
+  totalBurns_not_ends_with: String
+}
 type UserLockup {
   id: ID!
   account: Bytes!
@@ -328,6 +629,7 @@ type IncentivisedVotingLockup {
   totalStaticWeight: BigInt!
   totalStakingRewards: BigInt!
   totalValue: BigInt!
+  totalStakers: Counter!
 }
 enum UserLockup_orderBy {
   id
@@ -340,10 +642,6 @@ enum UserLockup_orderBy {
   bias
   ejected
   ejectedHash
-}
-enum OrderDirection {
-  asc
-  desc
 }
 input UserLockup_filter {
   id: ID
@@ -425,7 +723,6 @@ input UserLockup_filter {
   ejectedHash_contains: Bytes
   ejectedHash_not_contains: Bytes
 }
-scalar BigInt
 enum StakingReward_orderBy {
   id
   amount
@@ -546,85 +843,9 @@ type StakingBalance {
   incentivisedVotingLockup: IncentivisedVotingLockup!
   amount: BigInt!
 }
-type Token {
-  id: ID!
-  address: Bytes!
-  decimals: Int!
-  name: String!
-  symbol: String!
-  totalSupply: BigInt!
-}
 type RewardsDistributor {
   id: ID!
   fundManagers: [Bytes!]!
-}
-enum Token_orderBy {
-  id
-  address
-  decimals
-  name
-  symbol
-  totalSupply
-}
-input Token_filter {
-  id: ID
-  id_not: ID
-  id_gt: ID
-  id_lt: ID
-  id_gte: ID
-  id_lte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  address: Bytes
-  address_not: Bytes
-  address_in: [Bytes!]
-  address_not_in: [Bytes!]
-  address_contains: Bytes
-  address_not_contains: Bytes
-  decimals: Int
-  decimals_not: Int
-  decimals_gt: Int
-  decimals_lt: Int
-  decimals_gte: Int
-  decimals_lte: Int
-  decimals_in: [Int!]
-  decimals_not_in: [Int!]
-  name: String
-  name_not: String
-  name_gt: String
-  name_lt: String
-  name_gte: String
-  name_lte: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  symbol: String
-  symbol_not: String
-  symbol_gt: String
-  symbol_lt: String
-  symbol_gte: String
-  symbol_lte: String
-  symbol_in: [String!]
-  symbol_not_in: [String!]
-  symbol_contains: String
-  symbol_not_contains: String
-  symbol_starts_with: String
-  symbol_not_starts_with: String
-  symbol_ends_with: String
-  symbol_not_ends_with: String
-  totalSupply: BigInt
-  totalSupply_not: BigInt
-  totalSupply_gt: BigInt
-  totalSupply_lt: BigInt
-  totalSupply_gte: BigInt
-  totalSupply_lte: BigInt
-  totalSupply_in: [BigInt!]
-  totalSupply_not_in: [BigInt!]
 }
 enum IncentivisedVotingLockup_orderBy {
   id
@@ -647,6 +868,7 @@ enum IncentivisedVotingLockup_orderBy {
   totalStaticWeight
   totalStakingRewards
   totalValue
+  totalStakers
 }
 input IncentivisedVotingLockup_filter {
   id: ID
@@ -805,6 +1027,20 @@ input IncentivisedVotingLockup_filter {
   totalValue_lte: BigInt
   totalValue_in: [BigInt!]
   totalValue_not_in: [BigInt!]
+  totalStakers: String
+  totalStakers_not: String
+  totalStakers_gt: String
+  totalStakers_lt: String
+  totalStakers_gte: String
+  totalStakers_lte: String
+  totalStakers_in: [String!]
+  totalStakers_not_in: [String!]
+  totalStakers_contains: String
+  totalStakers_not_contains: String
+  totalStakers_starts_with: String
+  totalStakers_not_starts_with: String
+  totalStakers_ends_with: String
+  totalStakers_not_ends_with: String
 }
 enum RewardsDistributor_orderBy {
   id
@@ -831,24 +1067,19 @@ type WithdrawTransaction implements Transaction {
   provider: Bytes!
   sender: Bytes!
   timestamp: BigInt!
-  type: TransactionType!
   value: BigInt!
 }
 interface Transaction {
+  """Transaction hash + log index"""
   id: ID!
-  block: Int!
+  """Transaction hash"""
   hash: Bytes!
-  sender: Bytes!
+  """Block number the transaction is in"""
+  block: Int!
+  """Timestamp of the block the transaction is in"""
   timestamp: BigInt!
-  type: TransactionType!
-}
-enum TransactionType {
-  CREATE_LOCK
-  INCREASE_LOCK_TIME
-  INCREASE_LOCK_AMOUNT
-  WITHDRAW
-  EJECT
-  CLAIM
+  """Address of the sender of the transaction"""
+  sender: Bytes!
 }
 enum WithdrawTransaction_orderBy {
   id
@@ -857,7 +1088,6 @@ enum WithdrawTransaction_orderBy {
   provider
   sender
   timestamp
-  type
   value
 }
 input WithdrawTransaction_filter {
@@ -903,8 +1133,6 @@ input WithdrawTransaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  type: TransactionType
-  type_not: TransactionType
   value: BigInt
   value_not: BigInt
   value_gt: BigInt
@@ -922,7 +1150,6 @@ type EjectTransaction implements Transaction {
   hash: Bytes!
   sender: Bytes!
   timestamp: BigInt!
-  type: TransactionType!
 }
 enum EjectTransaction_orderBy {
   id
@@ -932,7 +1159,6 @@ enum EjectTransaction_orderBy {
   hash
   sender
   timestamp
-  type
 }
 input EjectTransaction_filter {
   id: ID
@@ -983,8 +1209,6 @@ input EjectTransaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  type: TransactionType
-  type_not: TransactionType
 }
 type ClaimTransaction implements Transaction {
   id: ID!
@@ -993,7 +1217,6 @@ type ClaimTransaction implements Transaction {
   reward: BigInt!
   sender: Bytes!
   timestamp: BigInt!
-  type: TransactionType!
   user: Bytes!
 }
 enum ClaimTransaction_orderBy {
@@ -1003,7 +1226,6 @@ enum ClaimTransaction_orderBy {
   reward
   sender
   timestamp
-  type
   user
 }
 input ClaimTransaction_filter {
@@ -1051,8 +1273,6 @@ input ClaimTransaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  type: TransactionType
-  type_not: TransactionType
   user: Bytes
   user_not: Bytes
   user_in: [Bytes!]
@@ -1068,7 +1288,6 @@ type CreateLockTransaction implements Transaction {
   provider: Bytes!
   sender: Bytes!
   timestamp: BigInt!
-  type: TransactionType!
   value: BigInt!
 }
 enum CreateLockTransaction_orderBy {
@@ -1079,7 +1298,6 @@ enum CreateLockTransaction_orderBy {
   provider
   sender
   timestamp
-  type
   value
 }
 input CreateLockTransaction_filter {
@@ -1133,8 +1351,6 @@ input CreateLockTransaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  type: TransactionType
-  type_not: TransactionType
   value: BigInt
   value_not: BigInt
   value_gt: BigInt
@@ -1151,7 +1367,6 @@ type IncreaseLockAmountTransaction implements Transaction {
   provider: Bytes!
   sender: Bytes!
   timestamp: BigInt!
-  type: TransactionType!
   value: BigInt!
 }
 enum IncreaseLockAmountTransaction_orderBy {
@@ -1161,7 +1376,6 @@ enum IncreaseLockAmountTransaction_orderBy {
   provider
   sender
   timestamp
-  type
   value
 }
 input IncreaseLockAmountTransaction_filter {
@@ -1207,8 +1421,6 @@ input IncreaseLockAmountTransaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  type: TransactionType
-  type_not: TransactionType
   value: BigInt
   value_not: BigInt
   value_gt: BigInt
@@ -1225,7 +1437,6 @@ type IncreaseLockTimeTransaction implements Transaction {
   lockTime: BigInt!
   provider: Bytes!
   sender: Bytes!
-  type: TransactionType!
   timestamp: BigInt!
 }
 enum IncreaseLockTimeTransaction_orderBy {
@@ -1235,7 +1446,6 @@ enum IncreaseLockTimeTransaction_orderBy {
   lockTime
   provider
   sender
-  type
   timestamp
 }
 input IncreaseLockTimeTransaction_filter {
@@ -1281,8 +1491,6 @@ input IncreaseLockTimeTransaction_filter {
   sender_not_in: [Bytes!]
   sender_contains: Bytes
   sender_not_contains: Bytes
-  type: TransactionType
-  type_not: TransactionType
   timestamp: BigInt
   timestamp_not: BigInt
   timestamp_gt: BigInt
@@ -1294,11 +1502,10 @@ input IncreaseLockTimeTransaction_filter {
 }
 enum Transaction_orderBy {
   id
-  block
   hash
-  sender
+  block
   timestamp
-  type
+  sender
 }
 input Transaction_filter {
   id: ID
@@ -1309,6 +1516,12 @@ input Transaction_filter {
   id_lte: ID
   id_in: [ID!]
   id_not_in: [ID!]
+  hash: Bytes
+  hash_not: Bytes
+  hash_in: [Bytes!]
+  hash_not_in: [Bytes!]
+  hash_contains: Bytes
+  hash_not_contains: Bytes
   block: Int
   block_not: Int
   block_gt: Int
@@ -1317,18 +1530,6 @@ input Transaction_filter {
   block_lte: Int
   block_in: [Int!]
   block_not_in: [Int!]
-  hash: Bytes
-  hash_not: Bytes
-  hash_in: [Bytes!]
-  hash_not_in: [Bytes!]
-  hash_contains: Bytes
-  hash_not_contains: Bytes
-  sender: Bytes
-  sender_not: Bytes
-  sender_in: [Bytes!]
-  sender_not_in: [Bytes!]
-  sender_contains: Bytes
-  sender_not_contains: Bytes
   timestamp: BigInt
   timestamp_not: BigInt
   timestamp_gt: BigInt
@@ -1337,11 +1538,33 @@ input Transaction_filter {
   timestamp_lte: BigInt
   timestamp_in: [BigInt!]
   timestamp_not_in: [BigInt!]
-  type: TransactionType
-  type_not: TransactionType
+  sender: Bytes
+  sender_not: Bytes
+  sender_in: [Bytes!]
+  sender_not_in: [Bytes!]
+  sender_contains: Bytes
+  sender_not_contains: Bytes
+}
+"""The type for the top-level _meta field"""
+type _Meta_ {
+  """
+  Information about a specific subgraph block. The hash of the block
+  will be null if the _meta field has a block constraint that asks for
+  a block number. It will be filled if the _meta field has no block constraint
+  and therefore asks for the latest  block
+  """
+  block: _Block_!
+  """The deployment ID"""
+  deployment: String!
+}
+type _Block_ {
+  """The hash of the block"""
+  hash: Bytes
+  """The block number"""
+  number: Int!
 }
 type Subscription {
-  userLockup(
+  metric(
     id: ID!
     """
     The block at which the query should be executed. Can either be an `{ number:
@@ -1349,20 +1572,42 @@ type Subscription {
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): UserLockup
-  userLockups(
+  ): Metric
+  metrics(
     skip: Int = 0
     first: Int = 100
-    orderBy: UserLockup_orderBy
+    orderBy: Metric_orderBy
     orderDirection: OrderDirection
-    where: UserLockup_filter
+    where: Metric_filter
     """
     The block at which the query should be executed. Can either be an `{ number:
     Int }` containing the block number or a `{ hash: Bytes }` value containing a
     block hash. Defaults to the latest block when omitted.
     """
     block: Block_height
-  ): [UserLockup!]!
+  ): [Metric!]!
+  counter(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): Counter
+  counters(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Counter_orderBy
+    orderDirection: OrderDirection
+    where: Counter_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [Counter!]!
   token(
     id: ID!
     """
@@ -1385,6 +1630,28 @@ type Subscription {
     """
     block: Block_height
   ): [Token!]!
+  userLockup(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): UserLockup
+  userLockups(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: UserLockup_orderBy
+    orderDirection: OrderDirection
+    where: UserLockup_filter
+    """
+    The block at which the query should be executed. Can either be an `{ number:
+    Int }` containing the block number or a `{ hash: Bytes }` value containing a
+    block hash. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+  ): [UserLockup!]!
   incentivisedVotingLockup(
     id: ID!
     """
@@ -1627,8 +1894,9 @@ type Subscription {
     """
     block: Block_height
   ): [Transaction!]!
+  """Access to subgraph metadata"""
+  _meta(block: Block_height): _Meta_
 }
-scalar BigDecimal
 enum LockAction {
   CREATE_LOCK
   INCREASE_LOCK_AMOUNT

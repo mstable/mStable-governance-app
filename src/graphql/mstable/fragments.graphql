@@ -3,7 +3,11 @@ fragment TokenDetails on Token {
   address
   decimals
   symbol
-  totalSupply
+  totalSupply {
+    simple
+    exact
+    decimals
+  }
 }
 
 fragment UserLockupDetails on UserLockup {
@@ -29,6 +33,9 @@ fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
   totalStaticWeight
   totalStakingRewards
   totalValue
+  totalStakers {
+    value
+  }
   stakingToken {
     ...TokenDetails
   }

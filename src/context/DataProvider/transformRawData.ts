@@ -70,7 +70,7 @@ export const transformRawTokenData = ({
   address,
 }: CurrentIncentivisedVotingLockup['stakingToken']): IncentivisedVotingLockup['stakingToken'] => ({
   address,
-  totalSupply: new BigDecimal(totalSupply, decimals),
+  totalSupply: new BigDecimal(totalSupply.exact, totalSupply.decimals),
   decimals,
   symbol,
 });
@@ -101,6 +101,7 @@ export const transformRawIncentivisedVotingLockups = (
     votingToken,
     totalStakingRewards,
     totalStaticWeight,
+    totalStakers: { value: totalStakers },
     totalValue,
   } = (current ?? historic) as HistoricIncentivisedVotingLockup;
 
@@ -141,6 +142,7 @@ export const transformRawIncentivisedVotingLockups = (
     maxTime: new BigNumber(maxTime),
     totalStaticWeight: new BigDecimal(totalStaticWeight),
     totalStakingRewards: new BigDecimal(totalStakingRewards),
+    totalStakers: parseInt(totalStakers, 10),
     totalValue: new BigDecimal(totalValue),
   };
 
