@@ -45,6 +45,7 @@ export interface IncentivisedVotingLockup {
   votingToken: Token;
   totalStakingRewards: BigDecimal;
   totalStaticWeight: BigDecimal;
+  totalStakers: number;
   totalValue: BigDecimal;
   userLockup?: UserLockup;
   userStakingBalance?: BigDecimal;
