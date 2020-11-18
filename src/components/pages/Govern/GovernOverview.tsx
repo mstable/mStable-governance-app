@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { GovernStats } from './GovernStats';
+import { GovernStats as Stats } from './GovernStats';
+import { GovernDAO as DAO } from './GovernDAO';
 
 import { IncentivisedVotingLockupAtBlockProvider } from '../Stats/IncentivisedVotingLockupAtBlockProvider';
 import { StatsDataProvider } from '../Stats/StatsDataProvider';
@@ -11,7 +12,8 @@ import { useAccount } from '../../../context/UserProvider';
 const Container = styled.div`
   grid-column: 1 / 6;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const GovernOverview: FC = () => {
@@ -22,7 +24,8 @@ export const GovernOverview: FC = () => {
       <StatsDataProvider>
         <StakeProvider key={account}>
           <Container>
-            <GovernStats />
+            <Stats />
+            <DAO />
           </Container>
         </StakeProvider>
       </StatsDataProvider>
