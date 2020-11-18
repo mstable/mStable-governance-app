@@ -16,7 +16,7 @@ const Container = styled.div`
   border-radius: 1rem;
 
   @media (min-width: ${ViewportWidth.xl}) {
-    width: 650px;
+    flex-basis: calc(55% - 0.5rem);
   }
 `;
 
@@ -79,7 +79,7 @@ const Items = styled.div`
 
   @media (min-width: ${ViewportWidth.m}) {
     > div {
-      flex-basis: calc(50% - 1.25rem);
+      flex-basis: calc(50% - 0.5rem);
     }
   }
 `;
@@ -96,7 +96,7 @@ const StyledRow = styled.div`
     text-align: right;
   }
 
-  > * {
+  p {
     flex: 1;
   }
 
