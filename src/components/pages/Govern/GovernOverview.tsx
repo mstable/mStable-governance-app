@@ -8,12 +8,17 @@ import { StatsDataProvider } from '../Stats/StatsDataProvider';
 import { StakeProvider } from '../Stake/StakeProvider';
 
 import { useAccount } from '../../../context/UserProvider';
+import { ViewportWidth } from '../../../theme';
 
 const Container = styled.div`
   grid-column: 1 / 6;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
+
+  @media (min-width: ${ViewportWidth.xl}) {
+    flex-direction: row;
+  }
 `;
 
 export const GovernOverview: FC = () => {
