@@ -15,6 +15,7 @@ enum State {
   MSTABLE,
   COMMUNITY,
   PROTOCOL,
+  DEVELOPMENT,
 }
 
 type Item = {
@@ -28,7 +29,7 @@ type Item = {
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL } = State;
+const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
 
 const Container = styled.div`
   width: 100%;
@@ -181,15 +182,22 @@ const mapDataToState = (state: State): Item => {
       return {
         title: 'Community',
         tooltip: 'Distributes grants for community building initiatives.',
-        address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
+        address: undefined,
         accent: '#4C4FA8',
       };
     case PROTOCOL:
       return {
         title: 'Protocol',
         tooltip: 'Executes and manages changes to the core mStable protocol.',
-        address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
+        address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
         accent: '#CC1010',
+      };
+    case DEVELOPMENT:
+      return {
+        title: 'Development',
+        tooltip: 'Distributes grants to fund independent software development.',
+        address: undefined,
+        accent: '#109255',
       };
     default:
       return { title: 'DAOs' };
@@ -252,11 +260,12 @@ export const GovernDAO: FC = () => {
     [MSTABLE, mockTokens],
     [COMMUNITY, mockTokens],
     [PROTOCOL, []],
+    [DEVELOPMENT, []],
   ]);
   const tokens = tokenMapping.get(state);
   //
 
-  const items = [MSTABLE, COMMUNITY, PROTOCOL];
+  const items = [MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT];
   const hasTokens = tokens?.length !== 0;
   const isDefault = state === DEFAULT;
 
