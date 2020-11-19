@@ -25,11 +25,64 @@ type Item = {
   accent?: string;
 };
 
+const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
+
 // replace with data
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
+const mapDataToState = (state: State): Item => {
+  switch (state) {
+    case MSTABLE:
+      return {
+        title: 'mStable',
+        tooltip: 'Manages all public MTA treasury.',
+        address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
+        accent: '#000',
+      };
+    case COMMUNITY:
+      return {
+        title: 'Community',
+        tooltip: 'Distributes grants for community building initiatives.',
+        address: undefined,
+        accent: '#4C4FA8',
+      };
+    case PROTOCOL:
+      return {
+        title: 'Protocol',
+        tooltip: 'Executes and manages changes to the core mStable protocol.',
+        address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
+        accent: '#CC1010',
+      };
+    case DEVELOPMENT:
+      return {
+        title: 'Development',
+        tooltip: 'Distributes grants to fund independent software development.',
+        address: undefined,
+        accent: '#109255',
+      };
+    default:
+      return { title: 'DAOs' };
+  }
+};
+
+const mockTokens: TokenProps[] = [
+  {
+    image: MTAIcon,
+    amount: new BigNumber(12010),
+    key: `token-0`,
+  },
+  {
+    image: EtherIcon,
+    amount: new BigNumber(1231),
+    key: `token-1`,
+  },
+  {
+    image: MTAIcon,
+    amount: new BigNumber(23043),
+    key: `token-2`,
+  },
+];
 
 const Container = styled.div`
   width: 100%;
@@ -182,41 +235,6 @@ const NavigateButton = styled.button`
   cursor: pointer;
 `;
 
-const mapDataToState = (state: State): Item => {
-  switch (state) {
-    case MSTABLE:
-      return {
-        title: 'mStable',
-        tooltip: 'Manages all public MTA treasury.',
-        address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
-        accent: '#000',
-      };
-    case COMMUNITY:
-      return {
-        title: 'Community',
-        tooltip: 'Distributes grants for community building initiatives.',
-        address: undefined,
-        accent: '#4C4FA8',
-      };
-    case PROTOCOL:
-      return {
-        title: 'Protocol',
-        tooltip: 'Executes and manages changes to the core mStable protocol.',
-        address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
-        accent: '#CC1010',
-      };
-    case DEVELOPMENT:
-      return {
-        title: 'Development',
-        tooltip: 'Distributes grants to fund independent software development.',
-        address: undefined,
-        accent: '#109255',
-      };
-    default:
-      return { title: 'DAOs' };
-  }
-};
-
 const StateSelector: FC<{
   state: State;
   onClick: (i: State) => void;
@@ -241,24 +259,6 @@ const TokenItem: FC<TokenProps> = ({ image, amount, key }) => {
     </StyledToken>
   );
 };
-
-const mockTokens: TokenProps[] = [
-  {
-    image: MTAIcon,
-    amount: new BigNumber(12010),
-    key: `token-0`,
-  },
-  {
-    image: EtherIcon,
-    amount: new BigNumber(1231),
-    key: `token-1`,
-  },
-  {
-    image: MTAIcon,
-    amount: new BigNumber(23043),
-    key: `token-2`,
-  },
-];
 
 export const GovernDAO: FC = () => {
   const [state, setState] = useState<State>(DEFAULT);
