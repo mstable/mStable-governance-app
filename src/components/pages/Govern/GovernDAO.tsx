@@ -40,9 +40,10 @@ const Container = styled.div`
   justify-self: flex-end;
   display: flex;
   flex-direction: column;
+  min-height: 8rem;
 
   @media (min-width: ${ViewportWidth.xl}) {
-    flex-basis: calc(45% - 0.5rem);
+    flex-basis: calc(40% - 0.5rem);
     margin: 0;
   }
 `;
@@ -50,8 +51,9 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 1rem;
+  align-items: flex-start;
 
   h3 {
     font-size: 1.5rem;
@@ -71,11 +73,15 @@ const Header = styled.div`
 
   div {
     display: flex;
+    margin-bottom: 0.5rem;
   }
 
   @media (min-width: ${ViewportWidth.s}) {
-    a > span {
-      display: inline;
+    flex-direction: row;
+    align-items: center;
+
+    div {
+      margin: 0;
     }
   }
 `;
@@ -88,7 +94,8 @@ const Items = styled.div`
   flex: 1;
 
   > * {
-    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    margin-right: 1.25rem;
   }
 `;
 
@@ -116,11 +123,17 @@ const StyledRow = styled.button`
 const StyledToken = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 2rem;
+  padding: 0.25rem;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: 0.5rem;
 
   span {
     ${({ theme }) => theme.mixins.numeric};
-    font-size: 1.125rem;
+  }
+
+  @media (min-width: ${ViewportWidth.s}) {
+    margin-top: 0;
   }
 `;
 

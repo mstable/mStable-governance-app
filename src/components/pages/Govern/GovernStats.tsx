@@ -16,7 +16,7 @@ const Container = styled.div`
   border-radius: 1rem;
 
   @media (min-width: ${ViewportWidth.xl}) {
-    flex-basis: calc(55% - 0.5rem);
+    flex-basis: calc(60% - 0.5rem);
   }
 `;
 
@@ -86,7 +86,7 @@ const Items = styled.div`
 
 const StyledRow = styled.div`
   display: flex;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
 
   b {
     font-weight: 600;
@@ -100,7 +100,7 @@ const StyledRow = styled.div`
     flex: 1;
   }
 
-  @media (min-width: ${ViewportWidth.s}) {
+  @media (min-width: ${ViewportWidth.xs}) {
     font-size: 1rem;
   }
 `;
