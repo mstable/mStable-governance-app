@@ -33,46 +33,35 @@ type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
 const mapDataToState = (state: State): Item =>
-  new Map([
-    [
-      MSTABLE,
-      {
-        title: 'mStable',
-        tooltip: 'Manages all public MTA treasury.',
-        address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
-        accent: '#000',
-      },
-    ],
-    [
-      COMMUNITY,
-      {
-        title: 'Community',
-        tooltip: 'Distributes grants for community building initiatives.',
-        address: undefined,
-        accent: '#4C4FA8',
-      },
-    ],
-    [
-      PROTOCOL,
-      {
-        title: 'Protocol',
-        tooltip: 'Executes and manages changes to the core mStable protocol.',
-        address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
-        accent: '#CC1010',
-      },
-    ],
-    [
-      DEVELOPMENT,
-      {
-        title: 'Development',
-        tooltip: 'Distributes grants to fund independent software development.',
-        address: undefined,
-        accent: '#109255',
-      },
-    ],
-  ]).get(state) ?? {
-    title: 'DAOs',
-  };
+  (({
+    DEFAULT: {
+      title: 'DAOs',
+    },
+    MSTABLE: {
+      title: 'mStable',
+      tooltip: 'Manages all public MTA treasury.',
+      address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
+      accent: '#000',
+    },
+    COMMUNITY: {
+      title: 'Community',
+      tooltip: 'Distributes grants for community building initiatives.',
+      address: undefined,
+      accent: '#4C4FA8',
+    },
+    PROTOCOL: {
+      title: 'Protocol',
+      tooltip: 'Executes and manages changes to the core mStable protocol.',
+      address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
+      accent: '#CC1010',
+    },
+    DEVELOPMENT: {
+      title: 'Development',
+      tooltip: 'Distributes grants to fund independent software development.',
+      address: undefined,
+      accent: '#109255',
+    },
+  } as { [state: string]: Item })[state]);
 
 const mockTokens: TokenProps[] = [
   {
@@ -277,13 +266,12 @@ export const GovernDAO: FC = () => {
   const { title, address, tooltip } = mapDataToState(state);
 
   // mocked
-  const tokenMapping: Map<State, TokenProps[]> = new Map([
-    [MSTABLE, mockTokens],
-    [COMMUNITY, mockTokens],
-    [PROTOCOL, []],
-    [DEVELOPMENT, []],
-  ]);
-  const tokens = tokenMapping.get(state);
+  const tokens: TokenProps[] = ({
+    MSTABLE: mockTokens,
+    COMMUNITY: mockTokens,
+    PROTOCOL: [],
+    DEVELOPMENT: [],
+  } as { [state: string]: TokenProps[] })[state];
   //
 
   const items = [MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT];
