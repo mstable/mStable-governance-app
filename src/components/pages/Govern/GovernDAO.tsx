@@ -19,12 +19,12 @@ enum State {
   DEVELOPMENT,
 }
 
-type Item = {
+interface Item {
   title: string;
   tooltip?: string;
   address?: string;
   accent?: string;
-};
+}
 
 const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
 
