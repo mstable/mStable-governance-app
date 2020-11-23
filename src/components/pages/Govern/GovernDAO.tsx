@@ -32,36 +32,35 @@ const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const mapDataToState = (state: State): Item =>
-  (({
-    DEFAULT: {
-      title: 'DAOs',
-    },
-    MSTABLE: {
-      title: 'mStable',
-      tooltip: 'Manages all public MTA treasury.',
-      address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
-      accent: '#000',
-    },
-    COMMUNITY: {
-      title: 'Community',
-      tooltip: 'Distributes grants for community building initiatives.',
-      address: undefined,
-      accent: '#4C4FA8',
-    },
-    PROTOCOL: {
-      title: 'Protocol',
-      tooltip: 'Executes and manages changes to the core mStable protocol.',
-      address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
-      accent: '#CC1010',
-    },
-    DEVELOPMENT: {
-      title: 'Development',
-      tooltip: 'Distributes grants to fund independent software development.',
-      address: undefined,
-      accent: '#109255',
-    },
-  } as { [state: string]: Item })[state]);
+const DAO_ITEMS: { [state: string]: Item } = {
+  DEFAULT: {
+    title: 'DAOs',
+  },
+  MSTABLE: {
+    title: 'mStable',
+    tooltip: 'Manages all public MTA treasury.',
+    address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
+    accent: '#000',
+  },
+  COMMUNITY: {
+    title: 'Community',
+    tooltip: 'Distributes grants for community building initiatives.',
+    address: undefined,
+    accent: '#4C4FA8',
+  },
+  PROTOCOL: {
+    title: 'Protocol',
+    tooltip: 'Executes and manages changes to the core mStable protocol.',
+    address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
+    accent: '#CC1010',
+  },
+  DEVELOPMENT: {
+    title: 'Development',
+    tooltip: 'Distributes grants to fund independent software development.',
+    address: undefined,
+    accent: '#109255',
+  },
+};
 
 const mockTokens: TokenProps[] = [
   {
@@ -236,11 +235,11 @@ const StateSelector: FC<{
   state: State;
   onClick: (i: State) => void;
 }> = ({ state, onClick }) => {
-  const data = mapDataToState(state);
+  const { title, accent } = DAO_ITEMS[state];
   return (
     <StyledRow onClick={() => onClick(state)}>
-      <Circle color={data?.accent ?? '#000'} />
-      <span>{data?.title}</span>
+      <Circle color={accent ?? '#000'} />
+      <span>{title}</span>
     </StyledRow>
   );
 };
