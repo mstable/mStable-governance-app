@@ -32,40 +32,47 @@ const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const mapDataToState = (state: State): Item => {
-  switch (state) {
-    case MSTABLE:
-      return {
+const mapDataToState = (state: State): Item =>
+  new Map([
+    [
+      MSTABLE,
+      {
         title: 'mStable',
         tooltip: 'Manages all public MTA treasury.',
         address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
         accent: '#000',
-      };
-    case COMMUNITY:
-      return {
+      },
+    ],
+    [
+      COMMUNITY,
+      {
         title: 'Community',
         tooltip: 'Distributes grants for community building initiatives.',
         address: undefined,
         accent: '#4C4FA8',
-      };
-    case PROTOCOL:
-      return {
+      },
+    ],
+    [
+      PROTOCOL,
+      {
         title: 'Protocol',
         tooltip: 'Executes and manages changes to the core mStable protocol.',
         address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
         accent: '#CC1010',
-      };
-    case DEVELOPMENT:
-      return {
+      },
+    ],
+    [
+      DEVELOPMENT,
+      {
         title: 'Development',
         tooltip: 'Distributes grants to fund independent software development.',
         address: undefined,
         accent: '#109255',
-      };
-    default:
-      return { title: 'DAOs' };
-  }
-};
+      },
+    ],
+  ]).get(state) ?? {
+    title: 'DAOs',
+  };
 
 const mockTokens: TokenProps[] = [
   {
