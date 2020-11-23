@@ -9,6 +9,7 @@ import MTAIcon from '../../icons/tokens/MTA.svg';
 import EtherIcon from '../../icons/tokens/Ether.svg';
 import { getEtherscanLink, truncateAddress } from '../../../utils/strings';
 import { Tooltip } from '../../core/ReactTooltip';
+import { UnstyledButton } from '../../core/Button';
 
 enum State {
   DEFAULT,
@@ -224,7 +225,7 @@ const Address = styled.a`
   }
 `;
 
-const NavigateButton = styled.button`
+const NavigateButton = styled(UnstyledButton)`
   background: url(${LeftArrow}) no-repeat;
   background-position-x: 50%;
   background-position-y: 50%;
