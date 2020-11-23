@@ -11,8 +11,7 @@ import { getEtherscanLink, truncateAddress } from '../../../utils/strings';
 import { Tooltip } from '../../core/ReactTooltip';
 import { UnstyledButton } from '../../core/Button';
 
-enum State {
-  DEFAULT = 'DEFAULT',
+enum DaoNames {
   MSTABLE = 'MSTABLE',
   COMMUNITY = 'COMMUNITY',
   PROTOCOL = 'PROTOCOL',
@@ -26,16 +25,13 @@ interface Item {
   accent?: string;
 }
 
-const { DEFAULT, MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = State;
+const { MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = DaoNames;
 
 // replace with data
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const DAO_ITEMS: { [state: string]: Item } = {
-  DEFAULT: {
-    title: 'DAOs',
-  },
+const DAO_ITEMS: { [key: string]: Item } = {
   MSTABLE: {
     title: 'mStable',
     tooltip: 'Manages all public MTA treasury.',
@@ -231,13 +227,13 @@ const NavigateButton = styled(UnstyledButton)`
   cursor: pointer;
 `;
 
-const StateSelector: FC<{
-  state: State;
-  onClick: (i: State) => void;
-}> = ({ state, onClick }) => {
-  const { title, accent } = DAO_ITEMS[state];
+const DAOItemButton: FC<{
+  dao: DaoNames;
+  onClick: (i: DaoNames | undefined) => void;
+}> = ({ dao, onClick }) => {
+  const { title, accent } = DAO_ITEMS[dao];
   return (
-    <StyledRow onClick={() => onClick(state)}>
+    <StyledRow onClick={() => onClick(dao)}>
       <Circle color={accent ?? '#000'} />
       <span>{title}</span>
     </StyledRow>
@@ -257,25 +253,34 @@ const TokenItem: FC<TokenProps> = ({ image, amount, key }) => {
 };
 
 export const GovernDAO: FC = () => {
-  const [state, setState] = useState<State>(DEFAULT);
+  const [selectedDao, setSelectedDao] = useState<DaoNames | undefined>(
+    undefined,
+  );
 
-  const handleNavigateClick = useCallback(() => setState(DEFAULT), []);
-  const handleStateSelect = useCallback((s: State) => setState(s), []);
+  const handleNavigateClick = useCallback(() => setSelectedDao(undefined), []);
+  const handleDAOItemClick = useCallback(
+    (s: DaoNames | undefined) => setSelectedDao(s),
+    [],
+  );
 
-  const { title, address, tooltip } = mapDataToState(state);
+  const { title, address, tooltip } = selectedDao
+    ? DAO_ITEMS[selectedDao]
+    : ({ title: 'DAOs' } as Item);
 
   // mocked
-  const tokens: TokenProps[] = ({
-    MSTABLE: mockTokens,
-    COMMUNITY: mockTokens,
-    PROTOCOL: [],
-    DEVELOPMENT: [],
-  } as { [state: string]: TokenProps[] })[state];
+  const tokens: TokenProps[] = selectedDao
+    ? ({
+        MSTABLE: mockTokens,
+        COMMUNITY: mockTokens,
+        PROTOCOL: [],
+        DEVELOPMENT: [],
+      } as { [key: string]: TokenProps[] })[selectedDao]
+    : [];
   //
 
   const items = [MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT];
   const hasTokens = tokens?.length !== 0;
-  const isDefault = state === DEFAULT;
+  const isDefault = selectedDao === undefined;
 
   return (
     <Container>
@@ -300,7 +305,7 @@ export const GovernDAO: FC = () => {
       <Items>
         {isDefault ? (
           items.map(s => (
-            <StateSelector key={s} state={s} onClick={handleStateSelect} />
+            <DAOItemButton key={s} dao={s} onClick={handleDAOItemClick} />
           ))
         ) : hasTokens ? (
           tokens?.map(({ image, amount, key }) => (
