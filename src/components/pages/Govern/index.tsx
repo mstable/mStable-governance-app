@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 
 import { GovernHeader as Header } from './GovernHeader';
-import { GovernStats as Stats } from './GovernStats';
+import { GovernOverview as Overview } from './GovernOverview';
 import { GovernFeed as Feed } from './GovernFeed';
 import { GovernOnboarding as Onboarding } from './GovernOnboarding';
 
@@ -14,13 +14,11 @@ const Wrapper = styled.div`
   grid-column-gap: ${({ theme }) => theme.spacing.l};
 `;
 
-export const Govern: FC<{}> = () => {
-  return (
-    <Wrapper>
-      <Header />
-      <Stats />
-      <Feed />
-      <Onboarding />
-    </Wrapper>
-  );
-};
+export const Govern: FC<{}> = () => (
+  <Wrapper>
+    <Header />
+    <Overview />
+    <Feed />
+    <Onboarding />
+  </Wrapper>
+);

@@ -10,7 +10,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
-  border-radius: 16px;
+  border-radius: 32px;
   background: linear-gradient(
     90deg,
     rgb(241, 250, 255) 0%,
