@@ -11,7 +11,7 @@ import { getEtherscanLink, truncateAddress } from '../../../utils/strings';
 import { Tooltip } from '../../core/ReactTooltip';
 import { UnstyledButton } from '../../core/Button';
 
-enum DaoItem {
+enum DaoItemType {
   MSTABLE = 'MSTABLE',
   COMMUNITY = 'COMMUNITY',
   PROTOCOL = 'PROTOCOL',
@@ -25,13 +25,13 @@ interface Item {
   accent?: string;
 }
 
-const { MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = DaoItem;
+const { MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = DaoItemType;
 
 // replace with data
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const DAO_ITEMS = new Map<DaoItem | undefined, Item>([
+const DAO_ITEMS = new Map<DaoItemType | undefined, Item>([
   [
     MSTABLE,
     {
@@ -240,14 +240,14 @@ const NavigateButton = styled(UnstyledButton)`
 `;
 
 const DAOItem: FC<{
-  dao: DaoItem;
-  onClick: (i: DaoItem) => void;
-}> = ({ dao, onClick }) => {
-  const daoItem = DAO_ITEMS.get(dao);
+  daoType: DaoItemType;
+  onClick: (type: DaoItemType) => void;
+}> = ({ daoType, onClick }) => {
+  const daoItem = DAO_ITEMS.get(daoType);
   if (!daoItem) return null;
   const { title, accent } = daoItem;
   return (
-    <StyledRow onClick={() => onClick(dao)}>
+    <StyledRow onClick={() => onClick(daoType)}>
       <Circle color={accent ?? '#000'} />
       <span>{title}</span>
     </StyledRow>
@@ -267,13 +267,13 @@ const TokenItem: FC<TokenProps> = ({ image, amount, key }) => {
 };
 
 export const DaoOverview: FC = () => {
-  const [selectedDao, setSelectedDao] = useState<DaoItem | undefined>(
+  const [selectedDao, setSelectedDao] = useState<DaoItemType | undefined>(
     undefined,
   );
 
   const handleNavigateBack = useCallback(() => setSelectedDao(undefined), []);
   const handleDAOItemSelect = useCallback(
-    (dao: DaoItem) => setSelectedDao(dao),
+    (dao: DaoItemType) => setSelectedDao(dao),
     [],
   );
 
@@ -282,7 +282,7 @@ export const DaoOverview: FC = () => {
   };
 
   // mocked
-  const tokens = new Map<DaoItem | undefined, TokenProps[]>([
+  const tokens = new Map<DaoItemType | undefined, TokenProps[]>([
     [MSTABLE, mockTokens],
     [COMMUNITY, mockTokens],
     [PROTOCOL, []],
@@ -317,7 +317,7 @@ export const DaoOverview: FC = () => {
       <Items>
         {isDefault ? (
           items.map(dao => (
-            <DAOItem key={dao} dao={dao} onClick={handleDAOItemSelect} />
+            <DAOItem key={dao} daoType={dao} onClick={handleDAOItemSelect} />
           ))
         ) : hasTokens ? (
           tokens?.map(({ image, amount, key }) => (
