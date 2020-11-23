@@ -123,7 +123,7 @@ const Row: FC<{ title: string; value?: number; suffix?: string }> = props => {
   );
 };
 
-export const GovernStats: FC = () => {
+export const ProtocolOverview: FC = () => {
   const { incentivisedVotingLockup } = useIncentivisedVotingLockupAtBlock();
   const { setLockupAmount, setLockupDays } = useStakeDispatch();
   const { data: stakeData } = useStakeState();

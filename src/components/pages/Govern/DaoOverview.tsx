@@ -11,7 +11,7 @@ import { getEtherscanLink, truncateAddress } from '../../../utils/strings';
 import { Tooltip } from '../../core/ReactTooltip';
 import { UnstyledButton } from '../../core/Button';
 
-enum DaoNames {
+enum DaoItem {
   MSTABLE = 'MSTABLE',
   COMMUNITY = 'COMMUNITY',
   PROTOCOL = 'PROTOCOL',
@@ -25,38 +25,50 @@ interface Item {
   accent?: string;
 }
 
-const { MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = DaoNames;
+const { MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT } = DaoItem;
 
 // replace with data
 type TokenProps = { amount?: BigNumber; image?: string; key?: string };
 //
 
-const DAO_ITEMS: { [key: string]: Item } = {
-  MSTABLE: {
-    title: 'mStable',
-    tooltip: 'Manages all public MTA treasury.',
-    address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
-    accent: '#000',
-  },
-  COMMUNITY: {
-    title: 'Community',
-    tooltip: 'Distributes grants for community building initiatives.',
-    address: undefined,
-    accent: '#4C4FA8',
-  },
-  PROTOCOL: {
-    title: 'Protocol',
-    tooltip: 'Executes and manages changes to the core mStable protocol.',
-    address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
-    accent: '#CC1010',
-  },
-  DEVELOPMENT: {
-    title: 'Development',
-    tooltip: 'Distributes grants to fund independent software development.',
-    address: undefined,
-    accent: '#109255',
-  },
-};
+const DAO_ITEMS = new Map<DaoItem | undefined, Item>([
+  [
+    MSTABLE,
+    {
+      title: 'mStable',
+      tooltip: 'Manages all public MTA treasury.',
+      address: '0xb8541e73aa47a847fa39e803d19a3f9b1bbc5a6c',
+      accent: '#000',
+    },
+  ],
+  [
+    COMMUNITY,
+    {
+      title: 'Community',
+      tooltip: 'Distributes grants for community building initiatives.',
+      address: undefined,
+      accent: '#4C4FA8',
+    },
+  ],
+  [
+    PROTOCOL,
+    {
+      title: 'Protocol',
+      tooltip: 'Executes and manages changes to the core mStable protocol.',
+      address: '0x4186C5AEd424876f7EBe52f9148552A45E17f287',
+      accent: '#CC1010',
+    },
+  ],
+  [
+    DEVELOPMENT,
+    {
+      title: 'Development',
+      tooltip: 'Distributes grants to fund independent software development.',
+      address: undefined,
+      accent: '#109255',
+    },
+  ],
+]);
 
 const mockTokens: TokenProps[] = [
   {
@@ -227,11 +239,13 @@ const NavigateButton = styled(UnstyledButton)`
   cursor: pointer;
 `;
 
-const DAOItemButton: FC<{
-  dao: DaoNames;
-  onClick: (i: DaoNames | undefined) => void;
+const DAOItem: FC<{
+  dao: DaoItem;
+  onClick: (i: DaoItem) => void;
 }> = ({ dao, onClick }) => {
-  const { title, accent } = DAO_ITEMS[dao];
+  const daoItem = DAO_ITEMS.get(dao);
+  if (!daoItem) return null;
+  const { title, accent } = daoItem;
   return (
     <StyledRow onClick={() => onClick(dao)}>
       <Circle color={accent ?? '#000'} />
@@ -252,30 +266,28 @@ const TokenItem: FC<TokenProps> = ({ image, amount, key }) => {
   );
 };
 
-export const GovernDAO: FC = () => {
-  const [selectedDao, setSelectedDao] = useState<DaoNames | undefined>(
+export const DaoOverview: FC = () => {
+  const [selectedDao, setSelectedDao] = useState<DaoItem | undefined>(
     undefined,
   );
 
-  const handleNavigateClick = useCallback(() => setSelectedDao(undefined), []);
-  const handleDAOItemClick = useCallback(
-    (s: DaoNames | undefined) => setSelectedDao(s),
+  const handleNavigateBack = useCallback(() => setSelectedDao(undefined), []);
+  const handleDAOItemSelect = useCallback(
+    (dao: DaoItem) => setSelectedDao(dao),
     [],
   );
 
-  const { title, address, tooltip } = selectedDao
-    ? DAO_ITEMS[selectedDao]
-    : ({ title: 'DAOs' } as Item);
+  const { title, address, tooltip }: Item = DAO_ITEMS.get(selectedDao) ?? {
+    title: 'DAOs',
+  };
 
   // mocked
-  const tokens: TokenProps[] = selectedDao
-    ? ({
-        MSTABLE: mockTokens,
-        COMMUNITY: mockTokens,
-        PROTOCOL: [],
-        DEVELOPMENT: [],
-      } as { [key: string]: TokenProps[] })[selectedDao]
-    : [];
+  const tokens = new Map<DaoItem | undefined, TokenProps[]>([
+    [MSTABLE, mockTokens],
+    [COMMUNITY, mockTokens],
+    [PROTOCOL, []],
+    [DEVELOPMENT, []],
+  ]).get(selectedDao);
   //
 
   const items = [MSTABLE, COMMUNITY, PROTOCOL, DEVELOPMENT];
@@ -287,7 +299,7 @@ export const GovernDAO: FC = () => {
       <Header>
         <div>
           {!isDefault && (
-            <NavigateButton type="button" onClick={handleNavigateClick} />
+            <NavigateButton type="button" onClick={handleNavigateBack} />
           )}
           <h3>{title}</h3>
           {tooltip && <Tooltip tip={tooltip} />}
@@ -304,8 +316,8 @@ export const GovernDAO: FC = () => {
       </Header>
       <Items>
         {isDefault ? (
-          items.map(s => (
-            <DAOItemButton key={s} dao={s} onClick={handleDAOItemClick} />
+          items.map(dao => (
+            <DAOItem key={dao} dao={dao} onClick={handleDAOItemSelect} />
           ))
         ) : hasTokens ? (
           tokens?.map(({ image, amount, key }) => (
