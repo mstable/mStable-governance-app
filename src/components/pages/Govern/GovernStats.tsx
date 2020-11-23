@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -146,10 +146,10 @@ export const GovernStats: FC = () => {
   const formattedBalance = metaToken?.balance.simple.toFixed(2);
   const formattedAPY = simUserStakingReward?.currentAPY?.toFixed(0);
 
-  const lockPeriod = useMemo(() => {
+  const lockPeriod = ((): number | undefined => {
     if (!totalValue || !totalSupply || !lockTimes) return undefined;
     return totalSupply.simple / (totalValue.simple / lockTimes.max);
-  }, [totalValue, totalSupply, lockTimes]);
+  })();
 
   return (
     <Container>
