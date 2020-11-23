@@ -12,11 +12,11 @@ import { Tooltip } from '../../core/ReactTooltip';
 import { UnstyledButton } from '../../core/Button';
 
 enum State {
-  DEFAULT,
-  MSTABLE,
-  COMMUNITY,
-  PROTOCOL,
-  DEVELOPMENT,
+  DEFAULT = 'DEFAULT',
+  MSTABLE = 'MSTABLE',
+  COMMUNITY = 'COMMUNITY',
+  PROTOCOL = 'PROTOCOL',
+  DEVELOPMENT = 'DEVELOPMENT',
 }
 
 interface Item {
@@ -236,11 +236,11 @@ const StateSelector: FC<{
   state: State;
   onClick: (i: State) => void;
 }> = ({ state, onClick }) => {
-  const { title, accent } = mapDataToState(state);
+  const data = mapDataToState(state);
   return (
     <StyledRow onClick={() => onClick(state)}>
-      <Circle color={accent ?? '#000'} />
-      <span>{title}</span>
+      <Circle color={data?.accent ?? '#000'} />
+      <span>{data?.title}</span>
     </StyledRow>
   );
 };
@@ -301,7 +301,7 @@ export const GovernDAO: FC = () => {
       <Items>
         {isDefault ? (
           items.map(s => (
-            <StateSelector state={s} onClick={handleStateSelect} />
+            <StateSelector key={s} state={s} onClick={handleStateSelect} />
           ))
         ) : hasTokens ? (
           tokens?.map(({ image, amount, key }) => (
