@@ -3,8 +3,6 @@ import styled from 'styled-components';
 
 import { GovernHeader as Header } from './GovernHeader';
 import { GovernOverview as Overview } from './GovernOverview';
-import { GovernFeed as Feed } from './GovernFeed';
-import { GovernOnboarding as Onboarding } from './GovernOnboarding';
 
 const Wrapper = styled.div`
   display: grid;
@@ -18,7 +16,5 @@ export const Govern: FC<{}> = () => (
   <Wrapper>
     <Header />
     <Overview />
-    <Feed />
-    <Onboarding />
   </Wrapper>
 );

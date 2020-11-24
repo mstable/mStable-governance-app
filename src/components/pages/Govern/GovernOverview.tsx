@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import { ProtocolOverview } from './ProtocolOverview';
-import { DaoOverview } from './DaoOverview';
 
 import { IncentivisedVotingLockupAtBlockProvider } from '../Stats/IncentivisedVotingLockupAtBlockProvider';
 import { StatsDataProvider } from '../Stats/StatsDataProvider';
@@ -30,7 +29,6 @@ export const GovernOverview: FC = () => {
         <StakeProvider key={account}>
           <Container>
             <ProtocolOverview />
-            <DaoOverview />
           </Container>
         </StakeProvider>
       </StatsDataProvider>

@@ -16,7 +16,7 @@ const Container = styled.div`
   border-radius: 1rem;
 
   @media (min-width: ${ViewportWidth.xl}) {
-    flex-basis: calc(60% - 0.5rem);
+    /* flex-basis: calc(60% - 0.5rem); */
   }
 `;
 
@@ -79,7 +79,13 @@ const Items = styled.div`
 
   @media (min-width: ${ViewportWidth.m}) {
     > div {
-      flex-basis: calc(50% - 0.5rem);
+      flex-basis: calc(50% - 1.25rem);
+    }
+  }
+
+  @media (min-width: ${ViewportWidth.xl}) {
+    > div {
+      flex-basis: calc(50% - 7.5rem);
     }
   }
 `;
