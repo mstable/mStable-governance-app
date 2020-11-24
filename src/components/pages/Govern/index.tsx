@@ -1,17 +1,20 @@
 import React, { FC } from 'react';
-import { PageHeader } from '../PageHeader';
-import { ReactComponent as GovernanceIcon } from '../../icons/circle/gavel.svg';
-import { GovernContent } from './GovernContent';
+import styled from 'styled-components';
 
-export const Govern: FC<{}> = () => {
-  return (
-    <div>
-      <PageHeader
-        icon={<GovernanceIcon />}
-        title="Govern"
-        subtitle="Learn how mStable Protocol Governance works and participate"
-      />
-      <GovernContent />
-    </div>
-  );
-};
+import { GovernHeader as Header } from './GovernHeader';
+import { GovernOverview as Overview } from './GovernOverview';
+
+const Wrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(min-content, max-content);
+  grid-row-gap: ${({ theme }) => theme.spacing.l};
+  grid-column-gap: ${({ theme }) => theme.spacing.l};
+`;
+
+export const Govern: FC<{}> = () => (
+  <Wrapper>
+    <Header />
+    <Overview />
+  </Wrapper>
+);

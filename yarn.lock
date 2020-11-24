@@ -2157,6 +2157,11 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
+"@mstable/components@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@mstable/components/-/components-1.0.0.tgz#b7010c26859a9cd739e8341286ffbdebc732ff6c"
+  integrity sha512-x0UDjC49fg8vgdSUMAIh8tywDApoQBigt91PUPO7pOpftLucYmE4oee5LB+cSa/IOUuW1i4dXuHKl3KyraX6YQ==
+
 "@mstable/protocol@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@mstable/protocol/-/protocol-1.2.1.tgz#88f2c00afa8c0a302215cb9a004ab714ea385b8b"

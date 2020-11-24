@@ -2,7 +2,6 @@ import React, { FC, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { TabsContainer, TabBtn } from '../../core/Tabs';
-import { Color } from '../../../theme';
 import { TransactionType } from './types';
 import { useStakeState, useStakeDispatch } from './StakeProvider';
 import { CreateLock } from './createLock/CreateLock';
@@ -57,7 +56,6 @@ const TabButton: FC<{ tab: TransactionType }> = ({ tab }) => {
 };
 
 const Container = styled.div`
-  background: ${Color.offWhite};
   border-radius: 0 0 2px 2px;
   padding: 16px 0 32px 0;
   text-align: left;

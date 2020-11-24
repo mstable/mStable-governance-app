@@ -11,6 +11,7 @@
     "@apollo/react-common": "^3.2.0-beta.1",
     "@apollo/react-hooks": "^3.2.0-beta.1",
     "@metamask/onboarding": "^0.3.0",
+    "@mstable/components": "^1.0.0",
     "@mstable/protocol": "^1.2.1",
     "@sentry/react": "^5.19.0",
     "@testing-library/jest-dom": "^5.7.0",
