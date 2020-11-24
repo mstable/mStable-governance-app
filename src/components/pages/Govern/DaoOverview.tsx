@@ -156,7 +156,7 @@ const Items = styled.div`
   }
 `;
 
-const StyledRow = styled.button`
+const StyledDaoItem = styled.button`
   display: flex;
   padding: 0.25rem 0.75rem 0.25rem 0.25rem;
   background: #f7f8f9;
@@ -172,7 +172,7 @@ const StyledRow = styled.button`
   :hover {
     outline: none;
     span {
-      border-bottom: 1px rgb(37, 39, 45) solid;
+      text-decoration: underline;
     }
   }
 `;
@@ -247,10 +247,10 @@ const DAOItem: FC<{
   if (!daoItem) return null;
   const { title, accent } = daoItem;
   return (
-    <StyledRow onClick={() => onClick(daoType)}>
+    <StyledDaoItem onClick={() => onClick(daoType)}>
       <Circle color={accent ?? '#000'} />
       <span>{title}</span>
-    </StyledRow>
+    </StyledDaoItem>
   );
 };
 
