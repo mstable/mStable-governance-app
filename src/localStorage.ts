@@ -1,20 +1,22 @@
 /* eslint-disable no-empty */
 
-import { Connectors } from 'use-wallet';
-
 const STORAGE_PREFIX = '__mStable-governance-app__';
-const STORAGE_VERSION = 0;
+const STORAGE_VERSION = 1;
 
 type VersionedStorage<V extends number, T> = {
   version: V;
 } & Omit<T, 'version'>;
 
 export interface StorageV0 extends VersionedStorage<0, {}> {
-  connector?: { id: keyof Connectors; subType?: string };
+  connector?: { id: string; subType?: string };
   viewedEarnOnboarding?: boolean;
 }
 
-export type AllStorage = StorageV0;
+export interface StorageV1 extends VersionedStorage<1, StorageV0> {
+  walletName?: string;
+}
+
+export type AllStorage = StorageV0 & StorageV1;
 
 export type Storage = Extract<AllStorage, { version: typeof STORAGE_VERSION }>;
 
@@ -40,7 +42,7 @@ export const LocalStorage = {
     }
   },
   get<K extends keyof AllStorage>(key: K): AllStorage[K] {
-    const storageKey = getStorageKey(key);
+    const storageKey = getStorageKey(key as string);
     let value;
     try {
       value = window.localStorage.getItem(storageKey);
@@ -64,8 +66,49 @@ export const LocalStorage = {
 };
 
 const migrateLocalStorage = (): void => {
-  // const version = LocalStorage.get('version');
-
+  const version = LocalStorage.get('version');
+  if (version === 0) {
+    const connector = LocalStorage.get<'connector'>('connector');
+    if (connector) {
+      const { id, subType } = connector;
+      let walletName;
+      switch (id) {
+        case 'injected':
+          if (subType === 'metamask') {
+            walletName = 'MetaMask';
+          } else if (subType === 'brave') {
+            walletName = 'Brave';
+          } else if (subType === 'meetOne') {
+            walletName = 'MeetOne';
+          }
+          break;
+        case 'fortmatic':
+          walletName = 'Fortmatic';
+          break;
+        case 'portis':
+          walletName = 'Portis';
+          break;
+        case 'authereum':
+          walletName = 'Authereum';
+          break;
+        case 'squarelink':
+          walletName = 'SquareLink';
+          break;
+        case 'torus':
+          walletName = 'Torus';
+          break;
+        case 'walletconnect':
+          walletName = 'WalletConnect';
+          break;
+        case 'walletlink':
+          walletName = 'WalletLink';
+          break;
+        default:
+          break;
+      }
+      LocalStorage.set('walletName', walletName);
+    }
+  }
   LocalStorage.setVersion(STORAGE_VERSION);
 };
 

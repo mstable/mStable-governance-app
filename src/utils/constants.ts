@@ -31,3 +31,5 @@ export const EMOJIS = {
 };
 
 export const DAPP_VERSION = process.env.REACT_APP_VERSION;
+
+export const rpcUrl = `${process.env.REACT_APP_RPC_URL}${process.env.REACT_APP_RPC_API_KEY}`;

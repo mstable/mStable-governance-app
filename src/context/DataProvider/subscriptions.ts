@@ -1,13 +1,12 @@
 import { LazyQueryHookOptions, QueryTuple } from '@apollo/react-hooks';
 import { QueryResult } from '@apollo/react-common';
 import { useEffect, useMemo, useRef } from 'react';
+import { useProvider } from '../OnboardProvider';
 import {
   useIncentivisedVotingLockupsLazyQuery,
   IncentivisedVotingLockupsQueryResult,
 } from '../../graphql/mstable';
 import { useBlockNumber } from './BlockProvider';
-
-import { useWeb3Provider } from '../SignerProvider';
 
 import { BigDecimal } from '../../utils/BigDecimal';
 import { Erc20DetailedFactory } from '../../typechain/Erc20DetailedFactory';
@@ -74,7 +73,7 @@ export const useUserLockupsSubscription = (
 export const useTotalSupply = (
   address: string | null | undefined,
 ): BigDecimal => {
-  const provider = useWeb3Provider();
+  const provider = useProvider();
   const blockNumber = useBlockNumber();
 
   const totalSupply = useRef(new BigDecimal(0));

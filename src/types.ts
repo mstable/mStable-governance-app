@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { TransactionResponse } from 'ethers/providers';
-import { Connectors } from 'use-wallet';
 import { Ierc20 } from './typechain/Ierc20.d';
 import { BigDecimal } from './utils/BigDecimal';
 import { IIncentivisedVotingLockup } from './typechain/IIncentivisedVotingLockup.d';
@@ -94,7 +93,7 @@ export interface InjectedEthereum {
 }
 
 export interface Connector {
-  id: keyof Required<Connectors>;
+  id: string;
   subType?: string;
   label: string;
   icon?: FC;

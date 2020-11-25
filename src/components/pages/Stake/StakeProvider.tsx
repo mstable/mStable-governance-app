@@ -23,8 +23,8 @@ import { SCALE } from '../../../utils/constants';
 import { BigDecimal } from '../../../utils/BigDecimal';
 import { reducer } from './reducer';
 import { IIncentivisedVotingLockupFactory } from '../../../typechain/IIncentivisedVotingLockupFactory';
-import { useSignerContext } from '../../../context/SignerProvider';
 import { IIncentivisedVotingLockup } from '../../../typechain/IIncentivisedVotingLockup.d';
+import { useSigner } from '../../../context/OnboardProvider';
 
 const initialState: State = {
   data: {},
@@ -65,7 +65,7 @@ export const useRewardsEarned = (): RewardsEarned =>
 
 const StakeContractProvider: FC = ({ children }) => {
   const { address } = useIncentivisedVotingLockup() ?? {};
-  const signer = useSignerContext();
+  const signer = useSigner();
 
   const contract = useMemo(
     () =>

@@ -1,19 +1,18 @@
 import { useEffect } from 'react';
-import { useWallet } from 'use-wallet';
+import { useConnected } from '../context/OnboardProvider';
 
 import { useTransactionsDispatch } from '../context/TransactionsProvider';
 import { useAccount } from '../context/UserProvider';
 
 export const ContractsUpdater = (): null => {
-  const { status, connector } = useWallet();
-  const connected = status === 'connected';
+  const connected = useConnected();
   const account = useAccount();
   const { reset } = useTransactionsDispatch();
 
   /**
    * When the account changes, reset the transactions state.
    */
-  useEffect(reset, [account, connector, connected, reset]);
+  useEffect(reset, [account, connected, reset]);
 
   return null;
 };
