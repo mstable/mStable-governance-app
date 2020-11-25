@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { TransactionReceipt } from 'ethers/providers';
+import { useProvider } from '../context/OnboardProvider';
 import { useTransactionsContext } from '../context/TransactionsProvider';
-import { useWeb3Provider } from '../context/SignerProvider';
 import { useBlockNumber } from '../context/DataProvider/BlockProvider';
 import { useAccount } from '../context/UserProvider';
 
@@ -11,7 +11,7 @@ import { useAccount } from '../context/UserProvider';
  */
 export const TransactionsUpdater = (): null => {
   const account = useAccount();
-  const provider = useWeb3Provider();
+  const provider = useProvider();
   const blockNumber = useBlockNumber();
   const accountRef = useRef(account);
 

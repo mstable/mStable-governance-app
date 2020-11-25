@@ -1,5 +1,5 @@
 import { Reducer, useEffect, useReducer, useRef } from 'react';
-import { useSignerContext } from '../context/SignerProvider';
+import { useSigner } from '../context/OnboardProvider';
 import { useBlockNumber } from '../context/DataProvider/BlockProvider';
 import { useAccount } from '../context/UserProvider';
 import {
@@ -47,7 +47,7 @@ const reducer: Reducer<State, Action> = (state, action) => {
  */
 export const TokenSubscriptionsUpdater = (): null => {
   const { reset, updateBalances, updateAllowances } = useTokensDispatch();
-  const signer = useSignerContext();
+  const signer = useSigner();
 
   const [contracts, dispatch] = useReducer(reducer, initialState);
 

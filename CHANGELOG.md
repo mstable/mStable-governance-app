@@ -2,7 +2,8 @@
 
 ## v.NEXT
 
-- Add support for running the dApp on IPFS
+- Implement Onboard.js for connecting wallets; this supports more wallet types
+  and reduces complexity of the UI
 
 Features
 
