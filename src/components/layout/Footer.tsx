@@ -6,7 +6,6 @@ import { isAddress } from 'web3-utils';
 
 import { useCloseAccount } from '../../context/AppProvider';
 import { useIsMasquerading, useMasquerade } from '../../context/UserProvider';
-import { DAPP_VERSION } from '../../utils/constants';
 import { ViewportWidth } from '../../theme';
 import Medium from '../icons/social/medium.svg';
 import Github from '../icons/social/github.svg';
@@ -38,14 +37,6 @@ const SocialIcons = styled(Links)`
     display: block;
     width: 24px;
     height: auto;
-  }
-`;
-
-const Version = styled.div`
-  font-size: 10px;
-
-  span {
-    font-weight: bold;
   }
 `;
 
@@ -181,16 +172,6 @@ export const Footer: FC<Props> = ({ accountOpen }) => {
           </div>
           <Gubbins>
             <div>
-              <Version>
-                Current version{' '}
-                <a
-                  href={`https://github.com/mstable/mStable-governance-app/releases/tag/v${DAPP_VERSION}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>{DAPP_VERSION}</span>
-                </a>
-              </Version>
               <Masquerade />
             </div>
             <GitHubButton
