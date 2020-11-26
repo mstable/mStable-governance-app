@@ -2,8 +2,9 @@ import React, { FC, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
 
+import { format, startOfDay, toDate } from 'date-fns/esm';
+import { addDays } from 'date-fns';
 import { Interfaces } from '../../../../types';
-import { formatUnix } from '../../../../utils/time';
 import { TransactionForm } from '../../../forms/TransactionForm';
 import {
   FormProvider,
@@ -57,7 +58,18 @@ const ExitForm: FC = () => {
           Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
           {incentivisedVotingLockup.userLockup?.lockTime
-            ? formatUnix(incentivisedVotingLockup.userLockup?.lockTime)
+            ? format(
+                startOfDay(
+                  addDays(
+                    toDate(
+                      (incentivisedVotingLockup?.userLockup
+                        ?.lockTime as number) * 1000,
+                    ),
+                    1,
+                  ),
+                ),
+                'dd-MM-yyyy',
+              )
             : null}
           .
         </Protip>
