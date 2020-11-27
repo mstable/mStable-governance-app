@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import styled from 'styled-components';
+import { pipe } from 'ts-pipe-compose';
 
-import { format, startOfDay, toDate } from 'date-fns/esm';
-import { addDays } from 'date-fns';
+import { startOfDay, fromUnixTime } from 'date-fns/esm';
 import { Interfaces } from '../../../../types';
 import { TransactionForm } from '../../../forms/TransactionForm';
 import {
@@ -11,6 +11,7 @@ import {
   useSetFormManifest,
 } from '../../../forms/TransactionForm/FormProvider';
 import { Protip } from '../../../core/Protip';
+import { addDaysPiped, formatDate, nowUnix } from '../../../../utils/time';
 import { useStakeState, useStakeContract } from '../StakeProvider';
 import { ExitInput } from './ExitInput';
 import { ExitConfirm } from './ExitConfirm';
@@ -28,8 +29,8 @@ const ExitForm: FC = () => {
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
   const canUnlock =
-    Date.now() >=
-    (incentivisedVotingLockup?.userLockup?.lockTime as number) * 1000;
+    nowUnix() >= (incentivisedVotingLockup?.userLockup?.lockTime as number);
+
   const balance = incentivisedVotingLockup?.userStakingBalance;
 
   useEffect(() => {
@@ -58,17 +59,12 @@ const ExitForm: FC = () => {
           Your stake of {incentivisedVotingLockup.userLockup?.value.simple} MTA
           will unlock on{' '}
           {incentivisedVotingLockup.userLockup?.lockTime
-            ? format(
-                startOfDay(
-                  addDays(
-                    toDate(
-                      (incentivisedVotingLockup?.userLockup
-                        ?.lockTime as number) * 1000,
-                    ),
-                    1,
-                  ),
-                ),
-                'dd-MM-yyyy',
+            ? pipe(
+                incentivisedVotingLockup.userLockup.lockTime,
+                fromUnixTime,
+                addDaysPiped(1),
+                startOfDay,
+                formatDate,
               )
             : null}
           .
