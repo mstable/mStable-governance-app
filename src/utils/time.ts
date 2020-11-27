@@ -1,24 +1,27 @@
-import format from 'date-fns/format';
-import differenceInHours from 'date-fns/differenceInHours';
+import {
+  addDays,
+  format,
+  differenceInHours,
+  getUnixTime,
+  fromUnixTime,
+} from 'date-fns';
 
-export const nowUnix = (): number => Math.ceil(Date.now() / 1000);
+export const nowUnix = (): number => getUnixTime(Date.now());
 
-export const toUnix = (dateOrTime: Date | number): number => {
-  const time = dateOrTime instanceof Date ? dateOrTime.getTime() : dateOrTime;
-  return Math.floor(time / 1e3);
-};
-
-export const fromUnix = (unixTime: number): Date => {
-  return new Date(unixTime * 1e3);
-};
+export const addDaysPiped = (days: number) => (date: Date) =>
+  addDays(date, days);
 
 export const durationInDaysUnix = (start: number, end: number): number => {
-  return Math.ceil(differenceInHours(fromUnix(start), fromUnix(end)) / 24);
+  return Math.ceil(
+    differenceInHours(fromUnixTime(start), fromUnixTime(end)) / 24,
+  );
 };
+
+export const formatDate = (date: Date): string => format(date, 'dd-MM-yyyy');
 
 export const formatUnix = (
   unixTime: number,
   dateFormat = 'dd-MM-yyyy',
 ): string => {
-  return format(fromUnix(unixTime), dateFormat);
+  return format(fromUnixTime(unixTime), dateFormat);
 };

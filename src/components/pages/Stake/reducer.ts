@@ -1,6 +1,6 @@
 import { Reducer } from 'react';
 import { pipeline } from 'ts-pipe-compose';
-import addDays from 'date-fns/addDays';
+import { addDays, getUnixTime } from 'date-fns';
 import { BigNumber } from 'ethers/utils';
 
 import {
@@ -8,7 +8,7 @@ import {
   UserStakingReward,
 } from '../../../context/DataProvider/types';
 
-import { durationInDaysUnix, nowUnix, toUnix } from '../../../utils/time';
+import { durationInDaysUnix, nowUnix } from '../../../utils/time';
 import { BigDecimal } from '../../../utils/BigDecimal';
 import {
   Action,
@@ -31,7 +31,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
       ) {
         const { lockTimes, end } = action.payload.incentivisedVotingLockup;
         const medianDays = lockTimes.min + 7 * 26;
-        const medianTime = toUnix(addDays(Date.now(), medianDays));
+        const medianTime = getUnixTime(addDays(Date.now(), medianDays));
         const unlockTime = Math.min(medianTime, end.toNumber());
         const formValue = durationInDaysUnix(unlockTime, nowUnix());
         return {
@@ -52,7 +52,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
 
     case Actions.SetLockupDays: {
       const formValue = action.payload;
-      const unlockTime = toUnix(addDays(Date.now(), formValue));
+      const unlockTime = getUnixTime(addDays(Date.now(), formValue));
       return {
         ...state,
         lockupPeriod: { unlockTime, formValue },
@@ -130,7 +130,7 @@ const reduce: Reducer<State, Action> = (state, action) => {
       if (!data.incentivisedVotingLockup) return state;
 
       const maxDays = data.incentivisedVotingLockup.lockTimes.max;
-      const unlockTime = toUnix(addDays(new Date(), maxDays));
+      const unlockTime = getUnixTime(addDays(new Date(), maxDays));
 
       return {
         ...state,
