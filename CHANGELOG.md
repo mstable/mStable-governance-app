@@ -2,13 +2,17 @@
 
 ## v.NEXT
 
-- Implement Onboard.js for connecting wallets; this supports more wallet types
-  and reduces complexity of the UI
+## v1.3.0
 
 Features
 
-- Add support for Meet.one wallet
+- Implement Onboard.js for connecting wallets; this supports more wallet types
+  and reduces complexity of the UI
 - Add historic transaction descriptions
+
+Bug fixes
+
+- Clarified the stake unlock time (it unlocks at midnight UTC, so show the next day)
 
 ## v1.2.0
 
