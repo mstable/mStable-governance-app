@@ -90,7 +90,7 @@ workflows:
   Kovan:
     jobs:
       - Approve build:
-        type: approval
+          type: approval
       - Build:
           context:
             - mstable-shared
