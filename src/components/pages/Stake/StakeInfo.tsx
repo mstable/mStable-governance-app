@@ -82,7 +82,10 @@ const UserStake: FC = () => {
               tip="Voting power (AKA vMTA balance) decays linearly over time - vMTA balance is used as your voting weight in community proposals"
             >
               You have{' '}
-              {vmta && totalSupply && totalSupply.simple > 0 ? (
+              {vmta &&
+              vmta.balance.simple > 0 &&
+              totalSupply &&
+              totalSupply.simple > 0 ? (
                 <ChangingCountUp
                   end={(vmta.balance.simple / totalSupply.simple) * 100}
                   suffix=" %"

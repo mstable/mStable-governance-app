@@ -18,7 +18,6 @@ import {
 import { Signer, providers, ethers } from 'ethers';
 import { CHAIN_ID } from '../utils/constants';
 import { initOnboard } from './onboardUtils';
-import { LocalStorage } from '../localStorage';
 import {
   useAddInfoNotification,
   useAddErrorNotification,
@@ -63,7 +62,7 @@ export const OnboardProvider: FC<{}> = ({ children }) => {
     return initOnboard({
       address: account => {
         if (account === undefined) {
-          LocalStorage.removeItem('walletName');
+          localStorage.removeItem('walletName');
           setWallet(undefined);
           setProvider(undefined);
           setSigner(undefined);
@@ -84,9 +83,9 @@ export const OnboardProvider: FC<{}> = ({ children }) => {
           setSigner(ethersProvider.getSigner());
           setConnected(true);
           if (walletInstance.name) {
-            LocalStorage.set('walletName', walletInstance.name);
+            localStorage.setItem('walletName', walletInstance.name);
           } else {
-            LocalStorage.removeItem('walletName');
+            localStorage.removeItem('walletName');
           }
         } else {
           setWallet(undefined);
@@ -116,7 +115,7 @@ export const OnboardProvider: FC<{}> = ({ children }) => {
             : 'Connected';
         addInfoNotification(message);
       } else {
-        LocalStorage.removeItem('walletName');
+        localStorage.removeItem('walletName');
         onboard.walletReset();
         addErrorNotification('Unable to connect wallet');
         setConnected(false);
@@ -129,7 +128,7 @@ export const OnboardProvider: FC<{}> = ({ children }) => {
   );
 
   useEffect(() => {
-    const previouslySelectedWallet = LocalStorage.get('walletName');
+    const previouslySelectedWallet = localStorage.getItem('walletName');
 
     if (previouslySelectedWallet && onboard.walletSelect) {
       connect(previouslySelectedWallet).catch(error => {
@@ -140,7 +139,7 @@ export const OnboardProvider: FC<{}> = ({ children }) => {
 
   const reset = useCallback(() => {
     onboard.walletReset();
-    LocalStorage.removeItem('walletName');
+    localStorage.removeItem('walletName');
     setWallet(undefined);
     setConnected(false);
     setProvider(undefined);

@@ -65,10 +65,12 @@ export const StatsDataProvider: FC = ({ children }) => {
     },
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const userLockupsData0 =
     allUserLockupsQuery0.data?.current ??
     allUserLockupsQuery0.data?.historic ??
     [];
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const userLockupsData1 =
     allUserLockupsQuery1.data?.current ??
     allUserLockupsQuery1.data?.historic ??
@@ -78,7 +80,7 @@ export const StatsDataProvider: FC = ({ children }) => {
 
   const data = useMemo<UserLockupDatum[]>(() => {
     const userLockups = transformAllUserLockups(
-      userLockupsData0.concat(userLockupsData1),
+      (userLockupsData0 as any[]).concat(userLockupsData1),
     );
 
     return totalSupplyRounded && totalSupplyRounded > 0
