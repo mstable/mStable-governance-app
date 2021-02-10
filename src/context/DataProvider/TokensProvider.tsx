@@ -386,24 +386,6 @@ export const useTokensState = (): State => useContext(stateCtx);
 
 export const useTokensDispatch = (): Dispatch => useContext(dispatchCtx);
 
-export const useTokenSubscriptionsSerialized = (): string => {
-  const { subscriptions } = useTokensState();
-  return useMemo(
-    () =>
-      JSON.stringify(
-        Object.keys(subscriptions).filter(
-          // Either subscribed for balance or allowance
-          address =>
-            subscriptions[address]?.balance?.size ||
-            Object.keys(subscriptions[address]?.allowances || {}).some(
-              spender => subscriptions[address]?.allowances[spender]?.size,
-            ),
-        ),
-      ),
-    [subscriptions],
-  );
-};
-
 export const useBalanceSubscriptionsSerialized = (): string => {
   const { tokens, subscriptions } = useTokensState();
   return useMemo(

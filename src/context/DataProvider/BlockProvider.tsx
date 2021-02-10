@@ -1,30 +1,31 @@
-import React, { createContext, FC, useContext, useRef, useEffect } from 'react';
+import React, { createContext, FC, useContext, useState } from 'react';
+import { useInterval } from 'react-use';
 
 import { useIsIdle } from '../UserProvider';
 import { useProvider } from '../OnboardProvider';
 
 export type MaybeBlockNumber = number | undefined;
 
-const ctx = createContext<MaybeBlockNumber>(undefined);
+const stateCtx = createContext<MaybeBlockNumber>(null as never);
 
-export const BlockProvider: FC<{}> = ({ children }) => {
-  const blockNumber = useRef<MaybeBlockNumber>();
+export const BlockProvider: FC = ({ children }) => {
+  const [blockNumber, setBlockNumber] = useState<MaybeBlockNumber>();
   const provider = useProvider();
   const idle = useIsIdle();
 
-  useEffect(() => {
+  useInterval(() => {
     if (!idle) {
       // Only set the new block number when the user is active
       // getBlockNumber apparently returns a string
       provider?.getBlockNumber().then(latest => {
-        blockNumber.current = latest
-          ? parseInt((latest as unknown) as string, 10)
-          : undefined;
+        setBlockNumber(
+          latest ? parseInt((latest as unknown) as string, 10) : undefined,
+        );
       });
     }
-  }, [idle, provider]);
+  }, 15e3);
 
-  return <ctx.Provider value={blockNumber.current}>{children}</ctx.Provider>;
+  return <stateCtx.Provider value={blockNumber}>{children}</stateCtx.Provider>;
 };
 
-export const useBlockNumber = (): MaybeBlockNumber => useContext(ctx);
+export const useBlockNumber = (): MaybeBlockNumber => useContext(stateCtx);
