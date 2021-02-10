@@ -154,7 +154,7 @@ const Buttons = styled.div`
   height: 100%;
 
   > * {
-    font-size: 16px;
+    font-size: 14px;
     margin-right: 6px;
     &:last-child {
       margin-right: 0;

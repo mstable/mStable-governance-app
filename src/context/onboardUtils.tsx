@@ -1,13 +1,12 @@
 // eslint-disable-next-line import/no-unresolved
 import { API, Subscriptions } from 'bnc-onboard/dist/src/interfaces';
-import Onboard from 'bnc-onboard';
+import init from 'bnc-onboard';
 import { CHAIN_ID, rpcUrl } from '../utils/constants';
 
 export const WALLETS = [
   { walletName: 'coinbase', preferred: true },
   { walletName: 'trust', preferred: true, rpcUrl },
   { walletName: 'metamask', preferred: true },
-  { walletName: 'dapper' },
   {
     walletName: 'trezor',
     appUrl: window.location.hostname,
@@ -29,14 +28,6 @@ export const WALLETS = [
     walletName: 'fortmatic',
     apiKey: process.env.REACT_APP_FORTMATIC_API_KEY,
   },
-  {
-    walletName: 'portis',
-    apiKey: process.env.REACT_APP_PORTIS_DAPP_ID,
-  },
-  {
-    walletName: 'squarelink',
-    apiKey: process.env.REACT_APP_SQUARELINK_CLIENT_ID,
-  },
   { walletName: 'authereum' },
   {
     walletName: 'walletConnect',
@@ -47,7 +38,6 @@ export const WALLETS = [
   { walletName: 'operaTouch' },
   { walletName: 'torus' },
   { walletName: 'status' },
-  { walletName: 'unilogin' },
   { walletName: 'walletLink', rpcUrl, appName: 'mStable' },
   { walletName: 'imToken', rpcUrl },
   { walletName: 'meetone' },
@@ -58,7 +48,7 @@ export const WALLETS = [
 ];
 
 export const initOnboard = (subscriptions: Subscriptions): API => {
-  return Onboard({
+  return init({
     hideBranding: true,
     networkId: CHAIN_ID,
     subscriptions,

@@ -145,26 +145,6 @@ export const AppProvider: FC<{}> = ({ children }) => {
     });
   }, [dispatch]);
 
-  /**
-   * Get latest release and add an update notification if necessary
-   */
-  // Temporarily disabled
-  // useEffect(() => {
-  //   fetch('https://api.github.com/repos/mStable/mStable-app/releases/latest')
-  //     .then(result => {
-  //       result.json().then(({ tag_name: tag }: { tag_name: string }) => {
-  //         if (tag && tag.slice(1) !== (DAPP_VERSION as string)) {
-  //           addUpdateNotification(
-  //             'New version available',
-  //             `A new version of the app is available`,
-  //           );
-  //         }
-  //       });
-  //     })
-  //     .catch(() => {
-  //       // Ignore
-  //     });
-  // }, [addUpdateNotification]);
 
   /**
    * Detect internet connection (or lack thereof)

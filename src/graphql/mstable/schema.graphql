@@ -1556,6 +1556,8 @@ type _Meta_ {
   block: _Block_!
   """The deployment ID"""
   deployment: String!
+  """If `true`, the subgraph encountered indexing errors at some past block"""
+  hasIndexingErrors: Boolean!
 }
 type _Block_ {
   """The hash of the block"""
@@ -1902,3 +1904,12 @@ enum LockAction {
   INCREASE_LOCK_AMOUNT
   INCREASE_LOCK_TIME
 }
+enum _SubgraphErrorPolicy_ {
+  """Data will be returned even if the subgraph has indexing errors"""
+  allow
+  """If the subgraph has indexing errors, data will be omitted. The default."""
+  deny
+}
+directive @entity on OBJECT
+directive @derivedFrom(field: String) on FIELD_DEFINITION
+directive @subgraphId(id: String) on OBJECT

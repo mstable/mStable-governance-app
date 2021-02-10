@@ -1,7 +1,7 @@
 import { AllUserLockupsQueryResult } from '../../../graphql/mstable';
 
 export interface RawData {
-  userLockups: NonNullable<AllUserLockupsQueryResult['data']>['current'];
+  userLockups: NonNullable<NonNullable<AllUserLockupsQueryResult['data']>['current']>[];
 }
 
 export interface UserLockupSimple {

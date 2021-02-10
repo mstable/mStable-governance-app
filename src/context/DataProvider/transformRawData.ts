@@ -41,7 +41,7 @@ const transformUserLockup = (
 };
 
 const transformUserStakingReward = (
-  data?: CurrentIncentivisedVotingLockup['stakingRewards'][0],
+  data: CurrentIncentivisedVotingLockup['stakingRewards'][0],
 ): UserStakingReward | undefined => {
   if (data) {
     const { amount, amountPerTokenPaid, rewardsPaid } = data;
