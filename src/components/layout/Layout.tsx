@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
 import { ReactTooltip } from '../core/ReactTooltip';
+import { ReactTooltip, Tooltip } from '../core/ReactTooltip';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { Account } from './Account';
@@ -172,6 +173,8 @@ export const Layout: FC<{}> = ({ children }) => {
         </Container>
       </PageContainer>
       <Footer accountOpen={accountOpen} />
+      <Tooltip tip="" hideIcon />
+      <ReactTooltip id="global" place="top" />
       <NotificationToasts />
       <ReactTooltip id="global" />
       <GlobalStyle idle={idle} />
