@@ -2,7 +2,6 @@ import React, { FC, useLayoutEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
-import { ReactTooltip } from '../core/ReactTooltip';
 import { ReactTooltip, Tooltip } from '../core/ReactTooltip';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -13,7 +12,7 @@ import { Background } from './Background';
 import { AppBar } from './AppBar';
 import { NotificationToasts } from './NotificationToasts';
 import { centredLayout } from './css';
-import { Color } from '../../theme';
+import { Color, ViewportWidth } from '../../theme';
 
 const Main = styled.main`
   width: 100%;
@@ -57,53 +56,97 @@ const GlobalStyle = createGlobalStyle<{ idle: boolean }>`
   }
   // Onboard.js
   aside.bn-onboard-custom {
-    color: ${Color.offBlack};
-    z-index: 1;
-    > section {
-      font-family: 'Poppins', sans-serif !important;
-      border-radius: 2px;
+     z-index: 5 !important;
+     width: 100% !important;
+     height: 100% !important;
+     
+    .bn-onboard-modal-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+      width: inherit;
+      max-width: inherit;
+      box-sizing: border-box;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      transition: all ease-in;
     }
     .bn-onboard-modal-content-header {
-      > :first-child {
-        display: none;
-      }
-      > h3 {
-        margin-left: 0;
-      }
+      font-family: 'Poppins', sans-serif !important;
+      color: ${({ theme }) => theme.color.offBlack};
+      justify-content: center;
     }
+    h3 {
+      font-family: 'Poppins', sans-serif !important;
+      color: ${({ theme }) => theme.color.offBlack};
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+    .bn-onboard-modal-content-header-icon,
     .bn-onboard-select-description {
       display: none;
     }
     .bn-onboard-icon-button {
       font-weight: normal;
-      padding: 4px 16px;
+      padding: 0.5rem 1rem;
+      width: 100%;
       border: 1px ${Color.blackTransparent} solid;
-      border-radius: 3px;
+      border-radius: 0.5rem;
       > :first-child {
         min-width: 32px;
       }
       > span {
-        font-weight: normal;
-        font-size: 16px;
+        font-weight: 500;
+        font-size: 1rem;
+        color: ${({ theme }) => theme.color.offBlack};
       }
       &:hover {
+        border: 1px solid ${({ theme }) => theme.color.offBlack};
         box-shadow: none;
       }
     }
-    .bn-onboard-prepare-button {
-      appearance: none;
-      outline: none;
-      background: transparent;
-      user-select: none;
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: 12px;
-      padding: 8px 16px;
-      border: 1px ${Color.blackTransparent} solid;
-      border-radius: 3px;
-      color: ${Color.black};
-      &:hover {
-        background: white;
+    .bn-onboard-modal-content-close {
+      top: 1.5rem;
+    }
+    .bn-onboard-modal-select-wallets li {
+      width: 50%;
+    }
+    .bn-onboard-modal-select-wallets {
+      .bn-onboard-prepare-button { 
+        color: 1px solid ${({ theme }) => theme.color.offBlack} !important;
+        border: 1px ${Color.blackTransparent} solid !important;
+      }
+    }
+    .bn-onboard-select-info-container  {
+      justify-content: center !important;
+      
+      .bn-onboard-prepare-button { 
+        display: none;
+      }
+      
+      span {
+        text-align: center;
+        color: ${({ theme }) => theme.color.offBlack};
+        font-size: 0.875rem !important;
+        margin: 0 !important;
+      }
+    }
+    .bn-onboard-modal-selected-wallet {
+      > *:not(:last-child) {
+        margin-bottom: 0.75rem;
+      }
+    }
+    
+    
+    @media (min-width: ${ViewportWidth.s}) {
+      .bn-onboard-modal-content {
+        position: relative;
+        max-width: 28rem;
+        border-radius: 1rem;
       }
     }
   }
@@ -176,7 +219,6 @@ export const Layout: FC<{}> = ({ children }) => {
       <Tooltip tip="" hideIcon />
       <ReactTooltip id="global" place="top" />
       <NotificationToasts />
-      <ReactTooltip id="global" />
       <GlobalStyle idle={idle} />
     </>
   );
