@@ -25,6 +25,10 @@ export const WALLETS = [
     appName: 'mStable',
   },
   {
+    walletName: 'portis',
+    apiKey: 'bd88165a-43d7-481f-91bb-7e2f21e95ce6',
+  },
+  {
     walletName: 'fortmatic',
     apiKey: process.env.REACT_APP_FORTMATIC_API_KEY,
   },
