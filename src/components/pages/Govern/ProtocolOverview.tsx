@@ -139,7 +139,7 @@ export const ProtocolOverview: FC = () => {
   useEffect((): undefined => {
     if (!metaToken) return;
     setLockupAmount(`${metaToken?.balance.simple}`);
-    setLockupDays(180);
+    setLockupDays(120);
   }, [metaToken, setLockupAmount, setLockupDays]);
 
   const { userStakingReward: simUserStakingReward } =

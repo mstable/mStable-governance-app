@@ -118,7 +118,7 @@ export const transformRawIncentivisedVotingLockups = (
 
   // Max days = (end - nextUnixWeek) + min days
   const maxDays = Math.floor(
-    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber() + minDays,
+    (endBN.toNumber() - nextUnixWeek) / ONE_DAY.toNumber() + minDays + 1,
   );
 
   const incentivisedVotingLockup: IncentivisedVotingLockup = {
