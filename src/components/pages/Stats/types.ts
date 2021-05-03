@@ -16,9 +16,9 @@ export interface UserLockupSimple {
 
 export interface UserLockupDatum {
   account: string;
-  lockStart: string;
+  lockStart: number;
   mtaLocked: string;
-  unlockTime: string;
+  unlockTime: number;
   vMTA: string;
   votingPowerPercentage: string;
   votingPowerSimple: number;

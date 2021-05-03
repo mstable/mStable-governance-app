@@ -2,6 +2,8 @@ import { UseTableOptions } from 'react-table';
 
 import { UserLockupDatum } from './types';
 
+import { formatUnix } from '../../../utils/time';
+
 export const COLUMNS: UseTableOptions<UserLockupDatum>['columns'] = [
   {
     Header: 'Account',
@@ -23,9 +25,11 @@ export const COLUMNS: UseTableOptions<UserLockupDatum>['columns'] = [
   {
     Header: 'Lock Start',
     accessor: 'lockStart',
+	Cell: ({ value }) => formatUnix(value)
   },
   {
     Header: 'Unlock Time',
     accessor: 'unlockTime',
+	Cell: ({ value }) => formatUnix(value)
   },
 ];
