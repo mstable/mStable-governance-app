@@ -1,6 +1,6 @@
 import React, { createContext, FC, useContext, useMemo } from 'react';
 
-import { formatUnix, nowUnix } from '../../../utils/time';
+import { nowUnix } from '../../../utils/time';
 import { useAllUserLockupsQuery } from '../../../graphql/mstable';
 import { RawData, UserLockupDatum, UserLockupSimple } from './types';
 import { useIncentivisedVotingLockupAtBlock } from './IncentivisedVotingLockupAtBlockProvider';
@@ -94,9 +94,9 @@ export const StatsDataProvider: FC = ({ children }) => {
 
           return {
             account,
-            lockStart: formatUnix(ts),
+            lockStart: ts,
             mtaLocked: value.toFixed(2),
-            unlockTime: formatUnix(lockTime),
+            unlockTime: lockTime,
             vMTA: vMTA.toFixed(2),
             votingPowerPercentage: votingPowerSimple.toFixed(3).concat('%'),
             votingPowerSimple,
