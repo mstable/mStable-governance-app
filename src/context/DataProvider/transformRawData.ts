@@ -11,15 +11,17 @@ import {
 import { IncentivisedVotingLockupsQueryResult } from '../../graphql/mstable';
 
 type HistoricIncentivisedVotingLockup = NonNullable<
-  IncentivisedVotingLockupsQueryResult['data']
->['historic'][0];
+  NonNullable<IncentivisedVotingLockupsQueryResult['data']>['historic']
+>[0];
 
 type CurrentIncentivisedVotingLockup = NonNullable<
-  IncentivisedVotingLockupsQueryResult['data']
->['current'][0];
+  NonNullable<IncentivisedVotingLockupsQueryResult['data']>['current']
+>[0];
 
 const transformUserLockup = (
-  data: CurrentIncentivisedVotingLockup['userLockups'][0] | undefined,
+  data:
+    | NonNullable<CurrentIncentivisedVotingLockup['userLockups']>[0]
+    | undefined,
 ): UserLockup | undefined => {
   if (data) {
     const ts = parseInt(data.ts, 10);
@@ -41,7 +43,7 @@ const transformUserLockup = (
 };
 
 const transformUserStakingReward = (
-  data: CurrentIncentivisedVotingLockup['stakingRewards'][0],
+  data: NonNullable<CurrentIncentivisedVotingLockup['stakingRewards']>[0],
 ): UserStakingReward | undefined => {
   if (data) {
     const { amount, amountPerTokenPaid, rewardsPaid } = data;
@@ -55,7 +57,7 @@ const transformUserStakingReward = (
 };
 
 const transformUserStakingBalance = (
-  data?: CurrentIncentivisedVotingLockup['stakingBalances'][0],
+  data?: NonNullable<CurrentIncentivisedVotingLockup['stakingBalances']>[0],
 ): BigDecimal | undefined => {
   if (data) {
     return new BigDecimal(data.amount);

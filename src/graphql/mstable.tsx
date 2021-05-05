@@ -1,58 +1,30 @@
-import gql from 'graphql-tag';
-import * as ApolloReactCommon from '@apollo/react-common';
-import * as ApolloReactHooks from '@apollo/react-hooks';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-  { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions =  {}
 
-export interface IntrospectionResultData {
-  __schema: {
-    types: {
-      kind: string;
-      name: string;
-      possibleTypes: {
-        name: string;
-      }[];
-    }[];
-  };
-}
-const result: IntrospectionResultData = {
-  __schema: {
-    types: [
-      {
-        kind: 'INTERFACE',
-        name: 'Transaction',
-        possibleTypes: [
-          {
-            name: 'WithdrawTransaction',
-          },
-          {
-            name: 'EjectTransaction',
-          },
-          {
-            name: 'ClaimTransaction',
-          },
-          {
-            name: 'CreateLockTransaction',
-          },
-          {
-            name: 'IncreaseLockAmountTransaction',
-          },
-          {
-            name: 'IncreaseLockTimeTransaction',
-          },
-        ],
-      },
-    ],
-  },
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
+      }
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {
+    "Transaction": [
+      "WithdrawTransaction",
+      "EjectTransaction",
+      "ClaimTransaction",
+      "CreateLockTransaction",
+      "IncreaseLockAmountTransaction",
+      "IncreaseLockTimeTransaction"
+    ]
+  }
 };
-export default result;
-
+      export default result;
+    
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -64,6 +36,9 @@ export type Scalars = {
   BigInt: string;
   BigDecimal: string;
 };
+
+
+
 
 export type _Block_ = {
   /** The hash of the block */
@@ -91,13 +66,16 @@ export enum _SubgraphErrorPolicy_ {
   /** Data will be returned even if the subgraph has indexing errors */
   Allow = 'allow',
   /** If the subgraph has indexing errors, data will be omitted. The default. */
-  Deny = 'deny',
+  Deny = 'deny'
 }
+
+
 
 export type Block_Height = {
   hash?: Maybe<Scalars['Bytes']>;
   number?: Maybe<Scalars['Int']>;
 };
+
 
 export type ClaimTransaction = Transaction & {
   id: Scalars['ID'];
@@ -169,7 +147,7 @@ export enum ClaimTransaction_OrderBy {
   Reward = 'reward',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  User = 'user',
+  User = 'user'
 }
 
 export type Counter = {
@@ -199,7 +177,7 @@ export type Counter_Filter = {
 
 export enum Counter_OrderBy {
   Id = 'id',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type CreateLockTransaction = Transaction & {
@@ -282,7 +260,7 @@ export enum CreateLockTransaction_OrderBy {
   Provider = 'provider',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type EjectTransaction = Transaction & {
@@ -353,7 +331,7 @@ export enum EjectTransaction_OrderBy {
   Ejector = 'ejector',
   Hash = 'hash',
   Sender = 'sender',
-  Timestamp = 'timestamp',
+  Timestamp = 'timestamp'
 }
 
 export type IncentivisedVotingLockup = {
@@ -380,6 +358,7 @@ export type IncentivisedVotingLockup = {
   totalStakers: Counter;
 };
 
+
 export type IncentivisedVotingLockupUserLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
   first?: Maybe<Scalars['Int']>;
@@ -388,6 +367,7 @@ export type IncentivisedVotingLockupUserLockupsArgs = {
   where?: Maybe<UserLockup_Filter>;
 };
 
+
 export type IncentivisedVotingLockupStakingRewardsArgs = {
   skip?: Maybe<Scalars['Int']>;
   first?: Maybe<Scalars['Int']>;
@@ -395,6 +375,7 @@ export type IncentivisedVotingLockupStakingRewardsArgs = {
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<StakingReward_Filter>;
 };
+
 
 export type IncentivisedVotingLockupStakingBalancesArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -598,7 +579,7 @@ export enum IncentivisedVotingLockup_OrderBy {
   TotalStaticWeight = 'totalStaticWeight',
   TotalStakingRewards = 'totalStakingRewards',
   TotalValue = 'totalValue',
-  TotalStakers = 'totalStakers',
+  TotalStakers = 'totalStakers'
 }
 
 export type IncreaseLockAmountTransaction = Transaction & {
@@ -671,7 +652,7 @@ export enum IncreaseLockAmountTransaction_OrderBy {
   Provider = 'provider',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Value = 'value',
+  Value = 'value'
 }
 
 export type IncreaseLockTimeTransaction = Transaction & {
@@ -744,13 +725,13 @@ export enum IncreaseLockTimeTransaction_OrderBy {
   LockTime = 'lockTime',
   Provider = 'provider',
   Sender = 'sender',
-  Timestamp = 'timestamp',
+  Timestamp = 'timestamp'
 }
 
 export enum LockAction {
   CreateLock = 'CREATE_LOCK',
   IncreaseLockAmount = 'INCREASE_LOCK_AMOUNT',
-  IncreaseLockTime = 'INCREASE_LOCK_TIME',
+  IncreaseLockTime = 'INCREASE_LOCK_TIME'
 }
 
 export type Metric = {
@@ -802,12 +783,12 @@ export enum Metric_OrderBy {
   Id = 'id',
   Exact = 'exact',
   Decimals = 'decimals',
-  Simple = 'simple',
+  Simple = 'simple'
 }
 
 export enum OrderDirection {
   Asc = 'asc',
-  Desc = 'desc',
+  Desc = 'desc'
 }
 
 export type Query = {
@@ -845,10 +826,12 @@ export type Query = {
   _meta?: Maybe<_Meta_>;
 };
 
+
 export type QueryMetricArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryMetricsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -859,10 +842,12 @@ export type QueryMetricsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryCounterArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryCountersArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -873,10 +858,12 @@ export type QueryCountersArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryTokenArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryTokensArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -887,10 +874,12 @@ export type QueryTokensArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryUserLockupArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryUserLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -901,10 +890,12 @@ export type QueryUserLockupsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryIncentivisedVotingLockupArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryIncentivisedVotingLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -915,10 +906,12 @@ export type QueryIncentivisedVotingLockupsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryRewardsDistributorArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryRewardsDistributorsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -929,10 +922,12 @@ export type QueryRewardsDistributorsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryStakingRewardArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryStakingRewardsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -943,10 +938,12 @@ export type QueryStakingRewardsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryStakingBalanceArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryStakingBalancesArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -957,10 +954,12 @@ export type QueryStakingBalancesArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryWithdrawTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryWithdrawTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -971,10 +970,12 @@ export type QueryWithdrawTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryEjectTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryEjectTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -985,10 +986,12 @@ export type QueryEjectTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryClaimTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryClaimTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -999,10 +1002,12 @@ export type QueryClaimTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryCreateLockTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryCreateLockTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1013,10 +1018,12 @@ export type QueryCreateLockTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryIncreaseLockAmountTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryIncreaseLockAmountTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1027,10 +1034,12 @@ export type QueryIncreaseLockAmountTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryIncreaseLockTimeTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryIncreaseLockTimeTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1041,10 +1050,12 @@ export type QueryIncreaseLockTimeTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type QueryTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type QueryTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1054,6 +1065,7 @@ export type QueryTransactionsArgs = {
   where?: Maybe<Transaction_Filter>;
   block?: Maybe<Block_Height>;
 };
+
 
 export type Query_MetaArgs = {
   block?: Maybe<Block_Height>;
@@ -1081,7 +1093,7 @@ export type RewardsDistributor_Filter = {
 
 export enum RewardsDistributor_OrderBy {
   Id = 'id',
-  FundManagers = 'fundManagers',
+  FundManagers = 'fundManagers'
 }
 
 export type StakingBalance = {
@@ -1134,7 +1146,7 @@ export enum StakingBalance_OrderBy {
   Id = 'id',
   Account = 'account',
   IncentivisedVotingLockup = 'incentivisedVotingLockup',
-  Amount = 'amount',
+  Amount = 'amount'
 }
 
 export type StakingReward = {
@@ -1207,7 +1219,7 @@ export enum StakingReward_OrderBy {
   RewardsPaid = 'rewardsPaid',
   AmountPerTokenPaid = 'amountPerTokenPaid',
   Account = 'account',
-  IncentivisedVotingLockup = 'incentivisedVotingLockup',
+  IncentivisedVotingLockup = 'incentivisedVotingLockup'
 }
 
 export type Subscription = {
@@ -1245,10 +1257,12 @@ export type Subscription = {
   _meta?: Maybe<_Meta_>;
 };
 
+
 export type SubscriptionMetricArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionMetricsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1259,10 +1273,12 @@ export type SubscriptionMetricsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionCounterArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionCountersArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1273,10 +1289,12 @@ export type SubscriptionCountersArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionTokenArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionTokensArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1287,10 +1305,12 @@ export type SubscriptionTokensArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionUserLockupArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionUserLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1301,10 +1321,12 @@ export type SubscriptionUserLockupsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionIncentivisedVotingLockupArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionIncentivisedVotingLockupsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1315,10 +1337,12 @@ export type SubscriptionIncentivisedVotingLockupsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionRewardsDistributorArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionRewardsDistributorsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1329,10 +1353,12 @@ export type SubscriptionRewardsDistributorsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionStakingRewardArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionStakingRewardsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1343,10 +1369,12 @@ export type SubscriptionStakingRewardsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionStakingBalanceArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionStakingBalancesArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1357,10 +1385,12 @@ export type SubscriptionStakingBalancesArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionWithdrawTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionWithdrawTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1371,10 +1401,12 @@ export type SubscriptionWithdrawTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionEjectTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionEjectTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1385,10 +1417,12 @@ export type SubscriptionEjectTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionClaimTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionClaimTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1399,10 +1433,12 @@ export type SubscriptionClaimTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionCreateLockTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionCreateLockTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1413,10 +1449,12 @@ export type SubscriptionCreateLockTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionIncreaseLockAmountTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionIncreaseLockAmountTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1427,10 +1465,12 @@ export type SubscriptionIncreaseLockAmountTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionIncreaseLockTimeTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionIncreaseLockTimeTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1441,10 +1481,12 @@ export type SubscriptionIncreaseLockTimeTransactionsArgs = {
   block?: Maybe<Block_Height>;
 };
 
+
 export type SubscriptionTransactionArgs = {
   id: Scalars['ID'];
   block?: Maybe<Block_Height>;
 };
+
 
 export type SubscriptionTransactionsArgs = {
   skip?: Maybe<Scalars['Int']>;
@@ -1454,6 +1496,7 @@ export type SubscriptionTransactionsArgs = {
   where?: Maybe<Transaction_Filter>;
   block?: Maybe<Block_Height>;
 };
+
 
 export type Subscription_MetaArgs = {
   block?: Maybe<Block_Height>;
@@ -1632,7 +1675,7 @@ export enum Token_OrderBy {
   TotalMinted = 'totalMinted',
   TotalTransfers = 'totalTransfers',
   TotalMints = 'totalMints',
-  TotalBurns = 'totalBurns',
+  TotalBurns = 'totalBurns'
 }
 
 export type Transaction = {
@@ -1692,7 +1735,7 @@ export enum Transaction_OrderBy {
   Hash = 'hash',
   Block = 'block',
   Timestamp = 'timestamp',
-  Sender = 'sender',
+  Sender = 'sender'
 }
 
 export type UserLockup = {
@@ -1799,7 +1842,7 @@ export enum UserLockup_OrderBy {
   Slope = 'slope',
   Bias = 'bias',
   Ejected = 'ejected',
-  EjectedHash = 'ejectedHash',
+  EjectedHash = 'ejectedHash'
 }
 
 export type WithdrawTransaction = Transaction & {
@@ -1872,53 +1915,38 @@ export enum WithdrawTransaction_OrderBy {
   Provider = 'provider',
   Sender = 'sender',
   Timestamp = 'timestamp',
-  Value = 'value',
+  Value = 'value'
 }
 
-export type TokenDetailsFragment = Pick<
-  Token,
-  'id' | 'address' | 'decimals' | 'symbol'
-> & { totalSupply: Pick<Metric, 'simple' | 'exact' | 'decimals'> };
+export type TokenDetailsFragment = (
+  Pick<Token, 'id' | 'address' | 'decimals' | 'symbol'>
+  & { totalSupply: Pick<Metric, 'simple' | 'exact' | 'decimals'> }
+);
 
-export type UserLockupDetailsFragment = Pick<
-  UserLockup,
-  'value' | 'account' | 'lockTime' | 'bias' | 'slope' | 'ts'
->;
+export type UserLockupDetailsFragment = Pick<UserLockup, 'value' | 'account' | 'lockTime' | 'bias' | 'slope' | 'ts'>;
 
-export type IncentivisedVotingLockupDetailsFragment = Pick<
-  IncentivisedVotingLockup,
-  | 'periodFinish'
-  | 'lastUpdateTime'
-  | 'rewardPerTokenStored'
-  | 'end'
-  | 'duration'
-  | 'rewardRate'
-  | 'globalEpoch'
-  | 'expired'
-  | 'maxTime'
-  | 'totalStaticWeight'
-  | 'totalStakingRewards'
-  | 'totalValue'
-> & { address: IncentivisedVotingLockup['id'] } & {
-  totalStakers: Pick<Counter, 'value'>;
-  stakingToken: TokenDetailsFragment;
-  rewardsToken: TokenDetailsFragment;
-  votingToken: TokenDetailsFragment;
-};
+export type IncentivisedVotingLockupDetailsFragment = (
+  Pick<IncentivisedVotingLockup, 'periodFinish' | 'lastUpdateTime' | 'rewardPerTokenStored' | 'end' | 'duration' | 'rewardRate' | 'globalEpoch' | 'expired' | 'maxTime' | 'totalStaticWeight' | 'totalStakingRewards' | 'totalValue'>
+  & { address: IncentivisedVotingLockup['id'] }
+  & { totalStakers: Pick<Counter, 'value'>, stakingToken: TokenDetailsFragment, rewardsToken: TokenDetailsFragment, votingToken: TokenDetailsFragment }
+);
 
 export type Erc20TokensQueryVariables = Exact<{
   addresses: Array<Scalars['Bytes']> | Scalars['Bytes'];
 }>;
 
+
 export type Erc20TokensQuery = { tokens: Array<TokenDetailsFragment> };
 
-export type AllErc20TokensQueryVariables = Exact<{ [key: string]: never }>;
+export type AllErc20TokensQueryVariables = Exact<{ [key: string]: never; }>;
+
 
 export type AllErc20TokensQuery = { tokens: Array<TokenDetailsFragment> };
 
 export type TokenQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
+
 
 export type TokenQuery = { token?: Maybe<TokenDetailsFragment> };
 
@@ -1929,20 +1957,14 @@ export type IncentivisedVotingLockupsQueryVariables = Exact<{
   block?: Maybe<Block_Height>;
 }>;
 
-export type IncentivisedVotingLockupsQuery = {
-  current: Array<
-    {
-      stakingRewards: Array<
-        Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>
-      >;
-      stakingBalances: Array<Pick<StakingBalance, 'amount'>>;
-      userLockups: Array<
-        Pick<UserLockup, 'ejected' | 'ejectedHash'> & UserLockupDetailsFragment
-      >;
-    } & IncentivisedVotingLockupDetailsFragment
-  >;
-  historic: Array<IncentivisedVotingLockupDetailsFragment>;
-};
+
+export type IncentivisedVotingLockupsQuery = { current: Maybe<Array<(
+    { stakingRewards?: Maybe<Array<Pick<StakingReward, 'amount' | 'amountPerTokenPaid' | 'rewardsPaid'>>>, stakingBalances?: Maybe<Array<Pick<StakingBalance, 'amount'>>>, userLockups?: Maybe<Array<(
+      Pick<UserLockup, 'ejected' | 'ejectedHash'>
+      & UserLockupDetailsFragment
+    )>> }
+    & IncentivisedVotingLockupDetailsFragment
+  )>>, historic: Maybe<Array<IncentivisedVotingLockupDetailsFragment>> };
 
 export type AllUserLockupsQueryVariables = Exact<{
   skip: Scalars['Int'];
@@ -1951,109 +1973,90 @@ export type AllUserLockupsQueryVariables = Exact<{
   block?: Maybe<Block_Height>;
 }>;
 
-export type AllUserLockupsQuery = {
-  current: Maybe<UserLockupDetailsFragment>;
-  historic: Maybe<UserLockupDetailsFragment>;
-};
+
+export type AllUserLockupsQuery = { current: Maybe<Array<UserLockupDetailsFragment>>, historic: Maybe<Array<UserLockupDetailsFragment>> };
 
 export type HistoricTransactionsQueryVariables = Exact<{
   account?: Maybe<Scalars['Bytes']>;
 }>;
 
-export type HistoricTransactionsQuery = {
-  createLockTransactions: Array<
-    { __typename: 'CreateLockTransaction' } & Pick<
-      CreateLockTransaction,
-      'value' | 'lockTime' | 'hash' | 'timestamp'
-    >
-  >;
-  increaseLockTimeTransactions: Array<
-    { __typename: 'IncreaseLockTimeTransaction' } & Pick<
-      IncreaseLockTimeTransaction,
-      'lockTime' | 'hash' | 'timestamp'
-    >
-  >;
-  increaseLockAmountTransactions: Array<
-    { __typename: 'IncreaseLockAmountTransaction' } & Pick<
-      IncreaseLockAmountTransaction,
-      'value' | 'hash' | 'timestamp'
-    >
-  >;
-  withdrawTransactions: Array<
-    { __typename: 'WithdrawTransaction' } & Pick<
-      WithdrawTransaction,
-      'value' | 'hash' | 'timestamp'
-    >
-  >;
-  claimTransactions: Array<
-    { __typename: 'ClaimTransaction' } & Pick<
-      ClaimTransaction,
-      'reward' | 'hash' | 'timestamp'
-    >
-  >;
-};
+
+export type HistoricTransactionsQuery = { createLockTransactions: Array<(
+    { __typename: 'CreateLockTransaction' }
+    & Pick<CreateLockTransaction, 'value' | 'lockTime' | 'hash' | 'timestamp'>
+  )>, increaseLockTimeTransactions: Array<(
+    { __typename: 'IncreaseLockTimeTransaction' }
+    & Pick<IncreaseLockTimeTransaction, 'lockTime' | 'hash' | 'timestamp'>
+  )>, increaseLockAmountTransactions: Array<(
+    { __typename: 'IncreaseLockAmountTransaction' }
+    & Pick<IncreaseLockAmountTransaction, 'value' | 'hash' | 'timestamp'>
+  )>, withdrawTransactions: Array<(
+    { __typename: 'WithdrawTransaction' }
+    & Pick<WithdrawTransaction, 'value' | 'hash' | 'timestamp'>
+  )>, claimTransactions: Array<(
+    { __typename: 'ClaimTransaction' }
+    & Pick<ClaimTransaction, 'reward' | 'hash' | 'timestamp'>
+  )> };
 
 export const UserLockupDetailsFragmentDoc = gql`
-  fragment UserLockupDetails on UserLockup {
-    value
-    account
-    lockTime
-    bias
-    slope
-    ts
-  }
-`;
+    fragment UserLockupDetails on UserLockup {
+  value
+  account
+  lockTime
+  bias
+  slope
+  ts
+}
+    `;
 export const TokenDetailsFragmentDoc = gql`
-  fragment TokenDetails on Token {
-    id
-    address
+    fragment TokenDetails on Token {
+  id
+  address
+  decimals
+  symbol
+  totalSupply {
+    simple
+    exact
     decimals
-    symbol
-    totalSupply {
-      simple
-      exact
-      decimals
-    }
   }
-`;
+}
+    `;
 export const IncentivisedVotingLockupDetailsFragmentDoc = gql`
-  fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
-    address: id
-    periodFinish
-    lastUpdateTime
-    rewardPerTokenStored
-    end
-    duration
-    rewardRate
-    globalEpoch
-    expired
-    maxTime
-    totalStaticWeight
-    totalStakingRewards
-    totalValue
-    totalStakers {
-      value
-    }
-    stakingToken {
-      ...TokenDetails
-    }
-    rewardsToken {
-      ...TokenDetails
-    }
-    votingToken {
-      ...TokenDetails
-    }
+    fragment IncentivisedVotingLockupDetails on IncentivisedVotingLockup {
+  address: id
+  periodFinish
+  lastUpdateTime
+  rewardPerTokenStored
+  end
+  duration
+  rewardRate
+  globalEpoch
+  expired
+  maxTime
+  totalStaticWeight
+  totalStakingRewards
+  totalValue
+  totalStakers {
+    value
   }
-  ${TokenDetailsFragmentDoc}
-`;
+  stakingToken {
+    ...TokenDetails
+  }
+  rewardsToken {
+    ...TokenDetails
+  }
+  votingToken {
+    ...TokenDetails
+  }
+}
+    ${TokenDetailsFragmentDoc}`;
 export const Erc20TokensDocument = gql`
-  query Erc20Tokens($addresses: [Bytes!]!) {
-    tokens(where: { address_in: $addresses }) {
-      ...TokenDetails
-    }
+    query Erc20Tokens($addresses: [Bytes!]!) {
+  tokens(where: {address_in: $addresses}) {
+    ...TokenDetails
   }
-  ${TokenDetailsFragmentDoc}
-`;
+}
+    ${TokenDetailsFragmentDoc}`;
 
 /**
  * __useErc20TokensQuery__
@@ -2071,44 +2074,24 @@ export const Erc20TokensDocument = gql`
  *   },
  * });
  */
-export function useErc20TokensQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    Erc20TokensQuery,
-    Erc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<Erc20TokensQuery, Erc20TokensQueryVariables>(
-    Erc20TokensDocument,
-    baseOptions,
-  );
-}
-export function useErc20TokensLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    Erc20TokensQuery,
-    Erc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    Erc20TokensQuery,
-    Erc20TokensQueryVariables
-  >(Erc20TokensDocument, baseOptions);
-}
+export function useErc20TokensQuery(baseOptions: Apollo.QueryHookOptions<Erc20TokensQuery, Erc20TokensQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<Erc20TokensQuery, Erc20TokensQueryVariables>(Erc20TokensDocument, options);
+      }
+export function useErc20TokensLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Erc20TokensQuery, Erc20TokensQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<Erc20TokensQuery, Erc20TokensQueryVariables>(Erc20TokensDocument, options);
+        }
 export type Erc20TokensQueryHookResult = ReturnType<typeof useErc20TokensQuery>;
-export type Erc20TokensLazyQueryHookResult = ReturnType<
-  typeof useErc20TokensLazyQuery
->;
-export type Erc20TokensQueryResult = ApolloReactCommon.QueryResult<
-  Erc20TokensQuery,
-  Erc20TokensQueryVariables
->;
+export type Erc20TokensLazyQueryHookResult = ReturnType<typeof useErc20TokensLazyQuery>;
+export type Erc20TokensQueryResult = Apollo.QueryResult<Erc20TokensQuery, Erc20TokensQueryVariables>;
 export const AllErc20TokensDocument = gql`
-  query AllErc20Tokens {
-    tokens {
-      ...TokenDetails
-    }
+    query AllErc20Tokens {
+  tokens {
+    ...TokenDetails
   }
-  ${TokenDetailsFragmentDoc}
-`;
+}
+    ${TokenDetailsFragmentDoc}`;
 
 /**
  * __useAllErc20TokensQuery__
@@ -2125,46 +2108,24 @@ export const AllErc20TokensDocument = gql`
  *   },
  * });
  */
-export function useAllErc20TokensQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >(AllErc20TokensDocument, baseOptions);
-}
-export function useAllErc20TokensLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    AllErc20TokensQuery,
-    AllErc20TokensQueryVariables
-  >(AllErc20TokensDocument, baseOptions);
-}
-export type AllErc20TokensQueryHookResult = ReturnType<
-  typeof useAllErc20TokensQuery
->;
-export type AllErc20TokensLazyQueryHookResult = ReturnType<
-  typeof useAllErc20TokensLazyQuery
->;
-export type AllErc20TokensQueryResult = ApolloReactCommon.QueryResult<
-  AllErc20TokensQuery,
-  AllErc20TokensQueryVariables
->;
+export function useAllErc20TokensQuery(baseOptions?: Apollo.QueryHookOptions<AllErc20TokensQuery, AllErc20TokensQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllErc20TokensQuery, AllErc20TokensQueryVariables>(AllErc20TokensDocument, options);
+      }
+export function useAllErc20TokensLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllErc20TokensQuery, AllErc20TokensQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllErc20TokensQuery, AllErc20TokensQueryVariables>(AllErc20TokensDocument, options);
+        }
+export type AllErc20TokensQueryHookResult = ReturnType<typeof useAllErc20TokensQuery>;
+export type AllErc20TokensLazyQueryHookResult = ReturnType<typeof useAllErc20TokensLazyQuery>;
+export type AllErc20TokensQueryResult = Apollo.QueryResult<AllErc20TokensQuery, AllErc20TokensQueryVariables>;
 export const TokenDocument = gql`
-  query Token($id: ID!) {
-    token(id: $id) {
-      ...TokenDetails
-    }
+    query Token($id: ID!) {
+  token(id: $id) {
+    ...TokenDetails
   }
-  ${TokenDetailsFragmentDoc}
-`;
+}
+    ${TokenDetailsFragmentDoc}`;
 
 /**
  * __useTokenQuery__
@@ -2182,67 +2143,41 @@ export const TokenDocument = gql`
  *   },
  * });
  */
-export function useTokenQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    TokenQuery,
-    TokenQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<TokenQuery, TokenQueryVariables>(
-    TokenDocument,
-    baseOptions,
-  );
-}
-export function useTokenLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    TokenQuery,
-    TokenQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<TokenQuery, TokenQueryVariables>(
-    TokenDocument,
-    baseOptions,
-  );
-}
+export function useTokenQuery(baseOptions: Apollo.QueryHookOptions<TokenQuery, TokenQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TokenQuery, TokenQueryVariables>(TokenDocument, options);
+      }
+export function useTokenLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TokenQuery, TokenQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TokenQuery, TokenQueryVariables>(TokenDocument, options);
+        }
 export type TokenQueryHookResult = ReturnType<typeof useTokenQuery>;
 export type TokenLazyQueryHookResult = ReturnType<typeof useTokenLazyQuery>;
-export type TokenQueryResult = ApolloReactCommon.QueryResult<
-  TokenQuery,
-  TokenQueryVariables
->;
+export type TokenQueryResult = Apollo.QueryResult<TokenQuery, TokenQueryVariables>;
 export const IncentivisedVotingLockupsDocument = gql`
-  query IncentivisedVotingLockups(
-    $hasAccount: Boolean!
-    $hasBlock: Boolean!
-    $account: Bytes
-    $block: Block_height
-  ) {
-    current: incentivisedVotingLockups @skip(if: $hasBlock) {
-      ...IncentivisedVotingLockupDetails
-      stakingRewards(where: { account: $account }, first: 1)
-        @include(if: $hasAccount) {
-        amount
-        amountPerTokenPaid
-        rewardsPaid
-      }
-      stakingBalances(where: { account: $account }, first: 1)
-        @include(if: $hasAccount) {
-        amount
-      }
-      userLockups(where: { account: $account }, first: 1)
-        @include(if: $hasAccount) {
-        ...UserLockupDetails
-        ejected
-        ejectedHash
-      }
+    query IncentivisedVotingLockups($hasAccount: Boolean!, $hasBlock: Boolean!, $account: Bytes, $block: Block_height) {
+  current: incentivisedVotingLockups @skip(if: $hasBlock) {
+    ...IncentivisedVotingLockupDetails
+    stakingRewards(where: {account: $account}, first: 1) @include(if: $hasAccount) {
+      amount
+      amountPerTokenPaid
+      rewardsPaid
     }
-    historic: incentivisedVotingLockups(block: $block) @include(if: $hasBlock) {
-      ...IncentivisedVotingLockupDetails
+    stakingBalances(where: {account: $account}, first: 1) @include(if: $hasAccount) {
+      amount
+    }
+    userLockups(where: {account: $account}, first: 1) @include(if: $hasAccount) {
+      ...UserLockupDetails
+      ejected
+      ejectedHash
     }
   }
-  ${IncentivisedVotingLockupDetailsFragmentDoc}
-  ${UserLockupDetailsFragmentDoc}
-`;
+  historic: incentivisedVotingLockups(block: $block) @include(if: $hasBlock) {
+    ...IncentivisedVotingLockupDetails
+  }
+}
+    ${IncentivisedVotingLockupDetailsFragmentDoc}
+${UserLockupDetailsFragmentDoc}`;
 
 /**
  * __useIncentivisedVotingLockupsQuery__
@@ -2263,67 +2198,27 @@ export const IncentivisedVotingLockupsDocument = gql`
  *   },
  * });
  */
-export function useIncentivisedVotingLockupsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >(IncentivisedVotingLockupsDocument, baseOptions);
-}
-export function useIncentivisedVotingLockupsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    IncentivisedVotingLockupsQuery,
-    IncentivisedVotingLockupsQueryVariables
-  >(IncentivisedVotingLockupsDocument, baseOptions);
-}
-export type IncentivisedVotingLockupsQueryHookResult = ReturnType<
-  typeof useIncentivisedVotingLockupsQuery
->;
-export type IncentivisedVotingLockupsLazyQueryHookResult = ReturnType<
-  typeof useIncentivisedVotingLockupsLazyQuery
->;
-export type IncentivisedVotingLockupsQueryResult = ApolloReactCommon.QueryResult<
-  IncentivisedVotingLockupsQuery,
-  IncentivisedVotingLockupsQueryVariables
->;
+export function useIncentivisedVotingLockupsQuery(baseOptions: Apollo.QueryHookOptions<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>(IncentivisedVotingLockupsDocument, options);
+      }
+export function useIncentivisedVotingLockupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>(IncentivisedVotingLockupsDocument, options);
+        }
+export type IncentivisedVotingLockupsQueryHookResult = ReturnType<typeof useIncentivisedVotingLockupsQuery>;
+export type IncentivisedVotingLockupsLazyQueryHookResult = ReturnType<typeof useIncentivisedVotingLockupsLazyQuery>;
+export type IncentivisedVotingLockupsQueryResult = Apollo.QueryResult<IncentivisedVotingLockupsQuery, IncentivisedVotingLockupsQueryVariables>;
 export const AllUserLockupsDocument = gql`
-  query AllUserLockups(
-    $skip: Int!
-    $minLockTime: BigInt!
-    $hasBlock: Boolean!
-    $block: Block_height
-  ) {
-    current: userLockups(
-      where: { lockTime_gte: $minLockTime }
-      first: 500
-      skip: $skip
-      orderBy: bias
-      orderDirection: desc
-    ) @skip(if: $hasBlock) {
-      ...UserLockupDetails
-    }
-    historic: userLockups(
-      where: { lockTime_gte: $minLockTime }
-      block: $block
-      skip: $skip
-      first: 500
-      orderBy: bias
-      orderDirection: desc
-    ) @include(if: $hasBlock) {
-      ...UserLockupDetails
-    }
+    query AllUserLockups($skip: Int!, $minLockTime: BigInt!, $hasBlock: Boolean!, $block: Block_height) {
+  current: userLockups(where: {lockTime_gte: $minLockTime}, first: 500, skip: $skip, orderBy: bias, orderDirection: desc) @skip(if: $hasBlock) {
+    ...UserLockupDetails
   }
-  ${UserLockupDetailsFragmentDoc}
-`;
+  historic: userLockups(where: {lockTime_gte: $minLockTime}, block: $block, skip: $skip, first: 500, orderBy: bias, orderDirection: desc) @include(if: $hasBlock) {
+    ...UserLockupDetails
+  }
+}
+    ${UserLockupDetailsFragmentDoc}`;
 
 /**
  * __useAllUserLockupsQuery__
@@ -2344,79 +2239,52 @@ export const AllUserLockupsDocument = gql`
  *   },
  * });
  */
-export function useAllUserLockupsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >(AllUserLockupsDocument, baseOptions);
-}
-export function useAllUserLockupsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    AllUserLockupsQuery,
-    AllUserLockupsQueryVariables
-  >(AllUserLockupsDocument, baseOptions);
-}
-export type AllUserLockupsQueryHookResult = ReturnType<
-  typeof useAllUserLockupsQuery
->;
-export type AllUserLockupsLazyQueryHookResult = ReturnType<
-  typeof useAllUserLockupsLazyQuery
->;
-export type AllUserLockupsQueryResult = ApolloReactCommon.QueryResult<
-  AllUserLockupsQuery,
-  AllUserLockupsQueryVariables
->;
+export function useAllUserLockupsQuery(baseOptions: Apollo.QueryHookOptions<AllUserLockupsQuery, AllUserLockupsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AllUserLockupsQuery, AllUserLockupsQueryVariables>(AllUserLockupsDocument, options);
+      }
+export function useAllUserLockupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllUserLockupsQuery, AllUserLockupsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AllUserLockupsQuery, AllUserLockupsQueryVariables>(AllUserLockupsDocument, options);
+        }
+export type AllUserLockupsQueryHookResult = ReturnType<typeof useAllUserLockupsQuery>;
+export type AllUserLockupsLazyQueryHookResult = ReturnType<typeof useAllUserLockupsLazyQuery>;
+export type AllUserLockupsQueryResult = Apollo.QueryResult<AllUserLockupsQuery, AllUserLockupsQueryVariables>;
 export const HistoricTransactionsDocument = gql`
-  query HistoricTransactions($account: Bytes) @api(name: mstable) {
-    createLockTransactions(where: { provider: $account }, orderBy: timestamp) {
-      __typename
-      value
-      lockTime
-      hash
-      timestamp
-    }
-    increaseLockTimeTransactions(
-      where: { provider: $account }
-      orderBy: timestamp
-    ) {
-      __typename
-      lockTime
-      hash
-      timestamp
-    }
-    increaseLockAmountTransactions(
-      where: { provider: $account }
-      orderBy: timestamp
-    ) {
-      __typename
-      value
-      hash
-      timestamp
-    }
-    withdrawTransactions(where: { provider: $account }, orderBy: timestamp) {
-      __typename
-      value
-      hash
-      timestamp
-    }
-    claimTransactions(where: { user: $account }, orderBy: timestamp) {
-      __typename
-      reward
-      hash
-      timestamp
-    }
+    query HistoricTransactions($account: Bytes) @api(name: mstable) {
+  createLockTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    value
+    lockTime
+    hash
+    timestamp
   }
-`;
+  increaseLockTimeTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    lockTime
+    hash
+    timestamp
+  }
+  increaseLockAmountTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    value
+    hash
+    timestamp
+  }
+  withdrawTransactions(where: {provider: $account}, orderBy: timestamp) {
+    __typename
+    value
+    hash
+    timestamp
+  }
+  claimTransactions(where: {user: $account}, orderBy: timestamp) {
+    __typename
+    reward
+    hash
+    timestamp
+  }
+}
+    `;
 
 /**
  * __useHistoricTransactionsQuery__
@@ -2434,35 +2302,14 @@ export const HistoricTransactionsDocument = gql`
  *   },
  * });
  */
-export function useHistoricTransactionsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useQuery<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >(HistoricTransactionsDocument, baseOptions);
-}
-export function useHistoricTransactionsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >,
-) {
-  return ApolloReactHooks.useLazyQuery<
-    HistoricTransactionsQuery,
-    HistoricTransactionsQueryVariables
-  >(HistoricTransactionsDocument, baseOptions);
-}
-export type HistoricTransactionsQueryHookResult = ReturnType<
-  typeof useHistoricTransactionsQuery
->;
-export type HistoricTransactionsLazyQueryHookResult = ReturnType<
-  typeof useHistoricTransactionsLazyQuery
->;
-export type HistoricTransactionsQueryResult = ApolloReactCommon.QueryResult<
-  HistoricTransactionsQuery,
-  HistoricTransactionsQueryVariables
->;
+export function useHistoricTransactionsQuery(baseOptions?: Apollo.QueryHookOptions<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>(HistoricTransactionsDocument, options);
+      }
+export function useHistoricTransactionsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>(HistoricTransactionsDocument, options);
+        }
+export type HistoricTransactionsQueryHookResult = ReturnType<typeof useHistoricTransactionsQuery>;
+export type HistoricTransactionsLazyQueryHookResult = ReturnType<typeof useHistoricTransactionsLazyQuery>;
+export type HistoricTransactionsQueryResult = Apollo.QueryResult<HistoricTransactionsQuery, HistoricTransactionsQueryVariables>;

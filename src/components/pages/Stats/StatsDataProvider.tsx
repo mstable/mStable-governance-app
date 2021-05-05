@@ -7,7 +7,7 @@ import { useIncentivisedVotingLockupAtBlock } from './IncentivisedVotingLockupAt
 import { IncentivisedVotingLockup } from '../../../context/DataProvider/types';
 
 const transformAllUserLockups = (
-  userLockups: RawData['userLockups'] = [],
+  userLockups: NonNullable<RawData['userLockups'][0]> = [],
 ): UserLockupSimple[] => {
   return userLockups.map(userLockup => {
     const { value, bias, slope, account } = userLockup;

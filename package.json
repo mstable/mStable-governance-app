@@ -93,12 +93,12 @@
     ]
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.13.5",
-    "@graphql-codegen/fragment-matcher": "^1.13.5",
-    "@graphql-codegen/schema-ast": "^1.17.3",
-    "@graphql-codegen/typescript": "^1.13.5",
-    "@graphql-codegen/typescript-operations": "^1.13.5",
-    "@graphql-codegen/typescript-react-apollo": "^1.13.5",
+    "@graphql-codegen/cli": "^1.21.4",
+    "@graphql-codegen/fragment-matcher": "^2.0.1",
+    "@graphql-codegen/schema-ast": "^1.18.2",
+    "@graphql-codegen/typescript": "^1.22.0",
+    "@graphql-codegen/typescript-operations": "^1.17.16",
+    "@graphql-codegen/typescript-react-apollo": "^2.2.4",
     "@mstable/protocol": "1.2.1",
     "@testing-library/react-hooks": "^3.2.1",
     "@typechain/ethers-v4": "^1.0.0",
