@@ -19,7 +19,7 @@ jobs:
           key: dependency-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Install
-          command: yarn
+          command: yarn --ignore-engines
       - run:
           name: Codegen (TypeChain)
           command: yarn codegen:typechain
