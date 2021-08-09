@@ -38,6 +38,7 @@ export const WALLETS = [
     infuraKey: process.env.REACT_APP_RPC_API_KEY,
     preferred: true,
   },
+  { walletName: 'gnosis' },
   { walletName: 'opera' },
   { walletName: 'operaTouch' },
   { walletName: 'torus' },
