@@ -28,8 +28,10 @@ const ExitForm: FC = () => {
   } = useStakeState();
   const setFormManifest = useSetFormManifest();
   const contract = useStakeContract();
-  const canUnlock =
-    nowUnix() >= (incentivisedVotingLockup?.userLockup?.lockTime as number);
+  const canUnlock = !!(
+    nowUnix() >= (incentivisedVotingLockup?.userLockup?.lockTime as number) ||
+    incentivisedVotingLockup?.expired
+  );
 
   const balance = incentivisedVotingLockup?.userStakingBalance;
 
