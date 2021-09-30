@@ -12,7 +12,7 @@ import {
 } from '../context/DataProvider/TokensProvider';
 import { useSigner } from '../context/OnboardProvider';
 // eslint-disable-next-line import/named
-import { Erc20DetailedInterface } from '../typechain/Erc20Detailed.d';
+import { InitializableErc20DetailedInterface } from '../typechain/InitializableErc20Detailed.d';
 import { BigDecimal } from '../utils/BigDecimal';
 
 const contractInterface = (() => {
@@ -65,7 +65,7 @@ const contractInterface = (() => {
       type: 'function',
     },
   ];
-  return new Interface(abi) as Erc20DetailedInterface;
+  return new Interface(abi) as InitializableErc20DetailedInterface;
 })();
 
 /**

@@ -5,8 +5,8 @@ import { useMemo } from 'react';
 
 import formatDuration from 'date-fns/formatDuration';
 import { useSigner } from '../context/OnboardProvider';
-import { Erc20Detailed } from '../typechain/Erc20Detailed';
-import { Erc20DetailedFactory } from '../typechain/Erc20DetailedFactory';
+import { InitializableErc20Detailed } from '../typechain/InitializableErc20Detailed';
+import { InitializableErc20DetailedFactory } from '../typechain/InitializableErc20DetailedFactory';
 import { truncateAddress } from './strings';
 
 export const useTruncatedAddress = (address?: string | null): string | null =>
@@ -14,11 +14,13 @@ export const useTruncatedAddress = (address?: string | null): string | null =>
 
 export const useErc20Contract = (
   address: string | null,
-): Erc20Detailed | null => {
+): InitializableErc20Detailed | null => {
   const signer = useSigner();
   return useMemo(
     () =>
-      signer && address ? Erc20DetailedFactory.connect(address, signer) : null,
+      signer && address
+        ? InitializableErc20DetailedFactory.connect(address, signer)
+        : null,
     [address, signer],
   );
 };

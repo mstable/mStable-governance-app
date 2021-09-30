@@ -9,7 +9,7 @@ import {
 import { useBlockNumber } from './BlockProvider';
 
 import { BigDecimal } from '../../utils/BigDecimal';
-import { Erc20DetailedFactory } from '../../typechain/Erc20DetailedFactory';
+import { InitializableErc20DetailedFactory } from '../../typechain/InitializableErc20DetailedFactory';
 
 export const useBlockPollingSubscription = <TData, TVariables>(
   lazyQuery: (
@@ -81,7 +81,7 @@ export const useTotalSupply = (
   const contract = useMemo(
     () =>
       provider && address
-        ? Erc20DetailedFactory.connect(address, provider)
+        ? InitializableErc20DetailedFactory.connect(address, provider)
         : undefined,
     [address, provider],
   );
