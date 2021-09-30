@@ -37,8 +37,8 @@ const ExitForm: FC = () => {
 
   useEffect(() => {
     if (canUnlock && contract) {
-      return setFormManifest<Interfaces.IncentivisedVotingLockup, 'withdraw'>({
-        fn: 'withdraw',
+      return setFormManifest<Interfaces.IncentivisedVotingLockup, 'exit'>({
+        fn: 'exit',
         args: [],
         contract,
       });
